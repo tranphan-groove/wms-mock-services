@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="reset-pvx-files-flow" doc:id="473a0aab-fee6-47b8-89c4-a29ed2faf223" >
+		<http:listener doc:name="Listener" doc:id="1c86eefe-7a89-4b5d-87cd-f28092d307df" config-ref="HTTP_Listener_config" path="/reset-pvx-files" allowedMethods="PUT"/>
+		<ee:transform doc:name="Set Variable - resetFilePaths" doc:id="c7520501-85f4-4622-9e7b-cf4ec9e1ba57" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable resource="dw/variables/resetFilePaths.dwl" variableName="resetFilePaths" />
+			</ee:variables>
+		</ee:transform>
+		<foreach doc:name="For Each" doc:id="299e746b-b87b-45da-9550-b7169648e727" collection="#[vars.resetFilePaths]">
+			<file:write doc:name="Reset file" doc:id="3dae3e40-1122-4d31-bed9-dd8352b3b87f" config-ref="File_Config" path="#[payload]">
+			<file:content><![CDATA[#[%dw 2.0
+output application/json
+---
+[]]]]></file:content>
+		</file:write>
+		</foreach>
+		<ee:transform doc:name="Transform Message" doc:id="693c1288-8972-43a4-98e6-a32b6cad76a0" >
+			<ee:message >
+				<ee:set-payload resource="dw/transformations/pvx-reset-data-response.dwl" />
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="retrieve-file-content-flow" doc:id="42bb1477-5d04-4661-8460-864136e8f026" >
+		<http:listener doc:name="Listener" doc:id="0f944f49-d006-4e22-a674-dcfc61add517" config-ref="HTTP_Listener_config" path="/file-content" allowedMethods="GET"/>
+		<file:read doc:name="Read file" doc:id="fa73d311-ac32-4aec-a27b-d571a6b71e4b" outputMimeType="application/json" config-ref="File_Config" path="#[attributes.queryParams.filePath]"/>
+	</flow>
+</mule>

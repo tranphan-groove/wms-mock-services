@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
+	xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd 
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="0f3fb85d-f957-4f9a-a45d-9263beb9204b" >
+		<http:listener-connection host="0.0.0.0" port="8082" protocol="HTTPS">
+			<tls:context >
+				<tls:trust-store insecure="true" />
+				<tls:key-store type="pkcs12" path="certificates/keystore.p12" password="mock" alias="mock" keyPassword="mock"/>
+			</tls:context>
+		</http:listener-connection>
+	</http:listener-config>
+	<http:request-config name="s-whiplash_HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="8f580ae2-51a5-4d3a-be6e-3a5c97460533" >
+		<http:request-connection host="#[vars.parsedCallbackURI.host]" port="#[vars.parsedCallbackURI.port default 443]" protocol="HTTPS"/>
+	</http:request-config>
+	<file:config name="File_Config" doc:name="File Config" doc:id="35ecd874-6b5a-4d48-872b-6d504feca429" >
+		<file:connection workingDir="${app.home}" />
+	</file:config>
+	<configuration-properties doc:name="Configuration properties" doc:id="73ccdab0-5798-46a6-8d55-a85bcdfbcb60" file="config\common.yaml" />
+	<http:request-config name="pvx_inventory_HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="3d9a1e03-1b63-4523-baf3-a7005d2411da" basePath="#[p('peoplevox.inventory.basePath')]">
+		<http:request-connection protocol="HTTPS" host="#[p('peoplevox.inventory.host')]" port="#[p('peoplevox.inventory.port')]" />
+	</http:request-config>
+</mule>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+	<flow name="whiplash-create-orders-flow" doc:id="3775615d-d49f-47a3-8474-b2340f1ddc7c" >
+		<http:listener doc:name="Listener" doc:id="d4d06cfe-080d-423b-a558-45e67f9c4839" config-ref="HTTP_Listener_config" path="/api/v2/orders" allowedMethods="POST"/>
+		<file:read doc:name="Read wpl/sales-orders.json" doc:id="bbc9716a-f2a1-49a7-868a-e26fc8b38910" config-ref="File_Config" path="wpl/sales-orders.json" outputMimeType="application/json" target="fileContent" >
+			<ee:repeatable-file-store-stream inMemorySize="256" bufferUnit="MB" />
+		</file:read>
+		<ee:transform doc:name="Transform Message" doc:id="df75d37e-3c0e-4e86-9180-455dfac5c841" >
+			<ee:message >
+				<ee:set-payload resource="dw/transformations/wpl-create-order-response.dwl" />
+			</ee:message>
+		</ee:transform>
+		<file:write doc:name="Write wpl/sales-orders.json" doc:id="94882f75-7c9f-4e7c-819e-29895fd37398" config-ref="File_Config" path="wpl/sales-orders.json" >
+			<file:content ><![CDATA[#[%dw 2.0
+output application/json
+---
+(vars.fileContent default []) ++ [payload]]]]></file:content>
+		</file:write>
+	</flow>
+	<flow name="whiplash-get-orders-by-search-string-subflow" doc:id="0647291b-c4da-498c-8676-9383ff160857" >
+		<http:listener doc:name="Listener" doc:id="3bda1333-2aae-4f4f-bbbe-5cb95fc74139" config-ref="HTTP_Listener_config" path="/api/v2/orders" allowedMethods="GET"/>
+		<file:read doc:name="Read wpl/sales-orders.json" doc:id="e9db54e0-affd-41c1-8a9f-5a67957fdfd6" config-ref="File_Config" path="wpl/sales-orders.json" outputMimeType="application/json" target="fileContent">
+			<ee:repeatable-file-store-stream inMemorySize="256" bufferUnit="MB" />
+		</file:read>
+		<ee:transform doc:name="Transform Message" doc:id="e9b0f6f6-622d-431f-b38e-668785ce7ce7" >
+			<ee:message >
+				<ee:set-payload resource="dw/transformations/wpl-get-orders-by-search-string.dwl" />
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="whiplash-get-an-order-flow" doc:id="be75fde8-1192-44a2-ab49-b1a9d33dec07" >
+		<http:listener doc:name="Listener" doc:id="f0d4893e-8d75-4fa0-a7bf-df600a5567ec" config-ref="HTTP_Listener_config" path="/api/v2/orders/{id}" allowedMethods="GET"/>
+		<file:read doc:name="Read wpl/sales-orders.json" doc:id="721695f6-8262-4740-ba56-0a1a7777cf11" config-ref="File_Config" path="wpl/sales-orders.json" outputMimeType="application/json" target="fileContent" >
+			<ee:repeatable-file-store-stream inMemorySize="256" bufferUnit="MB" />
+		</file:read>
+		<ee:transform doc:name="Transform Message" doc:id="bc49ef67-2662-4d3b-8db4-f56004d25863" >
+			<ee:message >
+				<ee:set-payload resource="dw/transformations/wpl-get-an-order.dwl" />
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="whiplash-get-token-flow" doc:id="24ef67c6-dd38-4374-b292-85d40cdb696d" >
+		<http:listener doc:name="Listener" doc:id="ebb82e54-848d-4fb1-a8d3-f47cadec77b8" config-ref="HTTP_Listener_config" path="/oauth/token" allowedMethods="POST"/>
+		<ee:transform doc:name="Transform Message" doc:id="c8df1cfb-b1d4-4962-b6fa-0216c48893db" >
+			<ee:message >
+				<ee:set-payload resource="dw/transformations/wpl-token-response.dwl" />
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="whiplash-get-request-code-flow" doc:id="ef9e5df8-03d8-4f7f-94b4-142028d31a51" >
+		<http:listener doc:name="Listener" doc:id="eae4d42f-d01f-4846-85a3-d2a51fe50f89" config-ref="HTTP_Listener_config" path="/oauth/authorize" allowedMethods="GET"/>
+		<set-variable value="#[attributes.queryParams.redirect_uri]" doc:name="Set Variable - callbackURI" doc:id="e6c06eea-3fc4-47f4-97a3-14cd046be9cf" variableName="callbackURI"/>
+		<ee:transform doc:name="Set Variable - parsedCallbackURI" doc:id="4243ffbe-e804-4a38-814c-6408e61f8d89" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable resource="dw/variables/wpl-parsed-callback-uri.dwl" variableName="parsedCallbackURI" />
+			</ee:variables>
+		</ee:transform>
+		<http:request method="GET" doc:name="Request Whiplash callback" doc:id="787c30b3-61ec-4c24-9fbd-6ee8702b0d59" config-ref="s-whiplash_HTTP_Request_configuration" path="#[vars.parsedCallbackURI.path]">
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"code": p('s-whiplash.code')
+}]]]></http:query-params>
+		</http:request>
+		<ee:transform doc:name="Transform Message" doc:id="ad94ad7d-b108-4559-9616-fd204e527f4c" >
+			<ee:message >
+				<ee:set-payload resource="dw/transformations/wpl-get-request-code-response.dwl" />
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

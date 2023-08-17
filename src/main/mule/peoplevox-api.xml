@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:apikit-soap="http://www.mulesoft.org/schema/mule/apikit-soap" xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+	xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
+http://www.mulesoft.org/schema/mule/apikit-soap http://www.mulesoft.org/schema/mule/apikit-soap/current/mule-apikit-soap.xsd">
+	<flow name="pvx-soap-flow" doc:id="4226e2e0-3a98-4e4c-b35e-a06f3431c290" >
+		<http:listener doc:name="Listener" doc:id="d29550ae-8c29-4841-8239-df26fff75bdf" config-ref="HTTP_Listener_config" path="/tfaQa3012/resources/integrationservicev4.asmx" allowedMethods="POST"/>
+		<ee:transform doc:name="Set Variable - templateName" doc:id="16180b66-5768-4d90-ae80-9624e7c86410" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable resource="dw/variables/pvx-save-data-templateName.dwl" variableName="templateName" />
+			</ee:variables>
+		</ee:transform>
+		<choice doc:name="Choice" doc:id="33db3f06-f536-4d35-82c1-e3babf7b6748" >
+			<when expression="#[['Sales Orders', 'Sales Order Items', 'Customers'] contains vars.templateName]">
+				<flow-ref doc:name="Flow pvx-soap-save-data-subflow" doc:id="c9c6514f-44da-4b2f-b813-3ae962925baf" name="pvx-soap-save-data-subflow"/>
+			</when>
+			<when expression="#[vars.templateName == 'Mulesoft - Despatched items by package v3']">
+				<flow-ref doc:name="Flow pvx-soap-get-report-data-subflow" doc:id="f5c4fb5a-7db8-4a1a-9433-4a5da0f54122" name="pvx-soap-get-report-data-subflow"/>
+			</when>
+		</choice>
+	</flow>
+	<sub-flow name="pvx-soap-save-data-subflow" doc:id="f132fe55-566f-493a-ab33-1e82ed605c8e" >
+		<ee:transform doc:name="Set Variable - saveDataContent" doc:id="a541a917-2d93-417e-a901-6f0fe85fce07">
+			<ee:message>
+			</ee:message>
+			<ee:variables>
+				<ee:set-variable resource="dw/variables/pvx-save-data-saveDataContent.dwl" variableName="saveDataContent" />
+			</ee:variables>
+		</ee:transform>
+		<ee:transform doc:name="Set Varable - filePath" doc:id="256ec832-f89c-4feb-b739-dae1c9f17347">
+			<ee:message>
+			</ee:message>
+			<ee:variables>
+				<ee:set-variable resource="dw/variables/pvx-get-file-path.dwl" variableName="filePath" />
+			</ee:variables>
+		</ee:transform>
+		<file:read doc:name="Read file" doc:id="692c57f1-8544-47f5-8b49-3dfa982d9ca4" config-ref="File_Config" path="#[vars.filePath]" target="fileContent" outputMimeType="application/json">
+					<ee:repeatable-file-store-stream inMemorySize="256" bufferUnit="MB" />
+				</file:read>
+		<file:write doc:name="Write file" doc:id="089f19f3-647e-4417-8937-fc5c1f2ecb58" config-ref="File_Config" path="#[vars.filePath]">
+					<file:content><![CDATA[#[%dw 2.0
+output application/json
+---
+(vars.fileContent default []) ++ (vars.saveDataContent map ((item) -> (item ++ {timestamp: now()})))]]]></file:content>
+				</file:write>
+		<ee:transform doc:name="Transform Message" doc:id="42454e97-075d-42d7-a692-5e8488964b29">
+			<ee:message>
+				<ee:set-payload resource="dw/transformations/pvx-save-data-response.dwl" />
+			</ee:message>
+		</ee:transform>
+		<choice doc:name="Choice" doc:id="fe607994-e019-41c0-99b5-cfd66637ebea">
+			<when expression="#[vars.templateName == 'Sales Order Items']" >
+				<async doc:name="Async" doc:id="f951a739-6a53-4d46-bf55-35a7ee8e6342" >
+					<ee:transform doc:name="wait" doc:id="5b9242e4-b0bd-4907-a153-599800a4453a" >
+						<ee:message >
+						</ee:message>
+						<ee:variables >
+							<ee:set-variable resource="dw/variables/wait.dwl" variableName="wait" />
+						</ee:variables>
+					</ee:transform>
+					<flow-ref doc:name="Flow pvx-inventory-availability-subflow" doc:id="601cb466-52f8-4b9c-8d90-d0ff1001c185" name="pvx-inventory-availability-subflow"/>
+					<flow-ref doc:name="Flow pvx-inventory-incremental-subflow" doc:id="0ee70de4-59af-4d3d-9acb-3b7562ece80a" name="pvx-inventory-incremental-subflow"/>
+				</async>
+			</when>
+		</choice>
+	</sub-flow>
+	<sub-flow name="pvx-soap-get-report-data-subflow" doc:id="5d97f2e6-5bd8-475f-b718-3aae81abc1d4" >
+		<file:read doc:name="Read pvx/sales-orders.json" doc:id="57966cbb-4f42-4ccf-8146-731acb8e964c" config-ref="File_Config" path="pvx/sales-orders.json" target="salesOrders" outputMimeType="application/json">
+			<ee:repeatable-file-store-stream inMemorySize="256" bufferUnit="MB" />
+		</file:read>
+		<file:read doc:name="Read pvx/sales-order-items.json" doc:id="53e6b16f-9740-4f91-83d5-312ab4e01573" config-ref="File_Config" path="pvx/sales-order-items.json" target="salesOrderItems" outputMimeType="application/json">
+			<ee:repeatable-file-store-stream inMemorySize="256" bufferUnit="MB" />
+		</file:read>
+		<ee:transform doc:name="Set Variable - searchClauseTimestamps and searchClauseRPLN" doc:id="476be670-2a1c-4e4e-b7e1-0b20001b7aa8">
+			<ee:message>
+			</ee:message>
+			<ee:variables>
+				<ee:set-variable resource="dw/variables/pvx-fulfillment-searchClauseTimestamps.dwl" variableName="searchClauseTimestamps" />
+				<ee:set-variable resource="dw/variables/pvx-fulfillment-searchClauseRPLN.dwl" variableName="searchClauseRPLN" />
+			</ee:variables>
+		</ee:transform>
+		<ee:transform doc:name="Filter Payload" doc:id="8a74a9a1-6da1-4321-be8c-4057d40d0601">
+			<ee:message>
+				<ee:set-payload resource="dw/transformations/pvx-fulfillment-filter-payload.dwl" />
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+	<sub-flow name="pvx-inventory-availability-subflow" doc:id="bd243e9a-b37d-4926-9720-e393c0461669" >
+		<foreach doc:name="For Each" doc:id="15d5cb7d-f29a-4be5-bbf2-503869f9dab2" collection="#[vars.saveDataContent]">
+			<ee:transform doc:name="Set Variable - inventoryAvailabilityQueryParams" doc:id="5d80f769-b43f-4e61-8a35-3d459254743f">
+			<ee:message>
+			</ee:message>
+			<ee:variables>
+					<ee:set-variable resource="dw/variables/pvx-inventoryAvailabilityQueryParams.dwl" variableName="inventoryAvailabilityQueryParams" />
+			</ee:variables>
+		</ee:transform>
+			<http:request method="GET" doc:name="Request inventory availability" doc:id="c4a5e210-46fd-4f5a-8ccb-3811fbdb5507" config-ref="pvx_inventory_HTTP_Request_configuration" path="/availability" >
+				<http:query-params ><![CDATA[#[vars.inventoryAvailabilityQueryParams]]]></http:query-params>
+			</http:request>
+		</foreach>
+	</sub-flow>
+	<sub-flow name="pvx-inventory-incremental-subflow" doc:id="c3c28f2f-8e8b-41d3-9afd-f62be76e95cc" >
+		<foreach doc:name="For Each" doc:id="3a162cbb-8227-40a4-9820-46cdf3bde40e" collection="#[vars.saveDataContent]">
+			<ee:transform doc:name="Set Variable - inventoryIncrementalQueryParams" doc:id="7763d995-2985-4544-a48d-f84bbc3ae03a">
+			<ee:message>
+			</ee:message>
+			<ee:variables>
+					<ee:set-variable resource="dw/variables/pvx-inventoryIncrementalQueryParams.dwl" variableName="inventoryIncrementalQueryParams" />
+			</ee:variables>
+		</ee:transform>
+			<http:request method="GET" doc:name="Request inventory incremental" doc:id="24eb4ee2-e3a1-4332-9238-b64c40ead8d0" config-ref="pvx_inventory_HTTP_Request_configuration" path="/incremental" >
+				<http:query-params ><![CDATA[#[vars.inventoryIncrementalQueryParams]]]></http:query-params>
+			</http:request>
+		</foreach>
+	</sub-flow>
+</mule>
