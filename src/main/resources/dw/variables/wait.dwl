@@ -2,4 +2,4 @@
 import * from dw::Runtime
 output application/json
 ---
-{} wait ((p('peoplevox.blazemeter-mock-service.wait') as Number) * 1000)
+{} wait ((p('blazemeter-mock-service.wait') as Number) * 1000)

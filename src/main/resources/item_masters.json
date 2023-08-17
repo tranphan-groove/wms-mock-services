@@ -1,0 +1,1483 @@
+[{
+        "id": 40271,
+        "sku": "01010102C0012XL",
+        "parent_id": "01010102-YC001",
+        "unified_model": {
+            "sku": "01010102C0012XL",
+            "name": "CONTOUR ESSENTIEL SHORT",
+            "prices": [{
+                    "type": "list",
+                    "value": 59.95,
+                    "currency": "AUD"
+                },
+                {
+                    "type": "list",
+                    "value": 69.95,
+                    "currency": "NZD"
+                },
+                {
+                    "type": "list",
+                    "value": 39.99,
+                    "currency": "USD"
+                }
+            ],
+            "barcode": "4434568880891",
+            "itemType": "sellable_product",
+            "locations": [
+                "100",
+                "115",
+                "116",
+                "117",
+                "190",
+                "199",
+                "200",
+                "210",
+                "211",
+                "300",
+                "303",
+                "310",
+                "400",
+                "410",
+                "411",
+                "600",
+                "900"
+            ],
+            "attributes": [{
+                    "id": "brand_code",
+                    "name": "Brand Code",
+                    "value": "CARRE"
+                },
+                {
+                    "id": "colour",
+                    "name": "Colour",
+                    "value": "Camo"
+                },
+                {
+                    "id": "size",
+                    "name": "Size",
+                    "value": "2XL"
+                },
+                {
+                    "id": "brand_name",
+                    "name": "Brand Name",
+                    "value": "CARRE"
+                },
+                {
+                    "id": "department",
+                    "code": "10",
+                    "name": "Department",
+                    "value": "APPAREL"
+                },
+                {
+                    "id": "category",
+                    "code": "A03",
+                    "name": "Category",
+                    "value": "Pur. Bottoms"
+                },
+                {
+                    "id": "subcategory",
+                    "code": "A03BEASH",
+                    "name": "Sub-Category",
+                    "value": "Beach Short"
+                },
+                {
+                    "id": "subsubcategory",
+                    "code": "100",
+                    "name": "Sub-Sub-Category",
+                    "value": "Mens"
+                }
+            ],
+            "categories": [{
+                "path": "Pur. Bottoms > Beach Short",
+                "type": "merch"
+            }],
+            "tariffCode": "610342",
+            "supplierSku": "01010102C0012XL",
+            "parentProductId": "01010102-YC001",
+            "manufactuerOrigin": ""
+        },
+        "created_at": "2023-06-30 04:21:03",
+        "updated_at": "2023-06-30 04:21:03"
+    },
+    {
+        "id": 40270,
+        "sku": "01010102C001M",
+        "parent_id": "01010102-YC001",
+        "unified_model": {
+            "sku": "01010102C001M",
+            "name": "CONTOUR ESSENTIEL SHORT -",
+            "prices": [{
+                    "type": "list",
+                    "value": 59.95,
+                    "currency": "AUD"
+                },
+                {
+                    "type": "list",
+                    "value": 69.95,
+                    "currency": "NZD"
+                },
+                {
+                    "type": "list",
+                    "value": 39.99,
+                    "currency": "USD"
+                }
+            ],
+            "barcode": "4434568880860",
+            "itemType": "sellable_product",
+            "locations": [
+                "100",
+                "115",
+                "116",
+                "117",
+                "190",
+                "199",
+                "200",
+                "210",
+                "211",
+                "300",
+                "303",
+                "310",
+                "400",
+                "410",
+                "411",
+                "600",
+                "900"
+            ],
+            "attributes": [{
+                    "id": "brand_code",
+                    "name": "Brand Code",
+                    "value": "CARRE"
+                },
+                {
+                    "id": "colour",
+                    "name": "Colour",
+                    "value": "Camo"
+                },
+                {
+                    "id": "size",
+                    "name": "Size",
+                    "value": "M"
+                },
+                {
+                    "id": "brand_name",
+                    "name": "Brand Name",
+                    "value": "CARRE"
+                },
+                {
+                    "id": "department",
+                    "code": "10",
+                    "name": "Department",
+                    "value": "APPAREL"
+                },
+                {
+                    "id": "category",
+                    "code": "A03",
+                    "name": "Category",
+                    "value": "Pur. Bottoms"
+                },
+                {
+                    "id": "subcategory",
+                    "code": "A03BEASH",
+                    "name": "Sub-Category",
+                    "value": "Beach Short"
+                },
+                {
+                    "id": "subsubcategory",
+                    "code": "100",
+                    "name": "Sub-Sub-Category",
+                    "value": "Mens"
+                }
+            ],
+            "categories": [{
+                "path": "Pur. Bottoms > Beach Short",
+                "type": "merch"
+            }],
+            "tariffCode": "610342",
+            "supplierSku": "01010102C001M",
+            "parentProductId": "01010102-YC001",
+            "manufactuerOrigin": ""
+        },
+        "created_at": "2023-06-30 04:21:03",
+        "updated_at": "2023-06-30 04:21:03"
+    },
+    {
+        "id": 40269,
+        "sku": "01010102C001XS",
+        "parent_id": "01010102-YC001",
+        "unified_model": {
+            "sku": "01010102C001XS",
+            "name": "CONTOUR ESSENTIEL SHORT -",
+            "prices": [{
+                    "type": "list",
+                    "value": 59.95,
+                    "currency": "AUD"
+                },
+                {
+                    "type": "list",
+                    "value": 69.95,
+                    "currency": "NZD"
+                },
+                {
+                    "type": "list",
+                    "value": 39.99,
+                    "currency": "USD"
+                }
+            ],
+            "barcode": "4434568880846",
+            "itemType": "sellable_product",
+            "locations": [
+                "100",
+                "115",
+                "116",
+                "117",
+                "190",
+                "199",
+                "200",
+                "210",
+                "211",
+                "300",
+                "303",
+                "310",
+                "400",
+                "410",
+                "411",
+                "600",
+                "900"
+            ],
+            "attributes": [{
+                    "id": "brand_code",
+                    "name": "Brand Code",
+                    "value": "CARRE"
+                },
+                {
+                    "id": "colour",
+                    "name": "Colour",
+                    "value": "Camo"
+                },
+                {
+                    "id": "size",
+                    "name": "Size",
+                    "value": "XS"
+                },
+                {
+                    "id": "brand_name",
+                    "name": "Brand Name",
+                    "value": "CARRE"
+                },
+                {
+                    "id": "department",
+                    "code": "10",
+                    "name": "Department",
+                    "value": "APPAREL"
+                },
+                {
+                    "id": "category",
+                    "code": "A03",
+                    "name": "Category",
+                    "value": "Pur. Bottoms"
+                },
+                {
+                    "id": "subcategory",
+                    "code": "A03BEASH",
+                    "name": "Sub-Category",
+                    "value": "Beach Short"
+                },
+                {
+                    "id": "subsubcategory",
+                    "code": "100",
+                    "name": "Sub-Sub-Category",
+                    "value": "Mens"
+                }
+            ],
+            "categories": [{
+                "path": "Pur. Bottoms > Beach Short",
+                "type": "merch"
+            }],
+            "tariffCode": "610342",
+            "supplierSku": "01010102C001XS",
+            "parentProductId": "01010102-YC001",
+            "manufactuerOrigin": ""
+        },
+        "created_at": "2023-06-30 04:21:03",
+        "updated_at": "2023-06-30 04:21:03"
+    },
+    {
+        "id": 40268,
+        "sku": "01010102C001XL",
+        "parent_id": "01010102-YC001",
+        "unified_model": {
+            "sku": "01010102C001XL",
+            "name": "CONTOUR ESSENTIEL SHORT -",
+            "prices": [{
+                    "type": "list",
+                    "value": 59.95,
+                    "currency": "AUD"
+                },
+                {
+                    "type": "list",
+                    "value": 69.95,
+                    "currency": "NZD"
+                },
+                {
+                    "type": "list",
+                    "value": 39.99,
+                    "currency": "USD"
+                }
+            ],
+            "barcode": "4434568880884",
+            "itemType": "sellable_product",
+            "locations": [
+                "100",
+                "115",
+                "116",
+                "117",
+                "190",
+                "199",
+                "200",
+                "210",
+                "211",
+                "300",
+                "303",
+                "310",
+                "400",
+                "410",
+                "411",
+                "600",
+                "900"
+            ],
+            "attributes": [{
+                    "id": "brand_code",
+                    "name": "Brand Code",
+                    "value": "CARRE"
+                },
+                {
+                    "id": "colour",
+                    "name": "Colour",
+                    "value": "Camo"
+                },
+                {
+                    "id": "size",
+                    "name": "Size",
+                    "value": "XL"
+                },
+                {
+                    "id": "brand_name",
+                    "name": "Brand Name",
+                    "value": "CARRE"
+                },
+                {
+                    "id": "department",
+                    "code": "10",
+                    "name": "Department",
+                    "value": "APPAREL"
+                },
+                {
+                    "id": "category",
+                    "code": "A03",
+                    "name": "Category",
+                    "value": "Pur. Bottoms"
+                },
+                {
+                    "id": "subcategory",
+                    "code": "A03BEASH",
+                    "name": "Sub-Category",
+                    "value": "Beach Short"
+                },
+                {
+                    "id": "subsubcategory",
+                    "code": "100",
+                    "name": "Sub-Sub-Category",
+                    "value": "Mens"
+                }
+            ],
+            "categories": [{
+                "path": "Pur. Bottoms > Beach Short",
+                "type": "merch"
+            }],
+            "tariffCode": "610342",
+            "supplierSku": "01010102C001XL",
+            "parentProductId": "01010102-YC001",
+            "manufactuerOrigin": ""
+        },
+        "created_at": "2023-06-30 04:21:03",
+        "updated_at": "2023-06-30 04:21:03"
+    },
+    {
+        "id": 40267,
+        "sku": "01010102C001L",
+        "parent_id": "01010102-YC001",
+        "unified_model": {
+            "sku": "01010102C001L",
+            "name": "CONTOUR ESSENTIEL SHORT -",
+            "prices": [{
+                    "type": "list",
+                    "value": 59.95,
+                    "currency": "AUD"
+                },
+                {
+                    "type": "list",
+                    "value": 69.95,
+                    "currency": "NZD"
+                },
+                {
+                    "type": "list",
+                    "value": 39.99,
+                    "currency": "USD"
+                }
+            ],
+            "barcode": "4434568880877",
+            "itemType": "sellable_product",
+            "locations": [
+                "100",
+                "115",
+                "116",
+                "117",
+                "190",
+                "199",
+                "200",
+                "210",
+                "211",
+                "300",
+                "303",
+                "310",
+                "400",
+                "410",
+                "411",
+                "600",
+                "900"
+            ],
+            "attributes": [{
+                    "id": "brand_code",
+                    "name": "Brand Code",
+                    "value": "CARRE"
+                },
+                {
+                    "id": "colour",
+                    "name": "Colour",
+                    "value": "Camo"
+                },
+                {
+                    "id": "size",
+                    "name": "Size",
+                    "value": "L"
+                },
+                {
+                    "id": "brand_name",
+                    "name": "Brand Name",
+                    "value": "CARRE"
+                },
+                {
+                    "id": "department",
+                    "code": "10",
+                    "name": "Department",
+                    "value": "APPAREL"
+                },
+                {
+                    "id": "category",
+                    "code": "A03",
+                    "name": "Category",
+                    "value": "Pur. Bottoms"
+                },
+                {
+                    "id": "subcategory",
+                    "code": "A03BEASH",
+                    "name": "Sub-Category",
+                    "value": "Beach Short"
+                },
+                {
+                    "id": "subsubcategory",
+                    "code": "100",
+                    "name": "Sub-Sub-Category",
+                    "value": "Mens"
+                }
+            ],
+            "categories": [{
+                "path": "Pur. Bottoms > Beach Short",
+                "type": "merch"
+            }],
+            "tariffCode": "610342",
+            "supplierSku": "01010102C001L",
+            "parentProductId": "01010102-YC001",
+            "manufactuerOrigin": ""
+        },
+        "created_at": "2023-06-30 04:21:03",
+        "updated_at": "2023-06-30 04:21:03"
+    },
+    {
+        "id": 40266,
+        "sku": "01010102C001S",
+        "parent_id": "01010102-YC001",
+        "unified_model": {
+            "sku": "01010102C001S",
+            "name": "CONTOUR ESSENTIEL SHORT -",
+            "prices": [{
+                    "type": "list",
+                    "value": 59.95,
+                    "currency": "AUD"
+                },
+                {
+                    "type": "list",
+                    "value": 69.95,
+                    "currency": "NZD"
+                },
+                {
+                    "type": "list",
+                    "value": 39.99,
+                    "currency": "USD"
+                }
+            ],
+            "barcode": "4434568880853",
+            "itemType": "sellable_product",
+            "locations": [
+                "100",
+                "115",
+                "116",
+                "117",
+                "190",
+                "199",
+                "200",
+                "210",
+                "211",
+                "300",
+                "303",
+                "310",
+                "400",
+                "410",
+                "411",
+                "600",
+                "900"
+            ],
+            "attributes": [{
+                    "id": "brand_code",
+                    "name": "Brand Code",
+                    "value": "CARRE"
+                },
+                {
+                    "id": "colour",
+                    "name": "Colour",
+                    "value": "Camo"
+                },
+                {
+                    "id": "size",
+                    "name": "Size",
+                    "value": "S"
+                },
+                {
+                    "id": "brand_name",
+                    "name": "Brand Name",
+                    "value": "CARRE"
+                },
+                {
+                    "id": "department",
+                    "code": "10",
+                    "name": "Department",
+                    "value": "APPAREL"
+                },
+                {
+                    "id": "category",
+                    "code": "A03",
+                    "name": "Category",
+                    "value": "Pur. Bottoms"
+                },
+                {
+                    "id": "subcategory",
+                    "code": "A03BEASH",
+                    "name": "Sub-Category",
+                    "value": "Beach Short"
+                },
+                {
+                    "id": "subsubcategory",
+                    "code": "100",
+                    "name": "Sub-Sub-Category",
+                    "value": "Mens"
+                }
+            ],
+            "categories": [{
+                "path": "Pur. Bottoms > Beach Short",
+                "type": "merch"
+            }],
+            "tariffCode": "610342",
+            "supplierSku": "01010102C001S",
+            "parentProductId": "01010102-YC001",
+            "manufactuerOrigin": ""
+        },
+        "created_at": "2023-06-30 04:21:03",
+        "updated_at": "2023-06-30 04:21:03"
+    },
+    {
+        "id": 40065,
+        "sku": "02042248B001L",
+        "parent_id": "02042248-YB001",
+        "unified_model": {
+            "sku": "02042248B001L",
+            "name": "TL CK PANTS 12 US up",
+            "prices": [{
+                    "type": "list",
+                    "value": 70,
+                    "currency": "AUD"
+                },
+                {
+                    "type": "list",
+                    "value": 0,
+                    "currency": "NZD"
+                },
+                {
+                    "type": "list",
+                    "value": 40,
+                    "currency": "USD"
+                }
+            ],
+            "barcode": "4454571471800",
+            "itemType": "sellable_product",
+            "locations": [
+                "100",
+                "115",
+                "116",
+                "117",
+                "118",
+                "120",
+                "175",
+                "180",
+                "185",
+                "190",
+                "199",
+                "200",
+                "210",
+                "211",
+                "215",
+                "300",
+                "303",
+                "310",
+                "400",
+                "410",
+                "411",
+                "600",
+                "900",
+                "910"
+            ],
+            "attributes": [{
+                    "id": "brand_code",
+                    "name": "Brand Code",
+                    "value": "SIX60"
+                },
+                {
+                    "id": "colour",
+                    "name": "Colour",
+                    "value": "Black"
+                },
+                {
+                    "id": "size",
+                    "name": "Size",
+                    "value": "L"
+                },
+                {
+                    "id": "brand_name",
+                    "name": "Brand Name",
+                    "value": "SIX60 MERCH"
+                },
+                {
+                    "id": "department",
+                    "code": "10",
+                    "name": "Department",
+                    "value": "APPAREL"
+                },
+                {
+                    "id": "category",
+                    "code": "A02",
+                    "name": "Category",
+                    "value": "Pur. Tops"
+                },
+                {
+                    "id": "subcategory",
+                    "code": "A02SSTEE",
+                    "name": "Sub-Category",
+                    "value": "SS-Tees"
+                },
+                {
+                    "id": "subsubcategory",
+                    "code": "100",
+                    "name": "Sub-Sub-Category",
+                    "value": "Mens"
+                }
+            ],
+            "categories": [{
+                "path": "Pur. Tops > SS-Tees",
+                "type": "merch"
+            }],
+            "tariffCode": "3307.90.0000",
+            "supplierSku": "02042248B001L",
+            "parentProductId": "02042248-YB001",
+            "manufactuerOrigin": "CN"
+        },
+        "created_at": "2023-05-29 08:13:56",
+        "updated_at": "2023-05-29 08:13:56"
+    },
+    {
+        "id": 40062,
+        "sku": "02042248B001M",
+        "parent_id": "02042248-YB001",
+        "unified_model": {
+            "sku": "02042248B001M",
+            "name": "TL CK PANTS 12 US uP",
+            "prices": [{
+                    "type": "list",
+                    "value": 70,
+                    "currency": "AUD"
+                },
+                {
+                    "type": "list",
+                    "value": 0,
+                    "currency": "NZD"
+                },
+                {
+                    "type": "list",
+                    "value": 40,
+                    "currency": "USD"
+                }
+            ],
+            "barcode": "4454571471794",
+            "itemType": "sellable_product",
+            "locations": [
+                "100",
+                "115",
+                "116",
+                "117",
+                "118",
+                "120",
+                "175",
+                "180",
+                "185",
+                "190",
+                "199",
+                "200",
+                "210",
+                "211",
+                "215",
+                "300",
+                "303",
+                "310",
+                "400",
+                "410",
+                "411",
+                "600",
+                "900",
+                "910"
+            ],
+            "attributes": [{
+                    "id": "brand_code",
+                    "name": "Brand Code",
+                    "value": "SIX60"
+                },
+                {
+                    "id": "colour",
+                    "name": "Colour",
+                    "value": "Black"
+                },
+                {
+                    "id": "size",
+                    "name": "Size",
+                    "value": "M"
+                },
+                {
+                    "id": "brand_name",
+                    "name": "Brand Name",
+                    "value": "SIX60 MERCH"
+                },
+                {
+                    "id": "department",
+                    "code": "10",
+                    "name": "Department",
+                    "value": "APPAREL"
+                },
+                {
+                    "id": "category",
+                    "code": "A02",
+                    "name": "Category",
+                    "value": "Pur. Tops"
+                },
+                {
+                    "id": "subcategory",
+                    "code": "A02SSTEE",
+                    "name": "Sub-Category",
+                    "value": "SS-Tees"
+                },
+                {
+                    "id": "subsubcategory",
+                    "code": "100",
+                    "name": "Sub-Sub-Category",
+                    "value": "Mens"
+                }
+            ],
+            "categories": [{
+                "path": "Pur. Tops > SS-Tees",
+                "type": "merch"
+            }],
+            "tariffCode": "3307.90.0000",
+            "supplierSku": "02042248B001M",
+            "parentProductId": "02042248-YB001",
+            "manufactuerOrigin": "CN"
+        },
+        "created_at": "2023-05-29 04:36:00",
+        "updated_at": "2023-05-29 04:36:00"
+    },
+    {
+        "id": 40061,
+        "sku": "02037606B0012XL",
+        "parent_id": "01000222-YB001",
+        "unified_model": {
+            "sku": "02037606B0012XL",
+            "name": "WESLEY FEDORA HAT DOREMON",
+            "prices": [{
+                    "type": "list",
+                    "value": 99.95,
+                    "currency": "AUD"
+                },
+                {
+                    "type": "list",
+                    "value": 89.95,
+                    "currency": "NZD"
+                },
+                {
+                    "type": "list",
+                    "value": 0,
+                    "currency": "USD"
+                }
+            ],
+            "barcode": "",
+            "itemType": "sellable_product",
+            "locations": [
+                "100",
+                "110",
+                "115",
+                "116",
+                "117",
+                "190",
+                "199",
+                "200",
+                "210",
+                "211",
+                "300",
+                "303",
+                "310",
+                "400",
+                "410",
+                "411",
+                "600"
+            ],
+            "attributes": [{
+                    "id": "brand_code",
+                    "name": "Brand Code",
+                    "value": "BRIXT"
+                },
+                {
+                    "id": "colour",
+                    "name": "Colour",
+                    "value": "Black"
+                },
+                {
+                    "id": "size",
+                    "name": "Size",
+                    "value": "L"
+                },
+                {
+                    "id": "brand_name",
+                    "name": "Brand Name",
+                    "value": "BRIXTON"
+                },
+                {
+                    "id": "department",
+                    "code": "10",
+                    "name": "Department",
+                    "value": "APPAREL"
+                },
+                {
+                    "id": "category",
+                    "code": "A01",
+                    "name": "Category",
+                    "value": "Pur. Hats"
+                },
+                {
+                    "id": "subcategory",
+                    "code": "A01FEDOR",
+                    "name": "Sub-Category",
+                    "value": "Fedora"
+                },
+                {
+                    "id": "subsubcategory",
+                    "code": "100",
+                    "name": "Sub-Sub-Category",
+                    "value": "Mens"
+                }
+            ],
+            "categories": [{
+                "path": "Pur. Hats > Fedora",
+                "type": "merch"
+            }],
+            "tariffCode": "Unspecified",
+            "supplierSku": "02037606B0012XL",
+            "parentProductId": "01000222-YB001",
+            "manufactuerOrigin": ""
+        },
+        "created_at": "2023-05-25 04:19:48",
+        "updated_at": "2023-05-25 04:19:48"
+    },
+    {
+        "id": 40060,
+        "sku": "01000222B1909L",
+        "parent_id": "01000222-YB001",
+        "unified_model": {
+            "sku": "01000222B1909L",
+            "name": "WESLEY FEDORA HAT DOREMON",
+            "prices": [{
+                    "type": "list",
+                    "value": 99.95,
+                    "currency": "AUD"
+                },
+                {
+                    "type": "list",
+                    "value": 89.95,
+                    "currency": "NZD"
+                },
+                {
+                    "type": "list",
+                    "value": 0,
+                    "currency": "USD"
+                }
+            ],
+            "barcode": "",
+            "itemType": "sellable_product",
+            "locations": [
+                "100",
+                "110",
+                "115",
+                "116",
+                "117",
+                "190",
+                "199",
+                "200",
+                "210",
+                "211",
+                "300",
+                "303",
+                "310",
+                "400",
+                "410",
+                "411",
+                "600"
+            ],
+            "attributes": [{
+                    "id": "brand_code",
+                    "name": "Brand Code",
+                    "value": "BRIXT"
+                },
+                {
+                    "id": "colour",
+                    "name": "Colour",
+                    "value": "Black"
+                },
+                {
+                    "id": "size",
+                    "name": "Size",
+                    "value": "L"
+                },
+                {
+                    "id": "brand_name",
+                    "name": "Brand Name",
+                    "value": "BRIXTON"
+                },
+                {
+                    "id": "department",
+                    "code": "10",
+                    "name": "Department",
+                    "value": "APPAREL"
+                },
+                {
+                    "id": "category",
+                    "code": "A01",
+                    "name": "Category",
+                    "value": "Pur. Hats"
+                },
+                {
+                    "id": "subcategory",
+                    "code": "A01FEDOR",
+                    "name": "Sub-Category",
+                    "value": "Fedora"
+                },
+                {
+                    "id": "subsubcategory",
+                    "code": "100",
+                    "name": "Sub-Sub-Category",
+                    "value": "Mens"
+                }
+            ],
+            "categories": [{
+                "path": "Pur. Hats > Fedora",
+                "type": "merch"
+            }],
+            "tariffCode": "Unspecified",
+            "supplierSku": "01000222B1909L",
+            "parentProductId": "01000222-YB001",
+            "manufactuerOrigin": ""
+        },
+        "created_at": "2023-05-25 03:32:28",
+        "updated_at": "2023-05-25 03:32:28"
+    },
+    {
+        "id": 36658,
+        "sku": "02033395N2003XLENGBAU-1549",
+        "parent_id": "02033395-YN200",
+        "unified_model": {
+            "sku": "02033395N2003XL",
+            "name": "SWG JER WRORS CURRY 09-10 HM",
+            "prices": [{
+                    "type": "list",
+                    "value": 179.99,
+                    "currency": "AUD"
+                },
+                {
+                    "type": "list",
+                    "value": 209.95,
+                    "currency": "NZD"
+                },
+                {
+                    "type": "list",
+                    "value": 129.99,
+                    "currency": "USD"
+                }
+            ],
+            "barcode": "697589416485",
+            "itemType": "sellable_product",
+            "locations": [
+                "100",
+                "115",
+                "116",
+                "120",
+                "175",
+                "180",
+                "185",
+                "190",
+                "199",
+                "200",
+                "210",
+                "211",
+                "215",
+                "300",
+                "303",
+                "310",
+                "400",
+                "410",
+                "411",
+                "600",
+                "900",
+                "910"
+            ],
+            "attributes": [{
+                    "id": "brand_code",
+                    "name": "Brand Code",
+                    "value": "MITCH"
+                },
+                {
+                    "id": "colour",
+                    "name": "Colour",
+                    "value": "Navy"
+                },
+                {
+                    "id": "size",
+                    "name": "Size",
+                    "value": "3XL"
+                },
+                {
+                    "id": "brand_name",
+                    "name": "Brand Name",
+                    "value": "MITCHELL & NESS"
+                },
+                {
+                    "id": "department",
+                    "code": "10",
+                    "name": "Department",
+                    "value": "APPAREL"
+                },
+                {
+                    "id": "category",
+                    "code": "A02",
+                    "name": "Category",
+                    "value": "Pur. Tops"
+                },
+                {
+                    "id": "subcategory",
+                    "code": "A02JERSE",
+                    "name": "Sub-Category",
+                    "value": "Jersey"
+                },
+                {
+                    "id": "subsubcategory",
+                    "code": "100",
+                    "name": "Sub-Sub-Category",
+                    "value": "Mens"
+                }
+            ],
+            "categories": [{
+                "path": "Pur. Tops > Jersey",
+                "type": "merch"
+            }],
+            "tariffCode": "",
+            "supplierSku": "02033395N2003XL",
+            "parentProductId": "02033395-YN200",
+            "manufactuerOrigin": ""
+        },
+        "created_at": "2023-05-11 06:48:48",
+        "updated_at": "2023-05-11 06:48:48"
+    },
+    {
+        "id": 36656,
+        "sku": "02033395N2003XL ENGBAU-1549",
+        "parent_id": "02033395-YN200",
+        "unified_model": {
+            "sku": "02033395N2003XL",
+            "name": "SWG JER WRORS CURRY 09-10 HM",
+            "prices": [{
+                    "type": "list",
+                    "value": 179.99,
+                    "currency": "AUD"
+                },
+                {
+                    "type": "list",
+                    "value": 209.95,
+                    "currency": "NZD"
+                },
+                {
+                    "type": "list",
+                    "value": 129.99,
+                    "currency": "USD"
+                }
+            ],
+            "barcode": "697589416485",
+            "itemType": "sellable_product",
+            "locations": [
+                "100",
+                "115",
+                "116",
+                "120",
+                "175",
+                "180",
+                "185",
+                "190",
+                "199",
+                "200",
+                "210",
+                "211",
+                "215",
+                "300",
+                "303",
+                "310",
+                "400",
+                "410",
+                "411",
+                "600",
+                "900",
+                "910"
+            ],
+            "attributes": [{
+                    "id": "brand_code",
+                    "name": "Brand Code",
+                    "value": "MITCH"
+                },
+                {
+                    "id": "colour",
+                    "name": "Colour",
+                    "value": "Navy"
+                },
+                {
+                    "id": "size",
+                    "name": "Size",
+                    "value": "3XL"
+                },
+                {
+                    "id": "brand_name",
+                    "name": "Brand Name",
+                    "value": "MITCHELL & NESS"
+                },
+                {
+                    "id": "department",
+                    "code": "10",
+                    "name": "Department",
+                    "value": "APPAREL"
+                },
+                {
+                    "id": "category",
+                    "code": "A02",
+                    "name": "Category",
+                    "value": "Pur. Tops"
+                },
+                {
+                    "id": "subcategory",
+                    "code": "A02JERSE",
+                    "name": "Sub-Category",
+                    "value": "Jersey"
+                },
+                {
+                    "id": "subsubcategory",
+                    "code": "100",
+                    "name": "Sub-Sub-Category",
+                    "value": "Mens"
+                }
+            ],
+            "categories": [{
+                "path": "Pur. Tops > Jersey",
+                "type": "merch"
+            }],
+            "tariffCode": "",
+            "supplierSku": "02033395N2003XL",
+            "parentProductId": "02033395-YN200",
+            "manufactuerOrigin": ""
+        },
+        "created_at": "2023-05-11 06:26:04",
+        "updated_at": "2023-05-11 06:26:04"
+    },
+    {
+        "id": 36633,
+        "sku": "06009865",
+        "parent_id": "06009852-YY001",
+        "unified_model": {
+            "sku": "06009865",
+            "name": "NC Backpack",
+            "prices": [{
+                    "type": "list",
+                    "value": 80,
+                    "currency": "AUD"
+                },
+                {
+                    "type": "list",
+                    "value": 0,
+                    "currency": "NZD"
+                },
+                {
+                    "type": "list",
+                    "value": 203,
+                    "currency": "USD"
+                }
+            ],
+            "barcode": "4454571463249",
+            "itemType": "sellable_product",
+            "attributes": [{
+                    "id": "brand_code",
+                    "name": "Brand Code",
+                    "value": "HERSC"
+                },
+                {
+                    "id": "colour",
+                    "name": "Colour",
+                    "value": "Yellow"
+                },
+                {
+                    "id": "size",
+                    "name": "Size",
+                    "value": "L"
+                },
+                {
+                    "id": "brand_name",
+                    "name": "Brand Name",
+                    "value": "HERSCHEL BAG CO"
+                },
+                {
+                    "id": "department",
+                    "code": "10",
+                    "name": "Department",
+                    "value": "APPAREL"
+                },
+                {
+                    "id": "category",
+                    "code": "A06",
+                    "name": "Category",
+                    "value": "Pur. Acc/Style"
+                },
+                {
+                    "id": "subcategory",
+                    "code": "A06BAGS",
+                    "name": "Sub-Category",
+                    "value": "Bags"
+                },
+                {
+                    "id": "subsubcategory",
+                    "code": "100",
+                    "name": "Sub-Sub-Category",
+                    "value": "Mens"
+                }
+            ],
+            "categories": [{
+                "path": "Pur. Acc/Style > Bags",
+                "type": "merch"
+            }],
+            "tariffCode": "3926.90.9985",
+            "supplierSku": "06009865",
+            "parentProductId": "06009852-YY001",
+            "manufactuerOrigin": "CN"
+        },
+        "created_at": "2023-02-14 05:07:50",
+        "updated_at": "2023-02-14 05:07:50"
+    },
+    {
+        "id": 36632,
+        "sku": "08001134X375034M",
+        "parent_id": "08001134-YX375",
+        "unified_model": {
+            "sku": "08001134X375034M",
+            "name": "TEST ANGELO AGAIN",
+            "prices": [{
+                    "type": "list",
+                    "value": 39.99,
+                    "currency": "AUD"
+                },
+                {
+                    "type": "list",
+                    "value": 0,
+                    "currency": "NZD"
+                },
+                {
+                    "type": "list",
+                    "value": 21.99,
+                    "currency": "USD"
+                }
+            ],
+            "barcode": "4454571465939",
+            "itemType": "sellable_product",
+            "attributes": [{
+                    "id": "brand_code",
+                    "name": "Brand Code",
+                    "value": "CAHIL"
+                },
+                {
+                    "id": "colour",
+                    "name": "Colour",
+                    "value": "White/Lucky Gre"
+                },
+                {
+                    "id": "size",
+                    "name": "Size",
+                    "value": "34"
+                },
+                {
+                    "id": "brand_name",
+                    "name": "Brand Name",
+                    "value": "CAHIL"
+                },
+                {
+                    "id": "department",
+                    "code": "10",
+                    "name": "Department",
+                    "value": "APPAREL"
+                },
+                {
+                    "id": "category",
+                    "code": "A08",
+                    "name": "Category",
+                    "value": "Pur. Mus/Style"
+                },
+                {
+                    "id": "subcategory",
+                    "code": "A08SHORT",
+                    "name": "Sub-Category",
+                    "value": "Short"
+                },
+                {
+                    "id": "subsubcategory",
+                    "code": "200",
+                    "name": "Sub-Sub-Category",
+                    "value": "Ladies"
+                }
+            ],
+            "categories": [{
+                "path": "Pur. Mus/Style > Short",
+                "type": "merch"
+            }],
+            "tariffCode": "4203.10.4030",
+            "supplierSku": "08001134X375034M",
+            "parentProductId": "08001134-YX375",
+            "manufactuerOrigin": "AO"
+        },
+        "created_at": "2023-02-13 10:53:02",
+        "updated_at": "2023-02-13 10:53:02"
+    },
+    {
+        "id": 36630,
+        "sku": "02039831B295MTEST",
+        "parent_id": "02039831-YB295",
+        "unified_model": {
+            "sku": "02039831B295MTEST",
+            "name": "FLAMING CROW TEE",
+            "prices": [{
+                    "type": "list",
+                    "value": 49.95,
+                    "currency": "AUD"
+                },
+                {
+                    "type": "list",
+                    "value": 54.95,
+                    "currency": "NZD"
+                },
+                {
+                    "type": "list",
+                    "value": 34.99,
+                    "currency": "USD"
+                }
+            ],
+            "barcode": "4454571183499",
+            "itemType": "sellable_product",
+            "attributes": [{
+                    "id": "brand_code",
+                    "name": "Brand Code",
+                    "value": "GOATC"
+                },
+                {
+                    "id": "colour",
+                    "name": "Colour",
+                    "value": "Black Wash"
+                },
+                {
+                    "id": "size",
+                    "name": "Size",
+                    "value": "M"
+                },
+                {
+                    "id": "brand_name",
+                    "name": "Brand Name",
+                    "value": "Goat Crew"
+                },
+                {
+                    "id": "department",
+                    "code": "10",
+                    "name": "Department",
+                    "value": "APPAREL"
+                },
+                {
+                    "id": "category",
+                    "code": "A02",
+                    "name": "Category",
+                    "value": "Pur. Tops"
+                },
+                {
+                    "id": "subcategory",
+                    "code": "A02SSTEE",
+                    "name": "Sub-Category",
+                    "value": "SS-Tees"
+                },
+                {
+                    "id": "subsubcategory",
+                    "code": "100",
+                    "name": "Sub-Sub-Category",
+                    "value": "Mens"
+                }
+            ],
+            "categories": [{
+                "path": "Pur. Tops > SS-Tees",
+                "type": "merch"
+            }],
+            "tariffCode": "6109.10.0027",
+            "supplierSku": "02039831B295MTEST",
+            "parentProductId": "02039831-YB295",
+            "manufactuerOrigin": "CN"
+        },
+        "created_at": "2023-02-13 10:31:27",
+        "updated_at": "2023-02-13 10:31:27"
+    }
+]
