@@ -70,6 +70,17 @@ output application/json
 					<flow-ref doc:name="Flow pvx-inventory-incremental-subflow" doc:id="0ee70de4-59af-4d3d-9acb-3b7562ece80a" name="pvx-inventory-incremental-subflow"/>
 				</async>
 			</when>
+			<when expression="#[vars.templateName == 'Sales Orders']">
+				<async doc:name="Async" doc:id="7803b779-a5dd-4899-8992-a91dee38c8ab" >
+					<ee:transform doc:name="wait" doc:id="05b0c231-1a9b-4d02-837f-acd4fa7de304" >
+						<ee:message />
+						<ee:variables >
+							<ee:set-variable resource="dw/variables/wait.dwl" variableName="wait" />
+						</ee:variables>
+					</ee:transform>
+					<flow-ref doc:name="Flow pvx-status-change-subflow" doc:id="1b4d99e6-a7b8-451e-9126-7baa545f4ddb" name="pvx-status-change-subflow"/>
+				</async>
+			</when>
 		</choice>
 	</sub-flow>
 	<sub-flow name="pvx-soap-get-report-data-subflow" doc:id="5d97f2e6-5bd8-475f-b718-3aae81abc1d4" >
@@ -102,7 +113,7 @@ output application/json
 					<ee:set-variable resource="dw/variables/pvx-inventoryAvailabilityQueryParams.dwl" variableName="inventoryAvailabilityQueryParams" />
 			</ee:variables>
 		</ee:transform>
-			<http:request method="GET" doc:name="Request inventory availability" doc:id="c4a5e210-46fd-4f5a-8ccb-3811fbdb5507" config-ref="pvx_inventory_HTTP_Request_configuration" path="/availability" >
+			<http:request method="GET" doc:name="Request inventory availability" doc:id="c4a5e210-46fd-4f5a-8ccb-3811fbdb5507" config-ref="pvx_inventory_HTTP_Request_configuration" path="/australia/p-inventory/v1-0/api/inventory/availability" >
 				<http:query-params ><![CDATA[#[vars.inventoryAvailabilityQueryParams]]]></http:query-params>
 			</http:request>
 		</foreach>
@@ -116,8 +127,24 @@ output application/json
 					<ee:set-variable resource="dw/variables/pvx-inventoryIncrementalQueryParams.dwl" variableName="inventoryIncrementalQueryParams" />
 			</ee:variables>
 		</ee:transform>
-			<http:request method="GET" doc:name="Request inventory incremental" doc:id="24eb4ee2-e3a1-4332-9238-b64c40ead8d0" config-ref="pvx_inventory_HTTP_Request_configuration" path="/incremental" >
+			<http:request method="GET" doc:name="Request inventory incremental" doc:id="24eb4ee2-e3a1-4332-9238-b64c40ead8d0" config-ref="pvx_inventory_HTTP_Request_configuration" path="/australia/p-inventory/v1-0/api/inventory/incremental" >
 				<http:query-params ><![CDATA[#[vars.inventoryIncrementalQueryParams]]]></http:query-params>
+			</http:request>
+		</foreach>
+	</sub-flow>
+	<sub-flow name="pvx-status-change-subflow" doc:id="f55f35af-03f0-4325-a23c-9c6ceba82565" >
+		<foreach doc:name="For Each" doc:id="2903f790-df78-453a-aed1-8b0ce7a40a2c" collection="#[vars.saveDataContent]">
+			<ee:transform doc:name="Set Variable - statusChangeQueryParams and statusChangeBody" doc:id="64877458-dfa8-42f7-9df5-e74186d3bb81">
+			<ee:message>
+			</ee:message>
+			<ee:variables>
+					<ee:set-variable resource="dw/variables/pvx-statusChangeBody.dwl" variableName="statusChangeBody" />
+					<ee:set-variable resource="dw/variables/pvx-statusChangeQueryParams.dwl" variableName="statusChangeQueryParams" />
+			</ee:variables>
+		</ee:transform>
+			<http:request method="POST" doc:name="Request status change" doc:id="490555f0-2411-46e2-8a3a-563e2684ed87" config-ref="pvx_inventory_HTTP_Request_configuration" path="/au/p-api-co-pvx-os-statusevents/v1/api/statusevents" >
+				<http:body ><![CDATA[#[vars.statusChangeBody]]]></http:body>
+				<http:query-params ><![CDATA[#[vars.statusChangeQueryParams]]]></http:query-params>
 			</http:request>
 		</foreach>
 	</sub-flow>

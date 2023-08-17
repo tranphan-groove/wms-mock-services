@@ -24,7 +24,7 @@ http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/
 		<file:connection workingDir="${app.home}" />
 	</file:config>
 	<configuration-properties doc:name="Configuration properties" doc:id="73ccdab0-5798-46a6-8d55-a85bcdfbcb60" file="config\common.yaml" />
-	<http:request-config name="pvx_inventory_HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="3d9a1e03-1b63-4523-baf3-a7005d2411da" basePath="#[p('peoplevox.inventory.basePath')]">
-		<http:request-connection protocol="HTTPS" host="#[p('peoplevox.inventory.host')]" port="#[p('peoplevox.inventory.port')]" />
+	<http:request-config name="pvx_inventory_HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="3d9a1e03-1b63-4523-baf3-a7005d2411da">
+		<http:request-connection protocol="HTTPS" host="#[p('peoplevox.blazemeter-mock-service.host')]" port="#[p('peoplevox.blazemeter-mock-service.port')]" />
 	</http:request-config>
 </mule>

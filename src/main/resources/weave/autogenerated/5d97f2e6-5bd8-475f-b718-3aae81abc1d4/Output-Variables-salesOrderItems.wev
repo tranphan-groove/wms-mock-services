@@ -1,4 +1,0 @@
-%dw 2.0
-
-type auto_5d97f2e6_5bd8_475f_b718_3aae81abc1d4_Output_Variables_salesOrderItems = Binary
-

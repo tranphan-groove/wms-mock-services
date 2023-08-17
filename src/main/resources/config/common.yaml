@@ -1,13 +1,16 @@
 filePaths: "pvx/sales-orders.json,pvx/sales-order-items.json,pvx/customers.json,wpl/sales-orders.json"
 mule:
-  client_id: "40405c2f1ba84b739867373c457f2dbb"
-  client_secret: "00683736750C415994fbAe0Cf822D290"
+  p-inventory:
+    client_id: "40405c2f1ba84b739867373c457f2dbb"
+    client_secret: "00683736750C415994fbAe0Cf822D290"
+  p-api-co-pvx-os-statusevents:
+    client_id: "fa6037665f69464b8ce3323487b8318b"
+    client_secret: "25D4963d95c0477C9128C3BabFB63DD4"
 whiplash:
   token: "ePnqhLxQKY89u-x0mu9Vg-kOAmY-hRNDp0Vjh28gSrg"
   code: "ePnqhLxQKY89u-x0mu9Vg-kOAmY-hRNDp0Vjh28gSrg"
 peoplevox:
-  inventory:
-    wait: "120" #secs
+  blazemeter-mock-service:
+    wait: "2" #secs
     host: "pvxinventorymockservice307991.mock.blazemeter.com"
     port: "443"
-    basePath: "/australia/p-inventory/v1-0/api/inventory"

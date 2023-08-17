@@ -8,6 +8,6 @@ output application/json
     "updated": now() as String {format: 'dd-MM-yyyy hh:mm:ss'},
     "qty_changed": randomInt(90) + 10,
     "history_id": now() as Number,
-    "client_id": p('mule.client_id'),
-    "client_secret": p('mule.client_secret')
+    "client_id": p('mule.p-inventory.client_id'),
+    "client_secret": p('mule.p-inventory.client_secret')
 }
