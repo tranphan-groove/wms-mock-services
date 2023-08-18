@@ -19,5 +19,5 @@ whiplash:
 
 blazemeter-mock-service:
   wait: "2" #secs
-  host: "pvxinventorymockservice307991.mock.blazemeter.com"
+  host: "https://ckmulesoftredirectmockservice308531.mock.blazemeter.com"
   port: "443"
