@@ -2,6 +2,6 @@
 output application/json
 import * from dw::util::Values
 ---
-payload update {
+vars.inventoryBody update {
      case order_id at .transaction.order_id -> vars.orderId
 }

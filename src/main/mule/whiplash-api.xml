@@ -11,13 +11,7 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
 		<file:read doc:name="Read wpl/sales-orders.json" doc:id="bbc9716a-f2a1-49a7-868a-e26fc8b38910" config-ref="File_Config" path="wpl/sales-orders.json" outputMimeType="application/json" target="fileContent" >
 			<ee:repeatable-file-store-stream inMemorySize="256" bufferUnit="MB" />
 		</file:read>
-		<ee:transform doc:name="Set Variable - orderId" doc:id="ba336364-a5ce-4a98-807b-275793679eaa" >
-			<ee:message >
-			</ee:message>
-			<ee:variables >
-				<ee:set-variable resource="dw/variables/wpl-orderId.dwl" variableName="orderId" />
-			</ee:variables>
-		</ee:transform>
+		<set-variable value="#[now() as Number]" doc:name="Set Variable - orderId" doc:id="5cf299f2-5902-4307-b766-93b5e5e45208" variableName="orderId"/>
 		<ee:transform doc:name="Transform Message" doc:id="df75d37e-3c0e-4e86-9180-455dfac5c841" >
 			<ee:message >
 				<ee:set-payload resource="dw/transformations/wpl-create-order-response.dwl" />
@@ -124,7 +118,7 @@ output application/json
 				</ee:variables>
 			</ee:transform>
 			<http:request method="POST" doc:name="Request inventory status change" doc:id="c921c688-8180-40ae-8d50-ee79cf23f53f" config-ref="blazeMeter_HTTP_Request_configuration" path="/australia/p-inventory-whip/v1/api/inventory">
-			<http:body><![CDATA[#[vars.inventoryATSBody]]]></http:body>
+			<http:body><![CDATA[#[vars.inventoryStatusChangeBody]]]></http:body>
 			<http:query-params><![CDATA[#[vars.inventoryQueryParams]]]></http:query-params>
 		</http:request>
 		</foreach>
