@@ -113,7 +113,7 @@ output application/json
 					<ee:set-variable resource="dw/variables/pvx-inventoryAvailabilityQueryParams.dwl" variableName="inventoryAvailabilityQueryParams" />
 			</ee:variables>
 		</ee:transform>
-			<http:request method="GET" doc:name="Request inventory availability" doc:id="c4a5e210-46fd-4f5a-8ccb-3811fbdb5507" config-ref="blazeMeter_HTTP_Request_configuration" path="/australia/p-inventory/v1-0/api/inventory/availability" >
+			<http:request method="GET" doc:name="Request inventory availability" doc:id="c4a5e210-46fd-4f5a-8ccb-3811fbdb5507" config-ref="blazeMeter_HTTP_Request_configuration" path="/australia/p-inventory/v1-0/api/inventory/availability" target="httpRes" >
 				<http:query-params ><![CDATA[#[vars.inventoryAvailabilityQueryParams]]]></http:query-params>
 			</http:request>
 		</foreach>
@@ -127,7 +127,7 @@ output application/json
 					<ee:set-variable resource="dw/variables/pvx-inventoryIncrementalQueryParams.dwl" variableName="inventoryIncrementalQueryParams" />
 			</ee:variables>
 		</ee:transform>
-			<http:request method="GET" doc:name="Request inventory incremental" doc:id="24eb4ee2-e3a1-4332-9238-b64c40ead8d0" config-ref="blazeMeter_HTTP_Request_configuration" path="/australia/p-inventory/v1-0/api/inventory/incremental" >
+			<http:request method="GET" doc:name="Request inventory incremental" doc:id="24eb4ee2-e3a1-4332-9238-b64c40ead8d0" config-ref="blazeMeter_HTTP_Request_configuration" path="/australia/p-inventory/v1-0/api/inventory/incremental" target="httpRes" >
 				<http:query-params ><![CDATA[#[vars.inventoryIncrementalQueryParams]]]></http:query-params>
 			</http:request>
 		</foreach>
@@ -142,7 +142,7 @@ output application/json
 					<ee:set-variable resource="dw/variables/pvx-statusChangeQueryParams.dwl" variableName="statusChangeQueryParams" />
 			</ee:variables>
 		</ee:transform>
-			<http:request method="POST" doc:name="Request status change" doc:id="490555f0-2411-46e2-8a3a-563e2684ed87" config-ref="blazeMeter_HTTP_Request_configuration" path="/au/p-api-co-pvx-os-statusevents/v1/api/statusevents" >
+			<http:request method="POST" doc:name="Request status change" doc:id="490555f0-2411-46e2-8a3a-563e2684ed87" config-ref="blazeMeter_HTTP_Request_configuration" path="/au/p-api-co-pvx-os-statusevents/v1/api/statusevents" target="httpRes" >
 				<http:body ><![CDATA[#[vars.statusChangeBody]]]></http:body>
 				<http:query-params ><![CDATA[#[vars.statusChangeQueryParams]]]></http:query-params>
 			</http:request>

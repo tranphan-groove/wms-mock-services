@@ -1,17 +1,16 @@
 %dw 2.0
 output application/json
 var nowTimestamp = now()
-var itemMaster = (vars.itemMasters filter ((itemMaster) -> itemMaster.id as String == payload.item_id))[0]
-var itemId = (nowTimestamp as Number) + randomInt(500)
+var itemMaster = (vars.itemMasters filter ((itemMaster) -> itemMaster.id == payload.item_id))[0]
 var transactionId = (nowTimestamp as Number) + randomInt(500)
 ---
 {
     "item": {
-        "id": itemId,
-        "sku": itemMaster.sku,
-        "title": itemMaster.unified_model.name,
-        "description": itemMaster.unified_model.name,
-        "full_description": itemMaster.unified_model.name,
+        "id": payload.item_id,
+        "sku": payload.sku,
+        "title": payload.description,
+        "description": payload.description,
+        "full_description": payload.description,
         "original_location": null,
         "created_at": nowTimestamp,
         "updated_at": nowTimestamp,
@@ -44,7 +43,7 @@ var transactionId = (nowTimestamp as Number) + randomInt(500)
         "tariff_number": null,
         "label_format": null,
         "notify_originator_inventory": null,
-        "name": itemMaster.unified_model.name,
+        "name": payload.description,
         "image_url": null,
         "hazmat": false,
         "hazmat_type": "",
@@ -66,12 +65,12 @@ var transactionId = (nowTimestamp as Number) + randomInt(500)
     },
     "transaction": {
         "id": transactionId,
-        "description": itemMaster.unified_model.name,
+        "description": payload.description,
         "quantity": payload.quantity,
         "change": (randomInt(9) + 1) * (if (randomInt(1) > 0) 1 else -1),
         "created_at": nowTimestamp,
         "updated_at": nowTimestamp,
-        "item_id": itemId,
+        "item_id": payload.item_id,
         "order_id": null,
         "shipnotice_id": null
     },

@@ -2,8 +2,8 @@
 output application/json
 ---
 {
-	access_token: p('whiplash.token'),
-	refresh_token: p('whiplash.token'),
+	access_token: uuid(),
+	refresh_token: uuid(),
 	created_at: now() as Number,
 	expires_in: 900000
 }
