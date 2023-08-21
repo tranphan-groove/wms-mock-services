@@ -21,3 +21,6 @@ blazemeter-mock-service:
   wait: "2" #secs
   host: "ckmulesoftredirectmockservice308531.mock.blazemeter.com"
   port: "443"
+
+object-store:
+  ttl: "5" #mins

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd">
+	<os:object-store name="Object_store" doc:name="Object store" doc:id="5e084ffb-708c-4978-a6bb-66e78e751bf1" persistent="false" entryTtl="${object-store.ttl}" entryTtlUnit="MINUTES" />
+	<flow name="data-generator-flow" doc:id="cded20e8-221c-4854-b778-5261231bbb6b" >
+		<http:listener doc:name="Listener" doc:id="e2818d0d-4ffb-4a17-962a-f05feff7847e" config-ref="HTTP_Listener_config" path="/generate-data"/>
+		<ee:transform doc:name="Set Variable - numOfOrders, numOfItems and osKeyPrefix" doc:id="76b83c9c-c31c-4cc7-95d4-ac2ba79047dc" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable resource="dw/variables/data-generator-orderQuantity.dwl" variableName="orderQuantity" />
+				<ee:set-variable resource="dw/variables/data-generator-itemQuantity.dwl" variableName="itemQuantity" />
+				<ee:set-variable resource="dw/variables/data-generator-osKeyPrefix.dwl" variableName="osKeyPrefix" />
+			</ee:variables>
+		</ee:transform>
+		<file:read doc:name="Read item_masters.json" doc:id="1da34f58-4be9-4b1f-afde-03e535909b1f" config-ref="File_Config" path="item_masters.json" outputMimeType="application/json" target="itemMasters">
+			<ee:repeatable-file-store-stream inMemorySize="256" bufferUnit="MB" />
+		</file:read>
+		<ee:transform doc:name="Generate orders" doc:id="5c9a4c4f-d21d-4594-93d0-0450223581bd" >
+			<ee:message >
+				<ee:set-payload resource="dw/transformations/data-genrator-orders.dwl" />
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Generate fulfillments" doc:id="781defb9-d3e9-48f1-b4af-88c2b58998a5" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable resource="dw/variables/data-genrator-generatedFulfillments.dwl" variableName="generatedFulfillments" />
+			</ee:variables>
+		</ee:transform>
+		<os:store doc:name="Store orders" doc:id="2ddb60a6-b360-402f-aa71-7f4dcd1b4377" key="#[vars.osKeyPrefix ++ '_orders']" objectStore="Object_store"/>
+		<os:store doc:name="Store fulfillments" doc:id="b4d3c77f-cd73-4cd5-a42a-2bcd9155470f" key="#[vars.osKeyPrefix ++ '_fulfillments']" objectStore="Object_store" >
+			<os:value ><![CDATA[#[vars.generatedFulfillments]]]></os:value>
+		</os:store>
+		<ee:transform doc:name="Transform Message" doc:id="75b42393-d9c3-490a-9bc9-b9eb72341eaa" >
+			<ee:message >
+				<ee:set-payload resource="dw/transformations/data-generator-response.dwl" />
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="get-generated-data-flow" doc:id="362e2f43-b17c-493b-bc82-9e605915ba4d" >
+		<http:listener doc:name="Listener" doc:id="4a7d3996-796b-4db8-bb40-ce3dcfc3a7fa" config-ref="HTTP_Listener_config" path="generated-data/{dataKey}"/>
+		<set-variable value="#[attributes.uriParams.dataKey]" doc:name="Set Variable - dataKey" doc:id="7f5674c1-6633-4258-a69a-c1d799aff6ad" variableName="dataKey"/>
+		<choice doc:name="Choice" doc:id="30e78f3f-21cc-41a5-962c-60bfb55e1847" >
+			<when expression="#[!isEmpty(vars.dataKey)]">
+				<choice doc:name="Choice" doc:id="06314969-56a1-467d-9777-04917d7be82a">
+			<when expression="#[attributes.queryParams.dataType == 'mock-service']" >
+						<flow-ref doc:name="Flow get-generated-mock-service-data-subflow" doc:id="054cc281-fbe1-4802-8139-a56b3b6ed2c3" name="get-generated-mock-service-data-subflow"/>
+					</when>
+					<otherwise >
+						<flow-ref doc:name="Flow get-generated-test-data-subflow" doc:id="4d0b4fbf-276f-40ce-875e-206d7703c90a" name="get-generated-test-data-subflow"/>
+					</otherwise>
+		</choice>
+			</when>
+			<otherwise >
+				<ee:transform doc:name="Not found" doc:id="1e63850e-eccb-4e72-8e7c-c17418b9b2d7" >
+					<ee:message >
+						<ee:set-payload resource="dw/transformations/data-generator-not-found.dwl" />
+					</ee:message>
+					<ee:variables >
+						<ee:set-variable resource="dw/variables/not-found-httpStatus.dwl" variableName="httpStatus" />
+					</ee:variables>
+				</ee:transform>
+			</otherwise>
+		</choice>
+	</flow>
+	<sub-flow name="get-generated-mock-service-data-subflow" doc:id="2fc6e2de-5e7d-46ea-9eb5-e658dc68518f">
+		<os:retrieve doc:name="Retrieve fulfillments" doc:id="c61a8991-d43a-4cb4-bdf7-7cd6e6fc2172" key="#[(vars.dataKey default '') ++ '_fulfillments']" objectStore="Object_store" >
+			<os:default-value ><![CDATA[#[[]]]]></os:default-value>
+		</os:retrieve>
+	</sub-flow>
+	<sub-flow name="get-generated-test-data-subflow" doc:id="134f0ea1-70fc-4b17-a2f8-6e7dbd91c3f0" >
+		<os:retrieve doc:name="Retrieve orders" doc:id="57f6600d-60a9-421f-a9da-b15e099a633b" objectStore="Object_store" key="#[(vars.dataKey default '') ++ '_orders']">
+			<os:default-value ><![CDATA[#[[]]]]></os:default-value>
+		</os:retrieve>
+	</sub-flow>
+</mule>
