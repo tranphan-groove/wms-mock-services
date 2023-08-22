@@ -208,20 +208,20 @@ var packageId = (now() as Number) + randomInt(500)
         "manifest_id": null
     }],
     "shipping_method": {
-        "id": 37,
-        "carrier": "Whiplash",
-        "service": "cheapest",
-        "description": "Cheapest Rate",
-        "name": "Whiplash Cheapest Rate",
-        "international": false,
-        "active": true,
-        "flat_rate": false,
-        "expedited": false,
-        "trackable": true,
-        "origins": ["US", "GB"],
-        "extended_description": null,
-        "created_at": "2014-11-19T15:53:32.000-05:00",
-        "updated_at": "2015-08-03T16:23:10.000-04:00"
+		"id" : 131,
+		"carrier" : "DHLeCommerce",
+		"service" : "DHLSMParcelExpedited",
+		"description" : "DHL SM Parcel Expedited",
+		"name" : "DHLeCommerce DHL SM Parcel Expedited",
+		"international" : false,
+		"active" : true,
+		"flat_rate" : false,
+		"expedited" : false,
+		"trackable" : true,
+		"origins" : [ "US" ],
+		"extended_description" : "",
+		"created_at" : "2020-06-09T17:01:29.000-04:00",
+		"updated_at" : "2020-06-09T17:01:29.000-04:00"
     },
     "serial_numbers": []
 }

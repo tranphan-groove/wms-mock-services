@@ -1,37 +1,38 @@
 %dw 2.0
 import * from dw::core::Arrays
 output application/json
----
-(0 to (vars.orderQuantity - 1)) map ((orderItem, orderIndex) -> do {
+fun generateOrder(orderType, orderIndex) = do {
     var uniqueVal = (now() as Number) + orderIndex
     var orderId = uniqueVal
     var transactionId = uniqueVal
-    var currency = 'USD'
+    var currency = if (orderType == 'US') 'USD' else 'AUD'
+    var taxTypes = if (orderType == 'AU') [
+        {
+            "rate": 0.1,
+            "title": "AUSTRALIA GST"
+        }
+    ] else [
+        {
+            "rate": 0.046,
+            "title": "NVSTATETAX"
+        },
+        {
+            "rate": 0.025,
+            "title": "NVCOUNTYTAX"
+        }
+    ]
 
     var lineItems = do {
         var itemMasterIndexes = slice((0 to (sizeOf(vars.itemMasters) - 1)) orderBy random(), 0, vars.itemQuantity)
         ---
         itemMasterIndexes map ((itemMasterItem, itemIndex) -> do {
-            var taxTypes = if (currency == 'AUD') [
-                {
-                    "rate": 0.1,
-                    "title": "AUSTRALIA GST"
-                }
-            ] else [
-                {
-                    "rate": 0.046,
-                    "title": "NVSTATETAX"
-                },
-                {
-                    "rate": 0.025,
-                    "title": "NVCOUNTYTAX"
-                }
-            ]
             var itemId = uniqueVal + itemIndex
             var item = vars.itemMasters[itemMasterItem]
-            var preTaxPrice = (item.unified_model.prices filter ((price) -> price.currency == currency))[0].value
+            var rawPreTaxPrice = (item.unified_model.prices filter ((price) -> price.currency == currency))[0].value
+            var auPreTaxPrice = (item.unified_model.prices filter ((price) -> price.currency == 'AUD'))[0].value
+            var preTaxPrice = if (rawPreTaxPrice == 0 and orderType == 'US') (auPreTaxPrice * 0.67) else rawPreTaxPrice
             var tax = preTaxPrice * sum(taxTypes.rate)
-            var price = if (currency == 'USD') (preTaxPrice + tax) else preTaxPrice
+            var price = if (orderType == 'US') (preTaxPrice + tax) else preTaxPrice
             ---
             {
                 "id": itemId,
@@ -62,25 +63,25 @@ output application/json
                     "city": "Chino",
                     "zip": "91710"
                 },
-                "pre_tax_price": preTaxPrice as String,
+                "pre_tax_price": preTaxPrice as String {format: '#.##'},
                 "pre_tax_price_set": {
                     "shop_money": {
-                        "amount": preTaxPrice as String,
+                        "amount": preTaxPrice as String {format: '#.##'},
                         "currency_code": currency
                     },
                     "presentment_money": {
-                        "amount": preTaxPrice as String,
+                        "amount": preTaxPrice as String {format: '#.##'},
                         "currency_code": currency
                     }
                 },
-                "price": price as String,
+                "price": price as String {format: '#.##'},
                 "price_set": {
                     "shop_money": {
-                        "amount": price as String,
+                        "amount": price as String {format: '#.##'},
                         "currency_code": currency
                     },
                     "presentment_money": {
-                        "amount": price as String,
+                        "amount": price as String {format: '#.##'},
                         "currency_code": currency
                     }
                 },
@@ -111,14 +112,14 @@ output application/json
                 "vendor": item.vendor,
                 "tax_lines": taxTypes map ((taxType) -> {
                     "channel_liable": false,
-                    "price": (preTaxPrice * taxType.rate) as String,
+                    "price": (preTaxPrice * taxType.rate) as String {format: '#.##'},
                     "price_set": {
                         "shop_money": {
-                            "amount": (preTaxPrice * taxType.rate) as String,
+                            "amount": (preTaxPrice * taxType.rate) as String {format: '#.##'},
                             "currency_code": currency
                         },
                         "presentment_money": {
-                            "amount": (preTaxPrice * taxType.rate) as String,
+                            "amount": (preTaxPrice * taxType.rate) as String {format: '#.##'},
                             "currency_code": currency
                         }
                     },
@@ -134,9 +135,9 @@ output application/json
             }
         })
     }
-    var subtotalPrice = sum(lineItems.pre_tax_price map ((price) -> price as Number)) as String
-    var totalPrice = sum(lineItems.price map ((price) -> price as Number)) as String
-    var totalTax = sum((flatten(lineItems.tax_lines).price) map ((price) -> price as Number)) as String
+    var subtotalPrice = sum(lineItems.pre_tax_price map ((price) -> price as Number)) as String {format: '#.##'}
+    var totalPrice = sum(lineItems.price map ((price) -> price as Number)) as String {format: '#.##'}
+    var totalTax = sum((flatten(lineItems.tax_lines).price) map ((price) -> price as Number)) as String {format: '#.##'}
     ---
     {
         "order": {
@@ -221,13 +222,13 @@ output application/json
             "landing_site": null,
             "landing_site_ref": null,
             "location_id": null,
-            "name": "CKBM" + uniqueVal,
+            "name": "CKBM" ++ uniqueVal ++ (if (orderType == 'US') 'US' else ''),
             "note": null,
             "note_attributes": [
             
             ],
-            "number": 10001,
-            "order_number": 10001,
+            "number": uniqueVal,
+            "order_number": uniqueVal,
             "order_status_url": "",
             "original_total_duties_set": null,
             "payment_gateway_names": [
@@ -254,40 +255,26 @@ output application/json
             }
             },
             "tags": "",
-            "tax_lines": [
-            {
-                "price": "5.10",
-                "rate": 0.025,
-                "title": "NVCOUNTYTAX",
-                "price_set": {
-                "shop_money": {
-                    "amount": "5.10",
-                    "currency_code": currency
-                },
-                "presentment_money": {
-                    "amount": "5.10",
-                    "currency_code": currency
+            "tax_lines": taxTypes map ((taxType) -> do {
+                var price = sum((flatten(lineItems.tax_lines) filter ((taxLine) -> taxLine.title == taxType.title)).price)
+                ---
+                {
+                    "channel_liable": false,
+                    "price": price as String {format: '#.##'},
+                    "price_set": {
+                        "shop_money": {
+                            "amount": price as String {format: '#.##'},
+                            "currency_code": currency
+                        },
+                        "presentment_money": {
+                            "amount": price as String {format: '#.##'},
+                            "currency_code": currency
+                        }
+                    },
+                    "rate": taxType.rate,
+                    "title": taxType.title
                 }
-                },
-                "channel_liable": false
-            },
-            {
-                "price": "9.38",
-                "rate": 0.046,
-                "title": "NVSTATETAX",
-                "price_set": {
-                "shop_money": {
-                    "amount": "9.38",
-                    "currency_code": currency
-                },
-                "presentment_money": {
-                    "amount": "9.38",
-                    "currency_code": currency
-                }
-                },
-                "channel_liable": false
-            }
-            ],
+            }),
             "taxes_included": false,
             "test": false,
             "token": "19a573a9f02b29b32d0e7f32e0b1ad3a",
@@ -468,8 +455,8 @@ output application/json
                 "receipt": {
                 "id": "pi_3NYglcEXTnHX5Jzi0dTUGnI4",
                 "object": "payment_intent",
-                "amount": totalPrice * 100,
-                "amount_capturable": totalPrice * 100,
+                "amount": totalPrice as Number * 100,
+                "amount_capturable": totalPrice as Number * 100,
                 "amount_received": 0,
                 "canceled_at": null,
                 "cancellation_reason": null,
@@ -480,7 +467,7 @@ output application/json
                     {
                         "id": "ch_3NYglcEXTnHX5Jzi0v5YtOpn",
                         "object": "charge",
-                        "amount": totalPrice * 100,
+                        "amount": totalPrice as Number * 100,
                         "application_fee": null,
                         "balance_transaction": null,
                         "captured": false,
@@ -599,4 +586,7 @@ output application/json
             ]
         }
     }
-})
+}
+---
+(((0 to (vars.AUOrderQuantity - 1)) map (() -> 'AU')) ++
+((0 to (vars.USOrderQuantity - 1)) map (() -> 'US'))) map ((orderType, orderIndex) -> generateOrder(orderType, orderIndex))
