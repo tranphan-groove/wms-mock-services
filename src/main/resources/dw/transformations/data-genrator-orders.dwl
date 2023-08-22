@@ -2,16 +2,16 @@
 import * from dw::core::Arrays
 output application/json
 ---
-(0 to (vars.orderQuantity - 1)) map ((orderIndex) -> do {
-    var uniqueVal = now() as Number
-    var orderId = uniqueVal + randomInt(1000)
-    var transactionId = uniqueVal + randomInt(1000)
+(0 to (vars.orderQuantity - 1)) map ((orderItem, orderIndex) -> do {
+    var uniqueVal = (now() as Number) + orderIndex
+    var orderId = uniqueVal
+    var transactionId = uniqueVal
     var currency = 'USD'
 
     var lineItems = do {
         var itemMasterIndexes = slice((0 to (sizeOf(vars.itemMasters) - 1)) orderBy random(), 0, vars.itemQuantity)
         ---
-        itemMasterIndexes map ((itemMasterIndex, index) -> do {
+        itemMasterIndexes map ((itemMasterItem, itemIndex) -> do {
             var taxTypes = if (currency == 'AUD') [
                 {
                     "rate": 0.1,
@@ -27,8 +27,8 @@ output application/json
                     "title": "NVCOUNTYTAX"
                 }
             ]
-            var itemId = uniqueVal + randomInt(1000)
-            var item = vars.itemMasters[itemMasterIndex]
+            var itemId = uniqueVal + itemIndex
+            var item = vars.itemMasters[itemMasterItem]
             var preTaxPrice = (item.unified_model.prices filter ((price) -> price.currency == currency))[0].value
             var tax = preTaxPrice * sum(taxTypes.rate)
             var price = if (currency == 'AUD') (preTaxPrice + tax) else preTaxPrice
@@ -105,10 +105,10 @@ output application/json
                         "currency_code": currency
                     }
                 },
-                "variant_id": 41682062540977,
-                "variant_inventory_management": "shopify",
-                "variant_title": "XL",
-                "vendor": "MYCHEMICALROMANCE",
+                "variant_id": item.variant_id,
+                "variant_inventory_management": item.variant_inventory_management,
+                "variant_title": item.variant_title,
+                "vendor": item.vendor,
                 "tax_lines": taxTypes map ((taxType) -> {
                     "channel_liable": false,
                     "price": (preTaxPrice * taxType.rate) as String,

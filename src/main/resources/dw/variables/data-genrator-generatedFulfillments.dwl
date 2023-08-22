@@ -1,9 +1,9 @@
 %dw 2.0
 output application/json
 ---
-payload map ((order) -> do {
+payload map ((order, orderIndex) -> do {
     var uniqueVal = now() as Number
-    var fulfillmentId = uniqueVal + randomInt(1000)
+    var fulfillmentId = uniqueVal + orderIndex
     ---
     {
         "fulfillment_orders": [
