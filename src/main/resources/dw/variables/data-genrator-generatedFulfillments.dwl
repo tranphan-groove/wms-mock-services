@@ -1,7 +1,7 @@
 %dw 2.0
 output application/json
 ---
-payload map ((order, orderIndex) -> do {
+payload.data map ((order, orderIndex) -> do {
     var uniqueVal = now() as Number
     var fulfillmentId = uniqueVal + orderIndex
     ---

@@ -1,7 +1,8 @@
 %dw 2.0
 import * from dw::core::Arrays
 output application/json
-fun generateOrder(orderType, orderIndex) = do {
+fun generateOrder(orderIndex) = do {
+	var orderType = vars.orderType
     var uniqueVal = (now() as Number) + orderIndex
     var orderId = uniqueVal
     var transactionId = uniqueVal
@@ -432,7 +433,59 @@ fun generateOrder(orderType, orderIndex) = do {
             "province_code": "NV"
             },
             "shipping_lines": [
-            
+                {
+                    "id": uniqueVal,
+                    "carrier_identifier": uuid(),
+                    "code": "custom",
+                    "delivery_category": null,
+                    "discounted_price": "0.00",
+                    "discounted_price_set": {
+                        "shop_money": {
+                            "amount": "0.00",
+                            "currency_code": currency
+                        },
+                        "presentment_money": {
+                            "amount": "0.00",
+                            "currency_code": currency
+                        }
+                    },
+                    "phone": null,
+                    "price": totalPrice,
+                    "price_set": {
+                        "shop_money": {
+                            "amount": totalPrice,
+                            "currency_code": currency
+                        },
+                        "presentment_money": {
+                            "amount": totalPrice,
+                            "currency_code": currency
+                        }
+                    },
+                    "requested_fulfillment_service_id": null,
+                    "source": "shopify",
+                    "title": if (orderType == 'US') "Standard Domestic Shipping (2-3 Business days)" else "Standard Shipping  (4-12 Business Days)",
+                    "tax_lines": taxTypes map ((taxType) -> do {
+                        var price = sum((flatten(lineItems.tax_lines) filter ((taxLine) -> taxLine.title == taxType.title)).price)
+                        ---
+                        {
+                            "channel_liable": false,
+                            "price": price as String {format: '#.##'},
+                            "price_set": {
+                                "shop_money": {
+                                    "amount": price as String {format: '#.##'},
+                                    "currency_code": currency
+                                },
+                                "presentment_money": {
+                                    "amount": price as String {format: '#.##'},
+                                    "currency_code": currency
+                                }
+                            },
+                            "rate": taxType.rate,
+                            "title": taxType.title
+                        }
+                    }),
+                    "discount_allocations": []
+                }
             ],
             "transactions": [
             {
@@ -588,5 +641,7 @@ fun generateOrder(orderType, orderIndex) = do {
     }
 }
 ---
-(((0 to (vars.AUOrderQuantity - 1)) map (() -> 'AU')) ++
-((0 to (vars.USOrderQuantity - 1)) map (() -> 'US'))) map ((orderType, orderIndex) -> generateOrder(orderType, orderIndex))
+{
+	header: vars.header,
+	data: (0 to (vars.orderQuantity[vars.orderType] - 1)) map ((orderIndex) -> generateOrder(orderIndex ++ (if (vars.orderType == 'US') (vars.orderQuantity.AU) else 0)))
+}
