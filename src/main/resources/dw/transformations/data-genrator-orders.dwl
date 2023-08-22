@@ -31,7 +31,7 @@ output application/json
             var item = vars.itemMasters[itemMasterItem]
             var preTaxPrice = (item.unified_model.prices filter ((price) -> price.currency == currency))[0].value
             var tax = preTaxPrice * sum(taxTypes.rate)
-            var price = if (currency == 'AUD') (preTaxPrice + tax) else preTaxPrice
+            var price = if (currency == 'USD') (preTaxPrice + tax) else preTaxPrice
             ---
             {
                 "id": itemId,
@@ -221,7 +221,7 @@ output application/json
             "landing_site": null,
             "landing_site_ref": null,
             "location_id": null,
-            "name": "CKBLZ10001",
+            "name": "CKBM" + uniqueVal,
             "note": null,
             "note_attributes": [
             
