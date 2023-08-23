@@ -1,4 +1,7 @@
 %dw 2.0
 output application/java
 ---
-(attributes.queryParams.itemQuantity as Number) default 1
+{
+	US: (attributes.queryParams.USItemQuantity as Number) default 1,
+	AU: (attributes.queryParams.AUItemQuantity as Number) default 1
+}

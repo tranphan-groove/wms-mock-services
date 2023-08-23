@@ -24,7 +24,7 @@ fun generateOrder(orderIndex) = do {
     ]
 
     var lineItems = do {
-        var itemMasterIndexes = slice((0 to (sizeOf(vars.itemMasters) - 1)) orderBy random(), 0, vars.itemQuantity)
+        var itemMasterIndexes = slice((0 to (sizeOf(vars.itemMasters) - 1)) orderBy random(), 0, vars.itemQuantity[vars.orderType])
         ---
         itemMasterIndexes map ((itemMasterItem, itemIndex) -> do {
             var itemId = uniqueVal + itemIndex
