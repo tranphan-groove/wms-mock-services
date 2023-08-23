@@ -642,6 +642,6 @@ fun generateOrder(orderIndex) = do {
 }
 ---
 {
-	header: vars.header,
+	header: vars.header[vars.orderType],
 	data: (0 to (vars.orderQuantity[vars.orderType] - 1)) map ((orderIndex) -> generateOrder(orderIndex ++ (if (vars.orderType == 'US') (vars.orderQuantity.AU) else 0)))
 }

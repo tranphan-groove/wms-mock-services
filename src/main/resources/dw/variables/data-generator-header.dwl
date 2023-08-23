@@ -1,4 +1,7 @@
 %dw 2.0
 output application/java
 ---
-attributes.queryParams.header
+{
+	US: attributes.queryParams.USHeader,
+	AU: attributes.queryParams.AUHeader
+}
