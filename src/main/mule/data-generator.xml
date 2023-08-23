@@ -7,7 +7,6 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
 http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
 http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd">
-	<os:object-store name="Object_store" doc:name="Object store" doc:id="5e084ffb-708c-4978-a6bb-66e78e751bf1" persistent="false" entryTtl="${object-store.ttl}" entryTtlUnit="MINUTES" />
 	<flow name="data-generator-flow" doc:id="cded20e8-221c-4854-b778-5261231bbb6b" >
 		<http:listener doc:name="Listener" doc:id="e2818d0d-4ffb-4a17-962a-f05feff7847e" config-ref="HTTP_Listener_config" path="/generate-data" allowedMethods="GET"/>
 		<ee:transform doc:name="Set Variable - orderQuantity, itemQuantity, osKeyPrefix and header" doc:id="76b83c9c-c31c-4cc7-95d4-ac2ba79047dc" >
@@ -57,7 +56,11 @@ http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/cu
 	</sub-flow>
 	<flow name="get-generated-data-flow" doc:id="362e2f43-b17c-493b-bc82-9e605915ba4d" >
 		<http:listener doc:name="Listener" doc:id="4a7d3996-796b-4db8-bb40-ce3dcfc3a7fa" config-ref="HTTP_Listener_config" path="generated-data/{dataKey}" allowedMethods="GET">
-			<http:response statusCode="#[vars.httpStatus default 200]" />
+			<http:response statusCode="#[vars.httpStatus default 200]" >
+				<http:headers ><![CDATA[#[if (!isEmpty(vars.resHeader)) {
+	"Content-Disposition": vars.resHeader
+} else {}]]]></http:headers>
+			</http:response>
 		</http:listener>
 		<ee:transform doc:name="Set Variable - dataKey and orderType" doc:id="0fa67100-c5fc-44ee-b28b-2014882faa9c" >
 			<ee:message >
@@ -109,6 +112,9 @@ output application/json
 					<ee:message >
 						<ee:set-payload resource="dw/transformations/generated-mock-service-data-response.dwl" />
 					</ee:message>
+					<ee:variables >
+						<ee:set-variable resource="dw/variables/data-generator-mock-service-data-resHeader.dwl" variableName="resHeader" />
+					</ee:variables>
 				</ee:transform>
 			</when>
 			<otherwise >
@@ -142,6 +148,9 @@ output application/json
 					<ee:message >
 						<ee:set-payload resource="dw/transformations/generated-test-data-response.dwl" />
 					</ee:message>
+					<ee:variables >
+						<ee:set-variable resource="dw/variables/data-generator-test-data-resHeader.dwl" variableName="resHeader" />
+					</ee:variables>
 				</ee:transform>
 			</when>
 			<otherwise >

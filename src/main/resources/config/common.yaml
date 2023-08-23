@@ -23,4 +23,7 @@ blazemeter-mock-service:
   port: "443"
 
 object-store:
-  ttl: "5" #mins
+  ttl: "10" #mins
+  
+http:
+  timeout: "180000" #milisecs

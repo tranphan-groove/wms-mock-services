@@ -10,7 +10,7 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
 http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd">
 	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="0f3fb85d-f957-4f9a-a45d-9263beb9204b" >
-		<http:listener-connection host="0.0.0.0" port="8082" protocol="HTTPS">
+		<http:listener-connection host="0.0.0.0" port="8082" protocol="HTTPS" readTimeout="${http.timeout}">
 			<tls:context >
 				<tls:trust-store insecure="true" />
 				<tls:key-store type="pkcs12" path="certificates/keystore.p12" password="mock" alias="mock" keyPassword="mock"/>
@@ -27,4 +27,5 @@ http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/
 	<http:request-config name="blazeMeter_HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="3d9a1e03-1b63-4523-baf3-a7005d2411da">
 		<http:request-connection protocol="HTTPS" host="#[p('blazemeter-mock-service.host')]" port="#[p('blazemeter-mock-service.port')]" />
 	</http:request-config>
+	<os:object-store name="Object_store" doc:name="Object store" doc:id="09f6d6d7-c3a9-4db6-afd9-13398f65e866" persistent="false" entryTtl="${object-store.ttl}" entryTtlUnit="MINUTES" />
 </mule>
