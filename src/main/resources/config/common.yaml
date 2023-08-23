@@ -1,4 +1,4 @@
-filePaths: "pvx/sales-orders.json,pvx/sales-order-items.json,pvx/customers.json,wpl/sales-orders.json"
+filePaths: "pvx/sales-orders.csv,pvx/sales-order-items.csv,pvx/customers.csv,wpl/sales-orders.csv"
 
 mule:
   p-inventory:

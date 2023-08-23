@@ -8,9 +8,6 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
 	<flow name="whiplash-create-orders-flow" doc:id="3775615d-d49f-47a3-8474-b2340f1ddc7c" >
 		<http:listener doc:name="Listener" doc:id="d4d06cfe-080d-423b-a558-45e67f9c4839" config-ref="HTTP_Listener_config" path="/api/v2/orders" allowedMethods="POST"/>
-		<file:read doc:name="Read wpl/sales-orders.json" doc:id="bbc9716a-f2a1-49a7-868a-e26fc8b38910" config-ref="File_Config" path="wpl/sales-orders.json" outputMimeType="application/json" target="fileContent" timeBetweenSizeCheckUnit="SECONDS" timeBetweenSizeCheck="${file.timeBetweenSizeCheck}">
-			<ee:repeatable-file-store-stream inMemorySize="256" bufferUnit="MB" />
-		</file:read>
 		<file:read doc:name="Read item_masters.json" doc:id="07449d78-767a-4440-92a8-b46c3208b2fe" config-ref="File_Config" path="item_masters.json" outputMimeType="application/json" target="itemMasters">
 				<ee:repeatable-file-store-stream inMemorySize="256" bufferUnit="MB" />
 			</file:read>
@@ -20,13 +17,15 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
 				<ee:set-payload resource="dw/transformations/wpl-create-order-response.dwl" />
 			</ee:message>
 		</ee:transform>
-		<file:write doc:name="Write wpl/sales-orders.json" doc:id="94882f75-7c9f-4e7c-819e-29895fd37398" config-ref="File_Config" path="wpl/sales-orders.json" >
+		<file:write doc:name="Write wpl/sales-orders.csv" doc:id="94882f75-7c9f-4e7c-819e-29895fd37398" config-ref="File_Config" path="wpl/sales-orders.csv" mode="APPEND">
 			<file:content ><![CDATA[#[%dw 2.0
-output application/json
+output application/csv header=false
 ---
-(vars.fileContent default []) ++ [payload]]]]></file:content>
+[{
+    data: write(payload, 'application/json', {indent: false})
+}]]]]></file:content>
 		</file:write>
-		<async doc:name="Async" doc:id="da5fb137-ba1f-4c19-8876-fed06802c5c6">
+<!-- [STUDIO:"Async"]		<async doc:name="Async" doc:id="da5fb137-ba1f-4c19-8876-fed06802c5c6">
 			<ee:transform doc:name="wait" doc:id="c7a70c33-6fe3-4c60-88c8-3a1b3315e6bd">
 				<ee:message />
 				<ee:variables>
@@ -34,11 +33,18 @@ output application/json
 				</ee:variables>
 			</ee:transform>
 			<flow-ref doc:name="Flow whiplash-inventory-flow" doc:id="c5afe440-17f7-4c50-a57c-12b66a33d462" name="whiplash-inventory-flow" />
-		</async>
+		</async> [STUDIO] -->
 	</flow>
 	<flow name="whiplash-get-orders-by-search-string-subflow" doc:id="0647291b-c4da-498c-8676-9383ff160857" >
 		<http:listener doc:name="Listener" doc:id="3bda1333-2aae-4f4f-bbbe-5cb95fc74139" config-ref="HTTP_Listener_config" path="/api/v2/orders" allowedMethods="GET"/>
-		<file:read doc:name="Read wpl/sales-orders.json" doc:id="e9db54e0-affd-41c1-8a9f-5a67957fdfd6" config-ref="File_Config" path="wpl/sales-orders.json" outputMimeType="application/json" target="fileContent" timeBetweenSizeCheck="${file.timeBetweenSizeCheck}" timeBetweenSizeCheckUnit="SECONDS">
+		<ee:transform doc:name="Set Variable - seach" doc:id="7fc602bc-f578-4c6d-944d-b1ad7776b4c7" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable resource="dw/variables/wpl-attr-query-search.dwl" variableName="search" />
+			</ee:variables>
+		</ee:transform>
+		<file:read doc:name="Read wpl/sales-orders.csv" doc:id="e9db54e0-affd-41c1-8a9f-5a67957fdfd6" config-ref="File_Config" path="wpl/sales-orders.csv" outputMimeType="application/csv" timeBetweenSizeCheck="${file.timeBetweenSizeCheck}" timeBetweenSizeCheckUnit="SECONDS">
 			<ee:repeatable-file-store-stream inMemorySize="256" bufferUnit="MB" />
 		</file:read>
 		<ee:transform doc:name="Transform Message" doc:id="e9b0f6f6-622d-431f-b38e-668785ce7ce7" >
@@ -49,7 +55,13 @@ output application/json
 	</flow>
 	<flow name="whiplash-get-an-order-flow" doc:id="be75fde8-1192-44a2-ab49-b1a9d33dec07" >
 		<http:listener doc:name="Listener" doc:id="f0d4893e-8d75-4fa0-a7bf-df600a5567ec" config-ref="HTTP_Listener_config" path="/api/v2/orders/{id}" allowedMethods="GET"/>
-		<file:read doc:name="Read wpl/sales-orders.json" doc:id="721695f6-8262-4740-ba56-0a1a7777cf11" config-ref="File_Config" path="wpl/sales-orders.json" outputMimeType="application/json" target="fileContent" timeBetweenSizeCheck="${file.timeBetweenSizeCheck}" timeBetweenSizeCheckUnit="SECONDS">
+		<ee:transform doc:name="Set Variable - id" doc:id="1d3d2d5a-58b9-43da-8bc0-9902c11ea00f">
+			<ee:message />
+			<ee:variables>
+				<ee:set-variable resource="dw/variables/wpl-attr-query-id.dwl" variableName="id" />
+			</ee:variables>
+		</ee:transform>
+		<file:read doc:name="Read wpl/sales-orders.csv" doc:id="721695f6-8262-4740-ba56-0a1a7777cf11" config-ref="File_Config" path="wpl/sales-orders.csv" outputMimeType="application/csv" timeBetweenSizeCheck="${file.timeBetweenSizeCheck}" timeBetweenSizeCheckUnit="SECONDS">
 			<ee:repeatable-file-store-stream inMemorySize="256" bufferUnit="MB" />
 		</file:read>
 		<ee:transform doc:name="Transform Message" doc:id="bc49ef67-2662-4d3b-8db4-f56004d25863" >

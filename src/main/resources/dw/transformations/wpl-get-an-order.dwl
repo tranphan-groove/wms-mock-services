@@ -1,4 +1,4 @@
 %dw 2.0
 output application/json
 ---
-(vars.fileContent filter ((order) -> order.order_orig == attributes.uriParams.id))[0]
+((payload.data map ((item) -> {(read(item))})) filter ((order) -> order.order_orig == vars.id))[0]
