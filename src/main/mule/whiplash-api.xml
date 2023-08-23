@@ -25,7 +25,7 @@ output application/csv header=false
     data: write(payload, 'application/json', {indent: false})
 }]]]]></file:content>
 		</file:write>
-<!-- [STUDIO:"Async"]		<async doc:name="Async" doc:id="da5fb137-ba1f-4c19-8876-fed06802c5c6">
+		<async doc:name="Async" doc:id="da5fb137-ba1f-4c19-8876-fed06802c5c6">
 			<ee:transform doc:name="wait" doc:id="c7a70c33-6fe3-4c60-88c8-3a1b3315e6bd">
 				<ee:message />
 				<ee:variables>
@@ -33,7 +33,7 @@ output application/csv header=false
 				</ee:variables>
 			</ee:transform>
 			<flow-ref doc:name="Flow whiplash-inventory-flow" doc:id="c5afe440-17f7-4c50-a57c-12b66a33d462" name="whiplash-inventory-flow" />
-		</async> [STUDIO] -->
+		</async>
 	</flow>
 	<flow name="whiplash-get-orders-by-search-string-subflow" doc:id="0647291b-c4da-498c-8676-9383ff160857" >
 		<http:listener doc:name="Listener" doc:id="3bda1333-2aae-4f4f-bbbe-5cb95fc74139" config-ref="HTTP_Listener_config" path="/api/v2/orders" allowedMethods="GET"/>
