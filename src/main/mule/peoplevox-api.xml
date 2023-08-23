@@ -42,7 +42,7 @@ http://www.mulesoft.org/schema/mule/apikit-soap http://www.mulesoft.org/schema/m
 				<ee:set-variable resource="dw/variables/pvx-get-file-path.dwl" variableName="filePath" />
 			</ee:variables>
 		</ee:transform>
-		<file:read doc:name="Read file" doc:id="692c57f1-8544-47f5-8b49-3dfa982d9ca4" config-ref="File_Config" path="#[vars.filePath]" target="fileContent" outputMimeType="application/json">
+		<file:read doc:name="Read file" doc:id="692c57f1-8544-47f5-8b49-3dfa982d9ca4" config-ref="File_Config" path="#[vars.filePath]" target="fileContent" outputMimeType="application/json" timeBetweenSizeCheck="${file.timeBetweenSizeCheck}" timeBetweenSizeCheckUnit="SECONDS">
 					<ee:repeatable-file-store-stream inMemorySize="256" bufferUnit="MB" />
 				</file:read>
 		<file:write doc:name="Write file" doc:id="089f19f3-647e-4417-8937-fc5c1f2ecb58" config-ref="File_Config" path="#[vars.filePath]">
@@ -87,7 +87,7 @@ output application/json
 		<file:read doc:name="Read pvx/sales-orders.json" doc:id="57966cbb-4f42-4ccf-8146-731acb8e964c" config-ref="File_Config" path="pvx/sales-orders.json" target="salesOrders" outputMimeType="application/json">
 			<ee:repeatable-file-store-stream inMemorySize="256" bufferUnit="MB" />
 		</file:read>
-		<file:read doc:name="Read pvx/sales-order-items.json" doc:id="53e6b16f-9740-4f91-83d5-312ab4e01573" config-ref="File_Config" path="pvx/sales-order-items.json" target="salesOrderItems" outputMimeType="application/json">
+		<file:read doc:name="Read pvx/sales-order-items.json" doc:id="53e6b16f-9740-4f91-83d5-312ab4e01573" config-ref="File_Config" path="pvx/sales-order-items.json" target="salesOrderItems" outputMimeType="application/json" timeBetweenSizeCheck="${file.timeBetweenSizeCheck}" timeBetweenSizeCheckUnit="SECONDS">
 			<ee:repeatable-file-store-stream inMemorySize="256" bufferUnit="MB" />
 		</file:read>
 		<ee:transform doc:name="Set Variable - searchClauseTimestamps and searchClauseRPLN" doc:id="476be670-2a1c-4e4e-b7e1-0b20001b7aa8">

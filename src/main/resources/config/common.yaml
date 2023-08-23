@@ -27,3 +27,6 @@ object-store:
   
 http:
   timeout: "180000" #milisecs
+  
+file:
+  timeBetweenSizeCheck: "5" #secs
