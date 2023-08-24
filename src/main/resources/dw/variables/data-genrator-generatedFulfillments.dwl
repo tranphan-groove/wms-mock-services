@@ -40,8 +40,8 @@ payload.data map ((order, orderIndex) -> do {
                     "quantity": lineItem.quantity,
                     "line_item_id": lineItem.id,
                     "inventory_item_id": 44117762146466,
-                    "fulfillable_quantity": 1,
-                    "variant_id": 42015926714530
+                    "fulfillable_quantity": lineItem.quantity,
+                    "variant_id": lineItem.variant_id
                 }),
                 "fulfill_at": "2023-08-14T13:00:00+10:00",
                 "fulfill_by": null,
