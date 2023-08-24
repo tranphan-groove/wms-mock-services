@@ -1,12 +1,13 @@
 %dw 2.0
+import * from dw::util::Timer
 output application/json
 fun countryName(code) = (
     if (code == 'US') 'United States'
     else if (code == 'NZ') 'New Zealand'
     else 'unknown'
 )
-var customerId = (now() as Number) + randomInt(500)
-var packageId = (now() as Number) + randomInt(500)
+var customerId = currentMilliseconds() + randomInt(500)
+var packageId = currentMilliseconds() + randomInt(500)
 ---
 {
     "id": vars.orderId,
@@ -119,7 +120,7 @@ var packageId = (now() as Number) + randomInt(500)
     "is_gestating": true,
     "permissions_limited": false,
     "order_items": payload.order_items map ((orderItem) -> do {
-        var itemMaster = (vars.itemMasters filter ((itemMaster) -> itemMaster.id as String == orderItem.item_id))[0]
+        var itemMaster = (vars.itemMasters filter ((itemMaster) -> itemMaster.source_system_id as String == orderItem.item_id))[0]
         ---
         {
             "id": orderItem.item_id as Number,
@@ -149,7 +150,7 @@ var packageId = (now() as Number) + randomInt(500)
             "misc": null,
             "request_serial_number": false,
             "originator": {
-                "id": (now() as Number) + randomInt(500),
+                "id": currentMilliseconds() + randomInt(500),
                 "originated_id": orderItem.item_id,
                 "originated_type": "OrderItem",
                 "shop_id": null,
@@ -169,7 +170,7 @@ var packageId = (now() as Number) + randomInt(500)
         }
     }),
     "originator": {
-        "id": (now() as Number) + randomInt(500),
+        "id": currentMilliseconds() + randomInt(500),
         "originated_id": vars.orderId,
         "originated_type": "Order",
         "shop_id": null,

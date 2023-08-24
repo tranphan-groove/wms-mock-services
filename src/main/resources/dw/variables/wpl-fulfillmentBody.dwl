@@ -1,5 +1,6 @@
 %dw 2.0
 output application/json
+import * from dw::util::Timer
 import * from dw::util::Values
 var packFee = (random() * 100) as String {format: '##.##'}
 var pickFee = (random() * 100) as String {format: '##.##'}
@@ -17,7 +18,7 @@ var pickFee = (random() * 100) as String {format: '##.##'}
     "order": 
     (
         payload update {
-            case .order_batch_id -> now() as Number
+            case .order_batch_id -> currentMilliseconds()
             case .address_verified -> true
             case .ship_actual_cost -> "0.0"
             case .packingslip_pdf_url -> ""

@@ -2,20 +2,20 @@ filePaths: "pvx/sales-orders.csv,pvx/sales-order-items.csv,pvx/customers.csv,wpl
 
 mule:
   p-inventory:
-    client_id: "40405c2f1ba84b739867373c457f2dbb"
-    client_secret: "00683736750C415994fbAe0Cf822D290"
+    client_id: "daa0dedb9b9f496aa64b5014dafcd2ef"
+    client_secret: "83ddb32B0ff7426CAb89Ff94aAd494BE"
     
   p-api-co-pvx-os-statusevents:
-    client_id: "fa6037665f69464b8ce3323487b8318b"
-    client_secret: "25D4963d95c0477C9128C3BabFB63DD4"
+    client_id: "daa0dedb9b9f496aa64b5014dafcd2ef"
+    client_secret: "83ddb32B0ff7426CAb89Ff94aAd494BE"
     
   p-inventory-whip:
-    client_id: "355efad188f2449bad0584c0578ab210"
-    client_secret: "e52F3d1a0FE74361B7aF118e82774240"
+    client_id: "daa0dedb9b9f496aa64b5014dafcd2ef"
+    client_secret: "83ddb32B0ff7426CAb89Ff94aAd494BE"
     
   p-forders-pub:
-    client_id: "355efad188f2449bad0584c0578ab210"
-    client_secret: "e52F3d1a0FE74361B7aF118e82774240"
+    client_id: "daa0dedb9b9f496aa64b5014dafcd2ef"
+    client_secret: "83ddb32B0ff7426CAb89Ff94aAd494BE"
     
 blazemeter-mock-service:
   wait: "2" #secs

@@ -1,1127 +1,1198 @@
-[{
-        "id": 7467,
+[
+    {
+      "id": 7467,
+      "sku": "01016085B001ONE",
+      "parent_id": "01016085-YB001",
+      "variant_id": 41599566217366,
+      "variant_inventory_management": "shopify",
+      "variant_title": "ONE",
+      "vendor": "47 Brand",
+      "unified_model": {
         "sku": "01016085B001ONE",
-        "parent_id": "01016085-YB001",
-        "variant_id": 41599566217366,
-        "variant_inventory_management": "shopify",
-        "variant_title": "ONE",
-        "vendor": "47 Brand",
-        "unified_model": {
-            "sku": "01016085B001ONE",
-            "name": "BLACKHAWKS BREAKAWAY CUFF KNT",
-            "prices": [{
-                    "type": "list",
-                    "value": 39.95,
-                    "currency": "AUD"
-                },
-                {
-                    "type": "list",
-                    "value": 46.95,
-                    "currency": "NZD"
-                },
-                {
-                    "type": "list",
-                    "value": 25.99,
-                    "currency": "USD"
-                }
-            ],
-            "barcode": "053838930728",
-            "itemType": "sellable_product",
-            "attributes": [{
-                    "id": "brand_code",
-                    "name": "Brand Code",
-                    "value": "47"
-                },
-                {
-                    "id": "colour",
-                    "name": "Colour",
-                    "value": "Black"
-                },
-                {
-                    "id": "size",
-                    "name": "Size",
-                    "value": "ONE"
-                },
-                {
-                    "id": "brand_name",
-                    "name": "Brand Name",
-                    "value": "47 Brand"
-                },
-                {
-                    "id": "department",
-                    "name": "Department",
-                    "value": "APPAREL"
-                },
-                {
-                    "id": "category",
-                    "name": "Category",
-                    "value": "Pur. Hats"
-                },
-                {
-                    "id": "subcategory",
-                    "name": "Sub-Category",
-                    "value": "Beanies"
-                },
-                {
-                    "id": "subsubcategory",
-                    "name": "Sub-Sub-Category",
-                    "value": "Mens"
-                }
-            ],
-            "categories": [{
-                "path": "Pur. Hats > Beanies",
-                "type": "merch"
-            }],
-            "tariffCode": "3307.90.0000",
-            "supplierSku": "01016085B001ONE",
-            "parentProductId": "01016085-YB001",
-            "manufactuerOrigin": "CN"
-        },
-        "created_at": "2022-04-05 00:01:32",
-        "updated_at": "2022-09-07 06:07:40"
+        "name": "BLACKHAWKS BREAKAWAY CUFF KNT",
+        "prices": [
+          {
+            "type": "list",
+            "value": 39.95,
+            "currency": "AUD"
+          },
+          {
+            "type": "list",
+            "value": 46.95,
+            "currency": "NZD"
+          },
+          {
+            "type": "list",
+            "value": 25.99,
+            "currency": "USD"
+          }
+        ],
+        "barcode": "053838930728",
+        "itemType": "sellable_product",
+        "attributes": [
+          {
+            "id": "brand_code",
+            "name": "Brand Code",
+            "value": "47"
+          },
+          {
+            "id": "colour",
+            "name": "Colour",
+            "value": "Black"
+          },
+          {
+            "id": "size",
+            "name": "Size",
+            "value": "ONE"
+          },
+          {
+            "id": "brand_name",
+            "name": "Brand Name",
+            "value": "47 Brand"
+          },
+          {
+            "id": "department",
+            "name": "Department",
+            "value": "APPAREL"
+          },
+          {
+            "id": "category",
+            "name": "Category",
+            "value": "Pur. Hats"
+          },
+          {
+            "id": "subcategory",
+            "name": "Sub-Category",
+            "value": "Beanies"
+          },
+          {
+            "id": "subsubcategory",
+            "name": "Sub-Sub-Category",
+            "value": "Mens"
+          }
+        ],
+        "categories": [
+          {
+            "path": "Pur. Hats > Beanies",
+            "type": "merch"
+          }
+        ],
+        "tariffCode": "3307.90.0000",
+        "supplierSku": "01016085B001ONE",
+        "parentProductId": "01016085-YB001",
+        "manufactuerOrigin": "CN"
+      },
+      "created_at": "2022-04-05 00:01:32",
+      "updated_at": "2022-09-07 06:07:40",
+      "source_system_id": "2465905"
     },
     {
-        "id": 8355,
+      "id": 8355,
+      "sku": "01016428B012ONE",
+      "parent_id": "01016428-YB012",
+      "variant_id": 41599566807190,
+      "variant_inventory_management": "shopify",
+      "variant_title": "ONE",
+      "vendor": "47 Brand",
+      "unified_model": {
         "sku": "01016428B012ONE",
-        "parent_id": "01016428-YB012",
-        "variant_id": 41599566807190,
-        "variant_inventory_management": "shopify",
-        "variant_title": "ONE",
-        "vendor": "47 Brand",
-        "unified_model": {
-            "sku": "01016428B012ONE",
-            "name": "BRUINS MVP DT SB",
-            "prices": [{
-                    "type": "list",
-                    "value": 49.99,
-                    "currency": "AUD"
-                },
-                {
-                    "type": "list",
-                    "value": 54.95,
-                    "currency": "NZD"
-                },
-                {
-                    "type": "list",
-                    "value": 31.99,
-                    "currency": "USD"
-                }
-            ],
-            "barcode": "193676696292",
-            "itemType": "sellable_product",
-            "attributes": [{
-                    "id": "brand_code",
-                    "name": "Brand Code",
-                    "value": "47"
-                },
-                {
-                    "id": "colour",
-                    "name": "Colour",
-                    "value": "Black/White"
-                },
-                {
-                    "id": "size",
-                    "name": "Size",
-                    "value": "ONE"
-                },
-                {
-                    "id": "brand_name",
-                    "name": "Brand Name",
-                    "value": "47 Brand"
-                },
-                {
-                    "id": "department",
-                    "name": "Department",
-                    "value": "APPAREL"
-                },
-                {
-                    "id": "category",
-                    "name": "Category",
-                    "value": "Pur. Hats"
-                },
-                {
-                    "id": "subcategory",
-                    "name": "Sub-Category",
-                    "value": "Snapback"
-                },
-                {
-                    "id": "subsubcategory",
-                    "name": "Sub-Sub-Category",
-                    "value": "Mens"
-                }
-            ],
-            "categories": [{
-                "path": "Pur. Hats > Snapback",
-                "type": "merch"
-            }],
-            "tariffCode": "6103.43.1520",
-            "supplierSku": "01016428B012ONE",
-            "parentProductId": "01016428-YB012",
-            "manufactuerOrigin": "CN"
-        },
-        "created_at": "2022-08-09 04:44:43",
-        "updated_at": "2022-09-26 08:03:48"
+        "name": "BRUINS MVP DT SB",
+        "prices": [
+          {
+            "type": "list",
+            "value": 49.99,
+            "currency": "AUD"
+          },
+          {
+            "type": "list",
+            "value": 54.95,
+            "currency": "NZD"
+          },
+          {
+            "type": "list",
+            "value": 31.99,
+            "currency": "USD"
+          }
+        ],
+        "barcode": "193676696292",
+        "itemType": "sellable_product",
+        "attributes": [
+          {
+            "id": "brand_code",
+            "name": "Brand Code",
+            "value": "47"
+          },
+          {
+            "id": "colour",
+            "name": "Colour",
+            "value": "Black/White"
+          },
+          {
+            "id": "size",
+            "name": "Size",
+            "value": "ONE"
+          },
+          {
+            "id": "brand_name",
+            "name": "Brand Name",
+            "value": "47 Brand"
+          },
+          {
+            "id": "department",
+            "name": "Department",
+            "value": "APPAREL"
+          },
+          {
+            "id": "category",
+            "name": "Category",
+            "value": "Pur. Hats"
+          },
+          {
+            "id": "subcategory",
+            "name": "Sub-Category",
+            "value": "Snapback"
+          },
+          {
+            "id": "subsubcategory",
+            "name": "Sub-Sub-Category",
+            "value": "Mens"
+          }
+        ],
+        "categories": [
+          {
+            "path": "Pur. Hats > Snapback",
+            "type": "merch"
+          }
+        ],
+        "tariffCode": "6103.43.1520",
+        "supplierSku": "01016428B012ONE",
+        "parentProductId": "01016428-YB012",
+        "manufactuerOrigin": "CN"
+      },
+      "created_at": "2022-08-09 04:44:43",
+      "updated_at": "2022-09-26 08:03:48",
+      "source_system_id": "2465904"
     },
     {
-        "id": 7483,
+      "id": 7483,
+      "sku": "01016628B001M/L",
+      "parent_id": "01016628-YB001",
+      "variant_id": 42012029354134,
+      "variant_inventory_management": "shopify",
+      "variant_title": "M/L",
+      "vendor": "New Era",
+      "unified_model": {
         "sku": "01016628B001M/L",
-        "parent_id": "01016628-YB001",
-        "variant_id": 42012029354134,
-        "variant_inventory_management": "shopify",
-        "variant_title": "M/L",
-        "vendor": "New Era",
-        "unified_model": {
-            "sku": "01016628B001M/L",
-            "name": "PIRATES 3930 STRETCH FIT",
-            "prices": [{
-                    "type": "list",
-                    "value": 40,
-                    "currency": "AUD"
-                },
-                {
-                    "type": "list",
-                    "value": 46.95,
-                    "currency": "NZD"
-                },
-                {
-                    "type": "list",
-                    "value": 10,
-                    "currency": "USD"
-                }
-            ],
-            "barcode": "887140475550",
-            "attributes": [{
-                    "id": "brand_code",
-                    "name": "Brand Code",
-                    "value": "NEWER"
-                },
-                {
-                    "id": "colour",
-                    "name": "Colour",
-                    "value": "Black"
-                },
-                {
-                    "id": "size",
-                    "name": "Size",
-                    "value": "M/L"
-                },
-                {
-                    "id": "brand_name",
-                    "name": "Brand Name",
-                    "value": "New Era"
-                }
-            ],
-            "categories": [{
-                "path": "Pur. Hats > Stretch Fit",
-                "type": "merch"
-            }],
-            "tariffCode": "",
-            "supplierSku": "01016628B001M/L",
-            "parentProductId": "01016628-YB001"
-        },
-        "created_at": "2022-04-05 00:02:34",
-        "updated_at": "2022-04-05 00:02:34"
+        "name": "PIRATES 3930 STRETCH FIT",
+        "prices": [
+          {
+            "type": "list",
+            "value": 40,
+            "currency": "AUD"
+          },
+          {
+            "type": "list",
+            "value": 46.95,
+            "currency": "NZD"
+          },
+          {
+            "type": "list",
+            "value": 10,
+            "currency": "USD"
+          }
+        ],
+        "barcode": "887140475550",
+        "attributes": [
+          {
+            "id": "brand_code",
+            "name": "Brand Code",
+            "value": "NEWER"
+          },
+          {
+            "id": "colour",
+            "name": "Colour",
+            "value": "Black"
+          },
+          {
+            "id": "size",
+            "name": "Size",
+            "value": "M/L"
+          },
+          {
+            "id": "brand_name",
+            "name": "Brand Name",
+            "value": "New Era"
+          }
+        ],
+        "categories": [
+          {
+            "path": "Pur. Hats > Stretch Fit",
+            "type": "merch"
+          }
+        ],
+        "tariffCode": "",
+        "supplierSku": "01016628B001M/L",
+        "parentProductId": "01016628-YB001"
+      },
+      "created_at": "2022-04-05 00:02:34",
+      "updated_at": "2022-04-05 00:02:34",
+      "source_system_id": "2503995"
     },
     {
-        "id": 7479,
+      "id": 7479,
+      "sku": "01016628B001S/M",
+      "parent_id": "01016628-YB001",
+      "variant_id": 42012029321366,
+      "variant_inventory_management": "shopify",
+      "variant_title": "S/M",
+      "vendor": "New Era",
+      "unified_model": {
         "sku": "01016628B001S/M",
-        "parent_id": "01016628-YB001",
-        "variant_id": 42012029321366,
-        "variant_inventory_management": "shopify",
-        "variant_title": "S/M",
-        "vendor": "New Era",
-        "unified_model": {
-            "sku": "01016628B001S/M",
-            "name": "PIRATES 3930 STRETCH FIT",
-            "prices": [{
-                    "type": "list",
-                    "value": 40,
-                    "currency": "AUD"
-                },
-                {
-                    "type": "list",
-                    "value": 46.95,
-                    "currency": "NZD"
-                },
-                {
-                    "type": "list",
-                    "value": 0,
-                    "currency": "USD"
-                }
-            ],
-            "barcode": "887140475567",
-            "itemType": "sellable_product",
-            "attributes": [{
-                    "id": "brand_code",
-                    "name": "Brand Code",
-                    "value": "NEWER"
-                },
-                {
-                    "id": "colour",
-                    "name": "Colour",
-                    "value": "Black"
-                },
-                {
-                    "id": "size",
-                    "name": "Size",
-                    "value": "S/M"
-                },
-                {
-                    "id": "brand_name",
-                    "name": "Brand Name",
-                    "value": "New Era"
-                },
-                {
-                    "id": "department",
-                    "name": "Department",
-                    "value": "APPAREL"
-                },
-                {
-                    "id": "category",
-                    "name": "Category",
-                    "value": "Pur. Hats"
-                },
-                {
-                    "id": "subcategory",
-                    "name": "Sub-Category",
-                    "value": "Stretch Fit"
-                },
-                {
-                    "id": "subsubcategory",
-                    "name": "Sub-Sub-Category",
-                    "value": "Mens"
-                }
-            ],
-            "categories": [{
-                "path": "Pur. Hats > Stretch Fit",
-                "type": "merch"
-            }],
-            "tariffCode": "Not Updated",
-            "supplierSku": "01016628B001S/M",
-            "parentProductId": "01016628-YB001",
-            "manufactuerOrigin": "CN"
-        },
-        "created_at": "2022-04-05 00:02:34",
-        "updated_at": "2022-09-18 01:47:06"
+        "name": "PIRATES 3930 STRETCH FIT",
+        "prices": [
+          {
+            "type": "list",
+            "value": 40,
+            "currency": "AUD"
+          },
+          {
+            "type": "list",
+            "value": 46.95,
+            "currency": "NZD"
+          },
+          {
+            "type": "list",
+            "value": 0,
+            "currency": "USD"
+          }
+        ],
+        "barcode": "887140475567",
+        "itemType": "sellable_product",
+        "attributes": [
+          {
+            "id": "brand_code",
+            "name": "Brand Code",
+            "value": "NEWER"
+          },
+          {
+            "id": "colour",
+            "name": "Colour",
+            "value": "Black"
+          },
+          {
+            "id": "size",
+            "name": "Size",
+            "value": "S/M"
+          },
+          {
+            "id": "brand_name",
+            "name": "Brand Name",
+            "value": "New Era"
+          },
+          {
+            "id": "department",
+            "name": "Department",
+            "value": "APPAREL"
+          },
+          {
+            "id": "category",
+            "name": "Category",
+            "value": "Pur. Hats"
+          },
+          {
+            "id": "subcategory",
+            "name": "Sub-Category",
+            "value": "Stretch Fit"
+          },
+          {
+            "id": "subsubcategory",
+            "name": "Sub-Sub-Category",
+            "value": "Mens"
+          }
+        ],
+        "categories": [
+          {
+            "path": "Pur. Hats > Stretch Fit",
+            "type": "merch"
+          }
+        ],
+        "tariffCode": "Not Updated",
+        "supplierSku": "01016628B001S/M",
+        "parentProductId": "01016628-YB001",
+        "manufactuerOrigin": "CN"
+      },
+      "created_at": "2022-04-05 00:02:34",
+      "updated_at": "2022-09-18 01:47:06",
+      "source_system_id": "2503994"
     },
     {
-        "id": 8532,
+      "id": 8532,
+      "sku": "01025163S264ONE",
+      "parent_id": "01025163-YS264",
+      "variant_id": 42012029583510,
+      "variant_inventory_management": "shopify",
+      "variant_title": "ONE",
+      "vendor": "New Era",
+      "unified_model": {
         "sku": "01025163S264ONE",
-        "parent_id": "01025163-YS264",
-        "variant_id": 42012029583510,
-        "variant_inventory_management": "shopify",
-        "variant_title": "ONE",
-        "vendor": "New Era",
-        "unified_model": {
-            "sku": "01025163S264ONE",
-            "name": "KNIT THIN POM NEYYAN Q222 COLO",
-            "prices": [{
-                    "type": "list",
-                    "value": 40,
-                    "currency": "AUD"
-                },
-                {
-                    "type": "list",
-                    "value": 46.95,
-                    "currency": "NZD"
-                },
-                {
-                    "type": "list",
-                    "value": 0,
-                    "currency": "USD"
-                }
-            ],
-            "barcode": "196313859470",
-            "itemType": "sellable_product",
-            "attributes": [{
-                    "id": "brand_code",
-                    "name": "Brand Code",
-                    "value": "NEWER"
-                },
-                {
-                    "id": "colour",
-                    "name": "Colour",
-                    "value": "Soft Pink"
-                },
-                {
-                    "id": "size",
-                    "name": "Size",
-                    "value": "ONE"
-                },
-                {
-                    "id": "brand_name",
-                    "name": "Brand Name",
-                    "value": "New Era"
-                },
-                {
-                    "id": "department",
-                    "name": "Department",
-                    "value": "APPAREL"
-                },
-                {
-                    "id": "category",
-                    "name": "Category",
-                    "value": "Pur. Hats"
-                },
-                {
-                    "id": "subcategory",
-                    "name": "Sub-Category",
-                    "value": "Beanies"
-                },
-                {
-                    "id": "subsubcategory",
-                    "name": "Sub-Sub-Category",
-                    "value": "Ladies"
-                }
-            ],
-            "categories": [{
-                "path": "Pur. Hats > Beanies",
-                "type": "merch"
-            }],
-            "tariffCode": "Not Updated",
-            "supplierSku": "01025163S264ONE",
-            "parentProductId": "01025163-YS264",
-            "manufactuerOrigin": ""
-        },
-        "created_at": "2022-08-09 04:48:04",
-        "updated_at": "2022-08-09 04:48:04"
+        "name": "KNIT THIN POM NEYYAN Q222 COLO",
+        "prices": [
+          {
+            "type": "list",
+            "value": 40,
+            "currency": "AUD"
+          },
+          {
+            "type": "list",
+            "value": 46.95,
+            "currency": "NZD"
+          },
+          {
+            "type": "list",
+            "value": 0,
+            "currency": "USD"
+          }
+        ],
+        "barcode": "196313859470",
+        "itemType": "sellable_product",
+        "attributes": [
+          {
+            "id": "brand_code",
+            "name": "Brand Code",
+            "value": "NEWER"
+          },
+          {
+            "id": "colour",
+            "name": "Colour",
+            "value": "Soft Pink"
+          },
+          {
+            "id": "size",
+            "name": "Size",
+            "value": "ONE"
+          },
+          {
+            "id": "brand_name",
+            "name": "Brand Name",
+            "value": "New Era"
+          },
+          {
+            "id": "department",
+            "name": "Department",
+            "value": "APPAREL"
+          },
+          {
+            "id": "category",
+            "name": "Category",
+            "value": "Pur. Hats"
+          },
+          {
+            "id": "subcategory",
+            "name": "Sub-Category",
+            "value": "Beanies"
+          },
+          {
+            "id": "subsubcategory",
+            "name": "Sub-Sub-Category",
+            "value": "Ladies"
+          }
+        ],
+        "categories": [
+          {
+            "path": "Pur. Hats > Beanies",
+            "type": "merch"
+          }
+        ],
+        "tariffCode": "Not Updated",
+        "supplierSku": "01025163S264ONE",
+        "parentProductId": "01025163-YS264",
+        "manufactuerOrigin": ""
+      },
+      "created_at": "2022-08-09 04:48:04",
+      "updated_at": "2022-08-09 04:48:04",
+      "source_system_id": "2677131"
     },
     {
-        "id": 8358,
+      "id": 8358,
+      "sku": "01026715C600ONE",
+      "parent_id": "01026715-YC600",
+      "variant_id": 42012029714582,
+      "variant_inventory_management": "shopify",
+      "variant_title": "ONE",
+      "vendor": "MITCHELL & NESS",
+      "unified_model": {
         "sku": "01026715C600ONE",
-        "parent_id": "01026715-YC600",
-        "variant_id": 42012029714582,
-        "variant_inventory_management": "shopify",
-        "variant_title": "ONE",
-        "vendor": "MITCHELL & NESS",
-        "unified_model": {
-            "sku": "01026715C600ONE",
-            "name": "NBA GO TEAM GO HAWKS",
-            "prices": [{
-                    "type": "list",
-                    "value": 54.95,
-                    "currency": "AUD"
-                },
-                {
-                    "type": "list",
-                    "value": 59.95,
-                    "currency": "NZD"
-                },
-                {
-                    "type": "list",
-                    "value": 34.99,
-                    "currency": "USD"
-                }
-            ],
-            "barcode": "196294229026",
-            "itemType": "sellable_product",
-            "attributes": [{
-                    "id": "brand_code",
-                    "name": "Brand Code",
-                    "value": "MITCH"
-                },
-                {
-                    "id": "colour",
-                    "name": "Colour",
-                    "value": "Cream"
-                },
-                {
-                    "id": "size",
-                    "name": "Size",
-                    "value": "ONE"
-                },
-                {
-                    "id": "brand_name",
-                    "name": "Brand Name",
-                    "value": "MITCHELL & NESS"
-                },
-                {
-                    "id": "department",
-                    "name": "Department",
-                    "value": "APPAREL"
-                },
-                {
-                    "id": "category",
-                    "name": "Category",
-                    "value": "Pur. Hats"
-                },
-                {
-                    "id": "subcategory",
-                    "name": "Sub-Category",
-                    "value": "Snapback"
-                },
-                {
-                    "id": "subsubcategory",
-                    "name": "Sub-Sub-Category",
-                    "value": "Mens"
-                }
-            ],
-            "categories": [{
-                "path": "Pur. Hats > Snapback",
-                "type": "merch"
-            }],
-            "tariffCode": "6505.00.2060",
-            "supplierSku": "01026715C600ONE",
-            "parentProductId": "01026715-YC600",
-            "manufactuerOrigin": ""
-        },
-        "created_at": "2022-08-09 04:44:54",
-        "updated_at": "2022-08-09 04:44:54"
+        "name": "NBA GO TEAM GO HAWKS",
+        "prices": [
+          {
+            "type": "list",
+            "value": 54.95,
+            "currency": "AUD"
+          },
+          {
+            "type": "list",
+            "value": 59.95,
+            "currency": "NZD"
+          },
+          {
+            "type": "list",
+            "value": 34.99,
+            "currency": "USD"
+          }
+        ],
+        "barcode": "196294229026",
+        "itemType": "sellable_product",
+        "attributes": [
+          {
+            "id": "brand_code",
+            "name": "Brand Code",
+            "value": "MITCH"
+          },
+          {
+            "id": "colour",
+            "name": "Colour",
+            "value": "Cream"
+          },
+          {
+            "id": "size",
+            "name": "Size",
+            "value": "ONE"
+          },
+          {
+            "id": "brand_name",
+            "name": "Brand Name",
+            "value": "MITCHELL & NESS"
+          },
+          {
+            "id": "department",
+            "name": "Department",
+            "value": "APPAREL"
+          },
+          {
+            "id": "category",
+            "name": "Category",
+            "value": "Pur. Hats"
+          },
+          {
+            "id": "subcategory",
+            "name": "Sub-Category",
+            "value": "Snapback"
+          },
+          {
+            "id": "subsubcategory",
+            "name": "Sub-Sub-Category",
+            "value": "Mens"
+          }
+        ],
+        "categories": [
+          {
+            "path": "Pur. Hats > Snapback",
+            "type": "merch"
+          }
+        ],
+        "tariffCode": "6505.00.2060",
+        "supplierSku": "01026715C600ONE",
+        "parentProductId": "01026715-YC600",
+        "manufactuerOrigin": ""
+      },
+      "created_at": "2022-08-09 04:44:54",
+      "updated_at": "2022-08-09 04:44:54",
+      "source_system_id": "2524795"
     },
     {
-        "id": 8364,
+      "id": 8364,
+      "sku": "01026716C600ONE",
+      "parent_id": "01026716-YC600",
+      "variant_id": 42012030075030,
+      "variant_inventory_management": "shopify",
+      "variant_title": "ONE",
+      "vendor": "MITCHELL & NESS",
+      "unified_model": {
         "sku": "01026716C600ONE",
-        "parent_id": "01026716-YC600",
-        "variant_id": 42012030075030,
-        "variant_inventory_management": "shopify",
-        "variant_title": "ONE",
-        "vendor": "MITCHELL & NESS",
-        "unified_model": {
-            "sku": "01026716C600ONE",
-            "name": "NBA GO TEAM GO JAZZ",
-            "prices": [{
-                    "type": "list",
-                    "value": 54.95,
-                    "currency": "AUD"
-                },
-                {
-                    "type": "list",
-                    "value": 59.95,
-                    "currency": "NZD"
-                },
-                {
-                    "type": "list",
-                    "value": 34.99,
-                    "currency": "USD"
-                }
-            ],
-            "barcode": "196294229071",
-            "itemType": "sellable_product",
-            "attributes": [{
-                    "id": "brand_code",
-                    "name": "Brand Code",
-                    "value": "MITCH"
-                },
-                {
-                    "id": "colour",
-                    "name": "Colour",
-                    "value": "Cream"
-                },
-                {
-                    "id": "size",
-                    "name": "Size",
-                    "value": "ONE"
-                },
-                {
-                    "id": "brand_name",
-                    "name": "Brand Name",
-                    "value": "MITCHELL & NESS"
-                },
-                {
-                    "id": "department",
-                    "name": "Department",
-                    "value": "APPAREL"
-                },
-                {
-                    "id": "category",
-                    "name": "Category",
-                    "value": "Pur. Hats"
-                },
-                {
-                    "id": "subcategory",
-                    "name": "Sub-Category",
-                    "value": "Snapback"
-                },
-                {
-                    "id": "subsubcategory",
-                    "name": "Sub-Sub-Category",
-                    "value": "Mens"
-                }
-            ],
-            "categories": [{
-                "path": "Pur. Hats > Snapback",
-                "type": "merch"
-            }],
-            "tariffCode": "6505.00.2060",
-            "supplierSku": "01026716C600ONE",
-            "parentProductId": "01026716-YC600",
-            "manufactuerOrigin": ""
-        },
-        "created_at": "2022-08-09 04:44:54",
-        "updated_at": "2022-08-09 04:44:54"
+        "name": "NBA GO TEAM GO JAZZ",
+        "prices": [
+          {
+            "type": "list",
+            "value": 54.95,
+            "currency": "AUD"
+          },
+          {
+            "type": "list",
+            "value": 59.95,
+            "currency": "NZD"
+          },
+          {
+            "type": "list",
+            "value": 34.99,
+            "currency": "USD"
+          }
+        ],
+        "barcode": "196294229071",
+        "itemType": "sellable_product",
+        "attributes": [
+          {
+            "id": "brand_code",
+            "name": "Brand Code",
+            "value": "MITCH"
+          },
+          {
+            "id": "colour",
+            "name": "Colour",
+            "value": "Cream"
+          },
+          {
+            "id": "size",
+            "name": "Size",
+            "value": "ONE"
+          },
+          {
+            "id": "brand_name",
+            "name": "Brand Name",
+            "value": "MITCHELL & NESS"
+          },
+          {
+            "id": "department",
+            "name": "Department",
+            "value": "APPAREL"
+          },
+          {
+            "id": "category",
+            "name": "Category",
+            "value": "Pur. Hats"
+          },
+          {
+            "id": "subcategory",
+            "name": "Sub-Category",
+            "value": "Snapback"
+          },
+          {
+            "id": "subsubcategory",
+            "name": "Sub-Sub-Category",
+            "value": "Mens"
+          }
+        ],
+        "categories": [
+          {
+            "path": "Pur. Hats > Snapback",
+            "type": "merch"
+          }
+        ],
+        "tariffCode": "6505.00.2060",
+        "supplierSku": "01026716C600ONE",
+        "parentProductId": "01026716-YC600",
+        "manufactuerOrigin": ""
+      },
+      "created_at": "2022-08-09 04:44:54",
+      "updated_at": "2022-08-09 04:44:54",
+      "source_system_id": "2524796"
     },
     {
-        "id": 8539,
+      "id": 8539,
+      "sku": "01026717C600ONE",
+      "parent_id": "01026717-YC600",
+      "variant_id": 42012030206102,
+      "variant_inventory_management": "shopify",
+      "variant_title": "ONE",
+      "vendor": "MITCHELL & NESS",
+      "unified_model": {
         "sku": "01026717C600ONE",
-        "parent_id": "01026717-YC600",
-        "variant_id": 42012030206102,
-        "variant_inventory_management": "shopify",
-        "variant_title": "ONE",
-        "vendor": "MITCHELL & NESS",
-        "unified_model": {
-            "sku": "01026717C600ONE",
-            "name": "NBA GO TEAM GO LAKRS",
-            "prices": [{
-                    "type": "list",
-                    "value": 54.95,
-                    "currency": "AUD"
-                },
-                {
-                    "type": "list",
-                    "value": 59.95,
-                    "currency": "NZD"
-                },
-                {
-                    "type": "list",
-                    "value": 34.99,
-                    "currency": "USD"
-                }
-            ],
-            "barcode": "196294229132",
-            "itemType": "sellable_product",
-            "attributes": [{
-                    "id": "brand_code",
-                    "name": "Brand Code",
-                    "value": "MITCH"
-                },
-                {
-                    "id": "colour",
-                    "name": "Colour",
-                    "value": "Cream"
-                },
-                {
-                    "id": "size",
-                    "name": "Size",
-                    "value": "ONE"
-                },
-                {
-                    "id": "brand_name",
-                    "name": "Brand Name",
-                    "value": "MITCHELL & NESS"
-                },
-                {
-                    "id": "department",
-                    "name": "Department",
-                    "value": "APPAREL"
-                },
-                {
-                    "id": "category",
-                    "name": "Category",
-                    "value": "Pur. Hats"
-                },
-                {
-                    "id": "subcategory",
-                    "name": "Sub-Category",
-                    "value": "Snapback"
-                },
-                {
-                    "id": "subsubcategory",
-                    "name": "Sub-Sub-Category",
-                    "value": "Mens"
-                }
-            ],
-            "categories": [{
-                "path": "Pur. Hats > Snapback",
-                "type": "merch"
-            }],
-            "tariffCode": "6505.00.2060",
-            "supplierSku": "01026717C600ONE",
-            "parentProductId": "01026717-YC600",
-            "manufactuerOrigin": ""
-        },
-        "created_at": "2022-08-09 04:48:14",
-        "updated_at": "2022-08-09 04:48:14"
+        "name": "NBA GO TEAM GO LAKRS",
+        "prices": [
+          {
+            "type": "list",
+            "value": 54.95,
+            "currency": "AUD"
+          },
+          {
+            "type": "list",
+            "value": 59.95,
+            "currency": "NZD"
+          },
+          {
+            "type": "list",
+            "value": 34.99,
+            "currency": "USD"
+          }
+        ],
+        "barcode": "196294229132",
+        "itemType": "sellable_product",
+        "attributes": [
+          {
+            "id": "brand_code",
+            "name": "Brand Code",
+            "value": "MITCH"
+          },
+          {
+            "id": "colour",
+            "name": "Colour",
+            "value": "Cream"
+          },
+          {
+            "id": "size",
+            "name": "Size",
+            "value": "ONE"
+          },
+          {
+            "id": "brand_name",
+            "name": "Brand Name",
+            "value": "MITCHELL & NESS"
+          },
+          {
+            "id": "department",
+            "name": "Department",
+            "value": "APPAREL"
+          },
+          {
+            "id": "category",
+            "name": "Category",
+            "value": "Pur. Hats"
+          },
+          {
+            "id": "subcategory",
+            "name": "Sub-Category",
+            "value": "Snapback"
+          },
+          {
+            "id": "subsubcategory",
+            "name": "Sub-Sub-Category",
+            "value": "Mens"
+          }
+        ],
+        "categories": [
+          {
+            "path": "Pur. Hats > Snapback",
+            "type": "merch"
+          }
+        ],
+        "tariffCode": "6505.00.2060",
+        "supplierSku": "01026717C600ONE",
+        "parentProductId": "01026717-YC600",
+        "manufactuerOrigin": ""
+      },
+      "created_at": "2022-08-09 04:48:14",
+      "updated_at": "2022-08-09 04:48:14",
+      "source_system_id": "2524797"
     },
     {
-        "id": 8541,
+      "id": 8541,
+      "sku": "01026718C600ONE",
+      "parent_id": "01026718-YC600",
+      "variant_id": 42012030533782,
+      "variant_inventory_management": "shopify",
+      "variant_title": "ONE",
+      "vendor": "MITCHELL & NESS",
+      "unified_model": {
         "sku": "01026718C600ONE",
-        "parent_id": "01026718-YC600",
-        "variant_id": 42012030533782,
-        "variant_inventory_management": "shopify",
-        "variant_title": "ONE",
-        "vendor": "MITCHELL & NESS",
-        "unified_model": {
-            "sku": "01026718C600ONE",
-            "name": "NBA GO TEAM GO NETS",
-            "prices": [{
-                    "type": "list",
-                    "value": 54.95,
-                    "currency": "AUD"
-                },
-                {
-                    "type": "list",
-                    "value": 59.95,
-                    "currency": "NZD"
-                },
-                {
-                    "type": "list",
-                    "value": 34.99,
-                    "currency": "USD"
-                }
-            ],
-            "barcode": "196294229019",
-            "itemType": "sellable_product",
-            "attributes": [{
-                    "id": "brand_code",
-                    "name": "Brand Code",
-                    "value": "MITCH"
-                },
-                {
-                    "id": "colour",
-                    "name": "Colour",
-                    "value": "Cream"
-                },
-                {
-                    "id": "size",
-                    "name": "Size",
-                    "value": "ONE"
-                },
-                {
-                    "id": "brand_name",
-                    "name": "Brand Name",
-                    "value": "MITCHELL & NESS"
-                },
-                {
-                    "id": "department",
-                    "name": "Department",
-                    "value": "APPAREL"
-                },
-                {
-                    "id": "category",
-                    "name": "Category",
-                    "value": "Pur. Hats"
-                },
-                {
-                    "id": "subcategory",
-                    "name": "Sub-Category",
-                    "value": "Snapback"
-                },
-                {
-                    "id": "subsubcategory",
-                    "name": "Sub-Sub-Category",
-                    "value": "Mens"
-                }
-            ],
-            "categories": [{
-                "path": "Pur. Hats > Snapback",
-                "type": "merch"
-            }],
-            "tariffCode": "6505.00.2060",
-            "supplierSku": "01026718C600ONE",
-            "parentProductId": "01026718-YC600",
-            "manufactuerOrigin": ""
-        },
-        "created_at": "2022-08-09 04:48:14",
-        "updated_at": "2022-08-09 04:48:14"
+        "name": "NBA GO TEAM GO NETS",
+        "prices": [
+          {
+            "type": "list",
+            "value": 54.95,
+            "currency": "AUD"
+          },
+          {
+            "type": "list",
+            "value": 59.95,
+            "currency": "NZD"
+          },
+          {
+            "type": "list",
+            "value": 34.99,
+            "currency": "USD"
+          }
+        ],
+        "barcode": "196294229019",
+        "itemType": "sellable_product",
+        "attributes": [
+          {
+            "id": "brand_code",
+            "name": "Brand Code",
+            "value": "MITCH"
+          },
+          {
+            "id": "colour",
+            "name": "Colour",
+            "value": "Cream"
+          },
+          {
+            "id": "size",
+            "name": "Size",
+            "value": "ONE"
+          },
+          {
+            "id": "brand_name",
+            "name": "Brand Name",
+            "value": "MITCHELL & NESS"
+          },
+          {
+            "id": "department",
+            "name": "Department",
+            "value": "APPAREL"
+          },
+          {
+            "id": "category",
+            "name": "Category",
+            "value": "Pur. Hats"
+          },
+          {
+            "id": "subcategory",
+            "name": "Sub-Category",
+            "value": "Snapback"
+          },
+          {
+            "id": "subsubcategory",
+            "name": "Sub-Sub-Category",
+            "value": "Mens"
+          }
+        ],
+        "categories": [
+          {
+            "path": "Pur. Hats > Snapback",
+            "type": "merch"
+          }
+        ],
+        "tariffCode": "6505.00.2060",
+        "supplierSku": "01026718C600ONE",
+        "parentProductId": "01026718-YC600",
+        "manufactuerOrigin": ""
+      },
+      "created_at": "2022-08-09 04:48:14",
+      "updated_at": "2022-08-09 04:48:14",
+      "source_system_id": "2524798"
     },
     {
-        "id": 8365,
+      "id": 8365,
+      "sku": "01026719C600ONE",
+      "parent_id": "01026719-YC600",
+      "variant_id": 42012030697622,
+      "variant_inventory_management": "shopify",
+      "variant_title": "ONE",
+      "vendor": "MITCHELL & NESS",
+      "unified_model": {
         "sku": "01026719C600ONE",
-        "parent_id": "01026719-YC600",
-        "variant_id": 42012030697622,
-        "variant_inventory_management": "shopify",
-        "variant_title": "ONE",
-        "vendor": "MITCHELL & NESS",
-        "unified_model": {
-            "sku": "01026719C600ONE",
-            "name": "PACKERS NFL PRO CROWN SNAP",
-            "prices": [{
-                    "type": "list",
-                    "value": 54.95,
-                    "currency": "AUD"
-                },
-                {
-                    "type": "list",
-                    "value": 59.95,
-                    "currency": "NZD"
-                },
-                {
-                    "type": "list",
-                    "value": 39.99,
-                    "currency": "USD"
-                }
-            ],
-            "barcode": "196294229156",
-            "itemType": "sellable_product",
-            "attributes": [{
-                    "id": "brand_code",
-                    "name": "Brand Code",
-                    "value": "MITCH"
-                },
-                {
-                    "id": "colour",
-                    "name": "Colour",
-                    "value": "Cream"
-                },
-                {
-                    "id": "size",
-                    "name": "Size",
-                    "value": "ONE"
-                },
-                {
-                    "id": "brand_name",
-                    "name": "Brand Name",
-                    "value": "MITCHELL & NESS"
-                },
-                {
-                    "id": "department",
-                    "name": "Department",
-                    "value": "APPAREL"
-                },
-                {
-                    "id": "category",
-                    "name": "Category",
-                    "value": "Pur. Hats"
-                },
-                {
-                    "id": "subcategory",
-                    "name": "Sub-Category",
-                    "value": "Snapback"
-                },
-                {
-                    "id": "subsubcategory",
-                    "name": "Sub-Sub-Category",
-                    "value": "Mens"
-                }
-            ],
-            "categories": [{
-                "path": "Pur. Hats > Snapback",
-                "type": "merch"
-            }],
-            "tariffCode": "6505.00.2060",
-            "supplierSku": "01026719C600ONE",
-            "parentProductId": "01026719-YC600",
-            "manufactuerOrigin": ""
-        },
-        "created_at": "2022-08-09 04:44:54",
-        "updated_at": "2022-08-09 04:44:54"
+        "name": "PACKERS NFL PRO CROWN SNAP",
+        "prices": [
+          {
+            "type": "list",
+            "value": 54.95,
+            "currency": "AUD"
+          },
+          {
+            "type": "list",
+            "value": 59.95,
+            "currency": "NZD"
+          },
+          {
+            "type": "list",
+            "value": 39.99,
+            "currency": "USD"
+          }
+        ],
+        "barcode": "196294229156",
+        "itemType": "sellable_product",
+        "attributes": [
+          {
+            "id": "brand_code",
+            "name": "Brand Code",
+            "value": "MITCH"
+          },
+          {
+            "id": "colour",
+            "name": "Colour",
+            "value": "Cream"
+          },
+          {
+            "id": "size",
+            "name": "Size",
+            "value": "ONE"
+          },
+          {
+            "id": "brand_name",
+            "name": "Brand Name",
+            "value": "MITCHELL & NESS"
+          },
+          {
+            "id": "department",
+            "name": "Department",
+            "value": "APPAREL"
+          },
+          {
+            "id": "category",
+            "name": "Category",
+            "value": "Pur. Hats"
+          },
+          {
+            "id": "subcategory",
+            "name": "Sub-Category",
+            "value": "Snapback"
+          },
+          {
+            "id": "subsubcategory",
+            "name": "Sub-Sub-Category",
+            "value": "Mens"
+          }
+        ],
+        "categories": [
+          {
+            "path": "Pur. Hats > Snapback",
+            "type": "merch"
+          }
+        ],
+        "tariffCode": "6505.00.2060",
+        "supplierSku": "01026719C600ONE",
+        "parentProductId": "01026719-YC600",
+        "manufactuerOrigin": ""
+      },
+      "created_at": "2022-08-09 04:44:54",
+      "updated_at": "2022-08-09 04:44:54",
+      "source_system_id": "2524799"
     },
     {
-        "id": 8522,
+      "id": 8522,
+      "sku": "01026720C600ONE",
+      "parent_id": "01026720-YC600",
+      "variant_id": 42012030861462,
+      "variant_inventory_management": "shopify",
+      "variant_title": "ONE",
+      "vendor": "MITCHELL & NESS",
+      "unified_model": {
         "sku": "01026720C600ONE",
-        "parent_id": "01026720-YC600",
-        "variant_id": 42012030861462,
-        "variant_inventory_management": "shopify",
-        "variant_title": "ONE",
-        "vendor": "MITCHELL & NESS",
-        "unified_model": {
-            "sku": "01026720C600ONE",
-            "name": "NBA GO TEAM GO SONCS",
-            "prices": [{
-                    "type": "list",
-                    "value": 54.95,
-                    "currency": "AUD"
-                },
-                {
-                    "type": "list",
-                    "value": 59.95,
-                    "currency": "NZD"
-                },
-                {
-                    "type": "list",
-                    "value": 34.99,
-                    "currency": "USD"
-                }
-            ],
-            "barcode": "196294229088",
-            "itemType": "sellable_product",
-            "attributes": [{
-                    "id": "brand_code",
-                    "name": "Brand Code",
-                    "value": "MITCH"
-                },
-                {
-                    "id": "colour",
-                    "name": "Colour",
-                    "value": "Cream"
-                },
-                {
-                    "id": "size",
-                    "name": "Size",
-                    "value": "ONE"
-                },
-                {
-                    "id": "brand_name",
-                    "name": "Brand Name",
-                    "value": "MITCHELL & NESS"
-                },
-                {
-                    "id": "department",
-                    "name": "Department",
-                    "value": "APPAREL"
-                },
-                {
-                    "id": "category",
-                    "name": "Category",
-                    "value": "Pur. Hats"
-                },
-                {
-                    "id": "subcategory",
-                    "name": "Sub-Category",
-                    "value": "Snapback"
-                },
-                {
-                    "id": "subsubcategory",
-                    "name": "Sub-Sub-Category",
-                    "value": "Mens"
-                }
-            ],
-            "categories": [{
-                "path": "Pur. Hats > Snapback",
-                "type": "merch"
-            }],
-            "tariffCode": "6505.00.2060",
-            "supplierSku": "01026720C600ONE",
-            "parentProductId": "01026720-YC600",
-            "manufactuerOrigin": ""
-        },
-        "created_at": "2022-08-09 04:47:52",
-        "updated_at": "2022-08-09 04:47:52"
+        "name": "NBA GO TEAM GO SONCS",
+        "prices": [
+          {
+            "type": "list",
+            "value": 54.95,
+            "currency": "AUD"
+          },
+          {
+            "type": "list",
+            "value": 59.95,
+            "currency": "NZD"
+          },
+          {
+            "type": "list",
+            "value": 34.99,
+            "currency": "USD"
+          }
+        ],
+        "barcode": "196294229088",
+        "itemType": "sellable_product",
+        "attributes": [
+          {
+            "id": "brand_code",
+            "name": "Brand Code",
+            "value": "MITCH"
+          },
+          {
+            "id": "colour",
+            "name": "Colour",
+            "value": "Cream"
+          },
+          {
+            "id": "size",
+            "name": "Size",
+            "value": "ONE"
+          },
+          {
+            "id": "brand_name",
+            "name": "Brand Name",
+            "value": "MITCHELL & NESS"
+          },
+          {
+            "id": "department",
+            "name": "Department",
+            "value": "APPAREL"
+          },
+          {
+            "id": "category",
+            "name": "Category",
+            "value": "Pur. Hats"
+          },
+          {
+            "id": "subcategory",
+            "name": "Sub-Category",
+            "value": "Snapback"
+          },
+          {
+            "id": "subsubcategory",
+            "name": "Sub-Sub-Category",
+            "value": "Mens"
+          }
+        ],
+        "categories": [
+          {
+            "path": "Pur. Hats > Snapback",
+            "type": "merch"
+          }
+        ],
+        "tariffCode": "6505.00.2060",
+        "supplierSku": "01026720C600ONE",
+        "parentProductId": "01026720-YC600",
+        "manufactuerOrigin": ""
+      },
+      "created_at": "2022-08-09 04:47:52",
+      "updated_at": "2022-08-09 04:47:52",
+      "source_system_id": "2524800"
     },
     {
-        "id": 8366,
+      "id": 8366,
+      "sku": "01026721C600ONE",
+      "parent_id": "01026721-YC600",
+      "variant_id": 42012030992534,
+      "variant_inventory_management": "shopify",
+      "variant_title": "ONE",
+      "vendor": "MITCHELL & NESS",
+      "unified_model": {
         "sku": "01026721C600ONE",
-        "parent_id": "01026721-YC600",
-        "variant_id": 42012030992534,
-        "variant_inventory_management": "shopify",
-        "variant_title": "ONE",
-        "vendor": "MITCHELL & NESS",
-        "unified_model": {
-            "sku": "01026721C600ONE",
-            "name": "NBA GO TEAM GO SPRS",
-            "prices": [{
-                    "type": "list",
-                    "value": 54.95,
-                    "currency": "AUD"
-                },
-                {
-                    "type": "list",
-                    "value": 59.95,
-                    "currency": "NZD"
-                },
-                {
-                    "type": "list",
-                    "value": 34.99,
-                    "currency": "USD"
-                }
-            ],
-            "barcode": "196294229095",
-            "itemType": "sellable_product",
-            "attributes": [{
-                    "id": "brand_code",
-                    "name": "Brand Code",
-                    "value": "MITCH"
-                },
-                {
-                    "id": "colour",
-                    "name": "Colour",
-                    "value": "Cream"
-                },
-                {
-                    "id": "size",
-                    "name": "Size",
-                    "value": "ONE"
-                },
-                {
-                    "id": "brand_name",
-                    "name": "Brand Name",
-                    "value": "MITCHELL & NESS"
-                },
-                {
-                    "id": "department",
-                    "name": "Department",
-                    "value": "APPAREL"
-                },
-                {
-                    "id": "category",
-                    "name": "Category",
-                    "value": "Pur. Hats"
-                },
-                {
-                    "id": "subcategory",
-                    "name": "Sub-Category",
-                    "value": "Snapback"
-                },
-                {
-                    "id": "subsubcategory",
-                    "name": "Sub-Sub-Category",
-                    "value": "Mens"
-                }
-            ],
-            "categories": [{
-                "path": "Pur. Hats > Snapback",
-                "type": "merch"
-            }],
-            "tariffCode": "6505.00.2060",
-            "supplierSku": "01026721C600ONE",
-            "parentProductId": "01026721-YC600",
-            "manufactuerOrigin": ""
-        },
-        "created_at": "2022-08-09 04:44:54",
-        "updated_at": "2022-08-09 04:44:54"
+        "name": "NBA GO TEAM GO SPRS",
+        "prices": [
+          {
+            "type": "list",
+            "value": 54.95,
+            "currency": "AUD"
+          },
+          {
+            "type": "list",
+            "value": 59.95,
+            "currency": "NZD"
+          },
+          {
+            "type": "list",
+            "value": 34.99,
+            "currency": "USD"
+          }
+        ],
+        "barcode": "196294229095",
+        "itemType": "sellable_product",
+        "attributes": [
+          {
+            "id": "brand_code",
+            "name": "Brand Code",
+            "value": "MITCH"
+          },
+          {
+            "id": "colour",
+            "name": "Colour",
+            "value": "Cream"
+          },
+          {
+            "id": "size",
+            "name": "Size",
+            "value": "ONE"
+          },
+          {
+            "id": "brand_name",
+            "name": "Brand Name",
+            "value": "MITCHELL & NESS"
+          },
+          {
+            "id": "department",
+            "name": "Department",
+            "value": "APPAREL"
+          },
+          {
+            "id": "category",
+            "name": "Category",
+            "value": "Pur. Hats"
+          },
+          {
+            "id": "subcategory",
+            "name": "Sub-Category",
+            "value": "Snapback"
+          },
+          {
+            "id": "subsubcategory",
+            "name": "Sub-Sub-Category",
+            "value": "Mens"
+          }
+        ],
+        "categories": [
+          {
+            "path": "Pur. Hats > Snapback",
+            "type": "merch"
+          }
+        ],
+        "tariffCode": "6505.00.2060",
+        "supplierSku": "01026721C600ONE",
+        "parentProductId": "01026721-YC600",
+        "manufactuerOrigin": ""
+      },
+      "created_at": "2022-08-09 04:44:54",
+      "updated_at": "2022-08-09 04:44:54",
+      "source_system_id": "2524801"
     },
     {
-        "id": 8361,
+      "id": 8361,
+      "sku": "01026728R001ONE",
+      "parent_id": "01026728-YR001",
+      "variant_id": 42012031058070,
+      "variant_inventory_management": "shopify",
+      "variant_title": "ONE",
+      "vendor": "MITCHELL & NESS",
+      "unified_model": {
         "sku": "01026728R001ONE",
-        "parent_id": "01026728-YR001",
-        "variant_id": 42012031058070,
-        "variant_inventory_management": "shopify",
-        "variant_title": "ONE",
-        "vendor": "MITCHELL & NESS",
-        "unified_model": {
-            "sku": "01026728R001ONE",
-            "name": "MONOCHRM SB HWC BULLS",
-            "prices": [{
-                    "type": "list",
-                    "value": 59.95,
-                    "currency": "AUD"
-                },
-                {
-                    "type": "list",
-                    "value": 69.95,
-                    "currency": "NZD"
-                },
-                {
-                    "type": "list",
-                    "value": 33.99,
-                    "currency": "USD"
-                }
-            ],
-            "barcode": "195563796733",
-            "itemType": "sellable_product",
-            "attributes": [{
-                    "id": "brand_code",
-                    "name": "Brand Code",
-                    "value": "MITCH"
-                },
-                {
-                    "id": "colour",
-                    "name": "Colour",
-                    "value": "Red"
-                },
-                {
-                    "id": "size",
-                    "name": "Size",
-                    "value": "ONE"
-                },
-                {
-                    "id": "brand_name",
-                    "name": "Brand Name",
-                    "value": "MITCHELL & NESS"
-                },
-                {
-                    "id": "department",
-                    "name": "Department",
-                    "value": "APPAREL"
-                },
-                {
-                    "id": "category",
-                    "name": "Category",
-                    "value": "Pur. Hats"
-                },
-                {
-                    "id": "subcategory",
-                    "name": "Sub-Category",
-                    "value": "Snapback"
-                },
-                {
-                    "id": "subsubcategory",
-                    "name": "Sub-Sub-Category",
-                    "value": "Mens"
-                }
-            ],
-            "categories": [{
-                "path": "Pur. Hats > Snapback",
-                "type": "merch"
-            }],
-            "tariffCode": "6505.00.8090",
-            "supplierSku": "01026728R001ONE",
-            "parentProductId": "01026728-YR001",
-            "manufactuerOrigin": ""
-        },
-        "created_at": "2022-08-09 04:44:54",
-        "updated_at": "2022-08-09 04:44:54"
+        "name": "MONOCHRM SB HWC BULLS",
+        "prices": [
+          {
+            "type": "list",
+            "value": 59.95,
+            "currency": "AUD"
+          },
+          {
+            "type": "list",
+            "value": 69.95,
+            "currency": "NZD"
+          },
+          {
+            "type": "list",
+            "value": 33.99,
+            "currency": "USD"
+          }
+        ],
+        "barcode": "195563796733",
+        "itemType": "sellable_product",
+        "attributes": [
+          {
+            "id": "brand_code",
+            "name": "Brand Code",
+            "value": "MITCH"
+          },
+          {
+            "id": "colour",
+            "name": "Colour",
+            "value": "Red"
+          },
+          {
+            "id": "size",
+            "name": "Size",
+            "value": "ONE"
+          },
+          {
+            "id": "brand_name",
+            "name": "Brand Name",
+            "value": "MITCHELL & NESS"
+          },
+          {
+            "id": "department",
+            "name": "Department",
+            "value": "APPAREL"
+          },
+          {
+            "id": "category",
+            "name": "Category",
+            "value": "Pur. Hats"
+          },
+          {
+            "id": "subcategory",
+            "name": "Sub-Category",
+            "value": "Snapback"
+          },
+          {
+            "id": "subsubcategory",
+            "name": "Sub-Sub-Category",
+            "value": "Mens"
+          }
+        ],
+        "categories": [
+          {
+            "path": "Pur. Hats > Snapback",
+            "type": "merch"
+          }
+        ],
+        "tariffCode": "6505.00.8090",
+        "supplierSku": "01026728R001ONE",
+        "parentProductId": "01026728-YR001",
+        "manufactuerOrigin": ""
+      },
+      "created_at": "2022-08-09 04:44:54",
+      "updated_at": "2022-08-09 04:44:54",
+      "source_system_id": "2524802"
     },
     {
-        "id": 8360,
+      "id": 8360,
+      "sku": "01026729T200ONE",
+      "parent_id": "01026729-YT200",
+      "variant_id": 42012031189142,
+      "variant_inventory_management": "shopify",
+      "variant_title": "ONE",
+      "vendor": "MITCHELL & NESS",
+      "unified_model": {
         "sku": "01026729T200ONE",
-        "parent_id": "01026729-YT200",
-        "variant_id": 42012031189142,
-        "variant_inventory_management": "shopify",
-        "variant_title": "ONE",
-        "vendor": "MITCHELL & NESS",
-        "unified_model": {
-            "sku": "01026729T200ONE",
-            "name": "MONOCHRM SB HWC GRIZL",
-            "prices": [{
-                    "type": "list",
-                    "value": 59.95,
-                    "currency": "AUD"
-                },
-                {
-                    "type": "list",
-                    "value": 69.95,
-                    "currency": "NZD"
-                },
-                {
-                    "type": "list",
-                    "value": 33.99,
-                    "currency": "USD"
-                }
-            ],
-            "barcode": "195563478103",
-            "itemType": "sellable_product",
-            "attributes": [{
-                    "id": "brand_code",
-                    "name": "Brand Code",
-                    "value": "MITCH"
-                },
-                {
-                    "id": "colour",
-                    "name": "Colour",
-                    "value": "Teal"
-                },
-                {
-                    "id": "size",
-                    "name": "Size",
-                    "value": "ONE"
-                },
-                {
-                    "id": "brand_name",
-                    "name": "Brand Name",
-                    "value": "MITCHELL & NESS"
-                },
-                {
-                    "id": "department",
-                    "name": "Department",
-                    "value": "APPAREL"
-                },
-                {
-                    "id": "category",
-                    "name": "Category",
-                    "value": "Pur. Hats"
-                },
-                {
-                    "id": "subcategory",
-                    "name": "Sub-Category",
-                    "value": "Snapback"
-                },
-                {
-                    "id": "subsubcategory",
-                    "name": "Sub-Sub-Category",
-                    "value": "Mens"
-                }
-            ],
-            "categories": [{
-                "path": "Pur. Hats > Snapback",
-                "type": "merch"
-            }],
-            "tariffCode": "6505.00.8090",
-            "supplierSku": "01026729T200ONE",
-            "parentProductId": "01026729-YT200",
-            "manufactuerOrigin": ""
-        },
-        "created_at": "2022-08-09 04:44:54",
-        "updated_at": "2022-08-09 04:44:54"
+        "name": "MONOCHRM SB HWC GRIZL",
+        "prices": [
+          {
+            "type": "list",
+            "value": 59.95,
+            "currency": "AUD"
+          },
+          {
+            "type": "list",
+            "value": 69.95,
+            "currency": "NZD"
+          },
+          {
+            "type": "list",
+            "value": 33.99,
+            "currency": "USD"
+          }
+        ],
+        "barcode": "195563478103",
+        "itemType": "sellable_product",
+        "attributes": [
+          {
+            "id": "brand_code",
+            "name": "Brand Code",
+            "value": "MITCH"
+          },
+          {
+            "id": "colour",
+            "name": "Colour",
+            "value": "Teal"
+          },
+          {
+            "id": "size",
+            "name": "Size",
+            "value": "ONE"
+          },
+          {
+            "id": "brand_name",
+            "name": "Brand Name",
+            "value": "MITCHELL & NESS"
+          },
+          {
+            "id": "department",
+            "name": "Department",
+            "value": "APPAREL"
+          },
+          {
+            "id": "category",
+            "name": "Category",
+            "value": "Pur. Hats"
+          },
+          {
+            "id": "subcategory",
+            "name": "Sub-Category",
+            "value": "Snapback"
+          },
+          {
+            "id": "subsubcategory",
+            "name": "Sub-Sub-Category",
+            "value": "Mens"
+          }
+        ],
+        "categories": [
+          {
+            "path": "Pur. Hats > Snapback",
+            "type": "merch"
+          }
+        ],
+        "tariffCode": "6505.00.8090",
+        "supplierSku": "01026729T200ONE",
+        "parentProductId": "01026729-YT200",
+        "manufactuerOrigin": ""
+      },
+      "created_at": "2022-08-09 04:44:54",
+      "updated_at": "2022-08-09 04:44:54",
+      "source_system_id": "2524803"
     }
-]
+  ]

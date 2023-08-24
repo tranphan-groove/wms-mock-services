@@ -12,7 +12,13 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
 		<file:read doc:name="Read item_masters.json" doc:id="07449d78-767a-4440-92a8-b46c3208b2fe" config-ref="File_Config" path="item_masters.json" outputMimeType="application/json" target="itemMasters">
 				<ee:repeatable-file-store-stream inMemorySize="256" bufferUnit="MB" />
 			</file:read>
-		<set-variable value="#[now() as Number]" doc:name="Set Variable - orderId" doc:id="5cf299f2-5902-4307-b766-93b5e5e45208" variableName="orderId"/>
+		<ee:transform doc:name="Set Variable - orderId" doc:id="c33fd925-7d3b-4df6-903a-b9e53cd237fa" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable resource="dw/variables/wpl-orderId.dwl" variableName="orderId" />
+			</ee:variables>
+		</ee:transform>
 		<ee:transform doc:name="Transform Message" doc:id="df75d37e-3c0e-4e86-9180-455dfac5c841" >
 			<ee:message >
 				<ee:set-payload resource="dw/transformations/wpl-create-order-response.dwl" />

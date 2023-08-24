@@ -1,7 +1,7 @@
 %dw 2.0
 output application/json
 var nowTimestamp = now()
-var itemMaster = (vars.itemMasters filter ((itemMaster) -> itemMaster.id == payload.item_id))[0]
+var itemMaster = (vars.itemMasters filter ((itemMaster) -> itemMaster.source_system_id == payload.item_id))[0]
 var transactionId = (nowTimestamp as Number) + randomInt(500)
 ---
 {
