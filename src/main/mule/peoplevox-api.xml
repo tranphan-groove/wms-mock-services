@@ -20,10 +20,14 @@ http://www.mulesoft.org/schema/mule/apikit-soap http://www.mulesoft.org/schema/m
 		</ee:transform>
 		<choice doc:name="Choice" doc:id="33db3f06-f536-4d35-82c1-e3babf7b6748" >
 			<when expression="#[['Sales Orders', 'Sales Order Items', 'Customers'] contains vars.templateName]">
+				<logger level="INFO" doc:name="INFO: START" doc:id="a40c995c-be58-42b0-9fe9-d39d76ce6d83" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.start')&#10;var logMessage = &quot;START: PeopleVox has received &quot; ++ vars.templateName&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
 				<flow-ref doc:name="Flow pvx-soap-save-data-subflow" doc:id="c9c6514f-44da-4b2f-b813-3ae962925baf" name="pvx-soap-save-data-subflow"/>
+				<logger level="INFO" doc:name="NFO: END" doc:id="2c8b2b5c-68f8-4611-96b8-565207675af4" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.end')&#10;var logMessage = &quot;END: PeopleVox has written &quot; ++ vars.templateName ++ &quot; to file&quot;&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
 			</when>
 			<when expression="#[vars.templateName == 'Mulesoft - Despatched items by package v3']">
+				<logger level="INFO" doc:name="INFO: START" doc:id="a8cb97d2-01bd-44fc-aded-942e2c0187c4" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.start')&#10;var logMessage = &quot;START: PeopleVox has received a get report request&quot;&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
 				<flow-ref doc:name="Flow pvx-soap-get-report-data-subflow" doc:id="f5c4fb5a-7db8-4a1a-9433-4a5da0f54122" name="pvx-soap-get-report-data-subflow"/>
+				<logger level="INFO" doc:name="INFO: END" doc:id="9613309d-7156-4ad9-b1fb-4b3fc8653249" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.end')&#10;var logMessage = &quot;END: PeopleVox has returned a report&quot;&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
 			</when>
 		</choice>
 	</flow>
@@ -83,7 +87,7 @@ output application/csv header=false
 		</choice>
 	</sub-flow>
 	<sub-flow name="pvx-soap-get-report-data-subflow" doc:id="5d97f2e6-5bd8-475f-b718-3aae81abc1d4" >
-		<file:read doc:name="Read pvx/sales-orders.csv" doc:id="57966cbb-4f42-4ccf-8146-731acb8e964c" config-ref="File_Config" path="pvx/sales-orders.csv" target="salesOrders" outputMimeType="application/csv">
+		<file:read doc:name="Read pvx/sales-orders.csv" doc:id="57966cbb-4f42-4ccf-8146-731acb8e964c" config-ref="File_Config" path="pvx/sales-orders.csv" target="salesOrders" outputMimeType="application/csv" timeBetweenSizeCheck="${file.timeBetweenSizeCheck}" timeBetweenSizeCheckUnit="SECONDS">
 			<ee:repeatable-file-store-stream inMemorySize="256" bufferUnit="MB" />
 		</file:read>
 		<file:read doc:name="Read pvx/sales-order-items.csv" doc:id="53e6b16f-9740-4f91-83d5-312ab4e01573" config-ref="File_Config" path="pvx/sales-order-items.csv" target="salesOrderItems" outputMimeType="application/csv" timeBetweenSizeCheck="${file.timeBetweenSizeCheck}" timeBetweenSizeCheckUnit="SECONDS">
@@ -115,6 +119,7 @@ output application/csv header=false
 			<http:request method="GET" doc:name="Request inventory availability" doc:id="c4a5e210-46fd-4f5a-8ccb-3811fbdb5507" config-ref="blazeMeter_HTTP_Request_configuration" path="/australia/p-inventory/v1-0/api/inventory/availability" target="httpRes" >
 				<http:query-params ><![CDATA[#[vars.inventoryAvailabilityQueryParams]]]></http:query-params>
 			</http:request>
+			<logger level="INFO" doc:name="INFO: AFTER_REQUEST" doc:id="3689c191-1479-48e7-8df7-afe81a707aa1" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.afterRequest')&#10;var logMessage = &quot;AFTER_REQUEST: PeopleVox has sent an availability inventory request - &quot; ++ (payload.SalesOrderNumber default &quot;&quot;) ++ &quot;-&quot; ++ (payload.ItemCode default &quot;&quot;)&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
 		</foreach>
 	</sub-flow>
 	<sub-flow name="pvx-inventory-incremental-subflow" doc:id="c3c28f2f-8e8b-41d3-9afd-f62be76e95cc" >
@@ -129,6 +134,7 @@ output application/csv header=false
 			<http:request method="GET" doc:name="Request inventory incremental" doc:id="24eb4ee2-e3a1-4332-9238-b64c40ead8d0" config-ref="blazeMeter_HTTP_Request_configuration" path="/australia/p-inventory/v1-0/api/inventory/incremental" target="httpRes" >
 				<http:query-params ><![CDATA[#[vars.inventoryIncrementalQueryParams]]]></http:query-params>
 			</http:request>
+			<logger level="INFO" doc:name="INFO: AFTER_REQUEST" doc:id="ce67a910-c15e-4dd1-b45a-a40647210c53" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.afterRequest')&#10;var logMessage = &quot;AFTER_REQUEST: PeopleVox has sent an incremental inventory request - &quot; ++ (payload.SalesOrderNumber default &quot;&quot;) ++ &quot;-&quot; ++ (payload.ItemCode default &quot;&quot;)&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
 		</foreach>
 	</sub-flow>
 	<sub-flow name="pvx-status-change-subflow" doc:id="f55f35af-03f0-4325-a23c-9c6ceba82565" >
@@ -145,6 +151,7 @@ output application/csv header=false
 				<http:body ><![CDATA[#[vars.statusChangeBody]]]></http:body>
 				<http:query-params ><![CDATA[#[vars.statusChangeQueryParams]]]></http:query-params>
 			</http:request>
+			<logger level="INFO" doc:name="INFO: AFTER_REQUEST" doc:id="2ee376f4-bac6-48a4-b6f9-3dbb7b0f8484" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.afterRequest')&#10;var logMessage = &quot;AFTER_REQUEST: PeopleVox has sent a status change request - &quot; ++ (payload.SalesOrderNumber default &quot;&quot;)&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
 		</foreach>
 	</sub-flow>
 </mule>

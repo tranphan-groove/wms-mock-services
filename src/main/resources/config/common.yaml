@@ -29,4 +29,33 @@ http:
   timeout: "180000" #milisecs
   
 file:
-  timeBetweenSizeCheck: "5" #secs
+  timeBetweenSizeCheck: "2" #secs
+  
+json.logger:
+## Priority/Levels of logging  
+  priority:
+    warn: WARN
+    error: ERROR
+    info: INFO
+    debug: DEBUG
+            
+## Following are some sample Keyfields for better log filtering. Modify the keyfields
+## depending your application needs.           
+  keyFields:
+    keyField01: "product_id"
+    keyField02: "parent_id"
+    keyField03: "customer_id"
+    keyField04: "sku"
+
+## tracePoint/Stages of the application at which you may want to log.    
+  tracePoint:
+    start: START
+    beforeTransformation: BEFORE_TRANSFORMATION
+    afterTransformation: AFTER_TRANSFORMATION
+    beforeRequest: BEFORE_REQUEST
+    afterRequest: AFTER_REQUEST
+    enterFlow: ENTER_FLOW
+    exitFlow: EXIT_FLOW
+    end: END
+    exception: EXCEPTION
+    processing: PROCESSING
