@@ -1,8 +1,8 @@
 %dw 2.0
 output application/xml  
 ns soap http://www.w3.org/2003/05/soap-envelope
-var salesOrders = flatten(vars.salesOrders.data map ((item) -> read(item, 'application/json')))
-var salesOrderItems = flatten(vars.salesOrderItems.data map ((item) -> read(item, 'application/json')))
+var salesOrders = flatten((vars.salesOrders.data default []) map ((item) -> read(item, 'application/json')))
+var salesOrderItems = flatten((vars.salesOrderItems.data default []) map ((item) -> read(item, 'application/json')))
 var transformedPayload = flatten((salesOrders filter ((item) -> (
     ((vars.searchClauseRPLN and (item.SalesOrderNumber contains "RPLN")) or ((vars.searchClauseRPLN == false and !(item.SalesOrderNumber contains "RPLN")))) and
     (isEmpty(vars.searchClauseTimestamps[0]) or ((item.timestamp as DateTime) > (vars.searchClauseTimestamps[0] as DateTime))) and
