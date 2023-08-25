@@ -7,7 +7,7 @@ output application/json
     "sku": payload.ItemCode,
     "reason": "Sales order",
     "updated": now() as String {format: 'dd-MM-yyyy hh:mm:ss'},
-    "qty_changed": randomInt(90) + 10,
+    "qty_changed": payload.QuantityOrdered,
     "history_id": currentMilliseconds(),
     "client_id": p('mule.p-inventory.client_id'),
     "client_secret": p('mule.p-inventory.client_secret')

@@ -121,12 +121,11 @@ output application/csv header=false
 				<ee:set-variable resource="dw/variables/wpl-inventoryQueryParams.dwl" variableName="inventoryQueryParams" />
 			</ee:variables>
 		</ee:transform>
-			<ee:transform doc:name="Set Variable - inventoryATSBody and inventoryStatusChangeBody" doc:id="7ec9800d-6740-4914-8a59-ce3a1de68fb6" >
+			<ee:transform doc:name="Set Variable - inventoryATSBody" doc:id="7ec9800d-6740-4914-8a59-ce3a1de68fb6" >
 				<ee:message >
 				</ee:message>
 				<ee:variables >
 					<ee:set-variable resource="dw/variables/wpl-inventoryATSBody.dwl" variableName="inventoryATSBody" />
-					<ee:set-variable resource="dw/variables/wpl-inventoryStatusChangeBody.dwl" variableName="inventoryStatusChangeBody" />
 				</ee:variables>
 			</ee:transform>
 			<http:request method="POST" doc:name="Request inventory ATS" doc:id="0cd11f49-d2a8-48ca-b68b-1b57bb91c2d9" config-ref="blazeMeter_HTTP_Request_configuration" path="/australia/p-inventory-whip/v1/api/inventory" target="httpRes">
@@ -134,6 +133,12 @@ output application/csv header=false
 			<http:query-params><![CDATA[#[vars.inventoryQueryParams]]]></http:query-params>
 		</http:request>
 			<logger level="INFO" doc:name="INFO: AFTER_REQUEST" doc:id="a4b45f98-82ec-4d5d-9f01-cd0f4088065e" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.afterRequest')&#10;var logMessage = &quot;AFTER_REQUEST: Whiplash has sent an ATS inventory request - &quot; ++ (vars.orderNumber default &quot;&quot;) ++ &quot;-&quot; ++ (payload.sku default &quot;&quot;)&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
+			<ee:transform doc:name="Set Variable - inventoryStatusChangeBody" doc:id="fe4da152-fdc0-4af6-b487-36d34818aeb4">
+				<ee:message />
+				<ee:variables>
+					<ee:set-variable resource="dw/variables/wpl-inventoryStatusChangeBody.dwl" variableName="inventoryStatusChangeBody" />
+				</ee:variables>
+			</ee:transform>
 			<http:request method="POST" doc:name="Request inventory status change" doc:id="c921c688-8180-40ae-8d50-ee79cf23f53f" config-ref="blazeMeter_HTTP_Request_configuration" path="/australia/p-inventory-whip/v1/api/inventory" target="httpRes">
 			<http:body><![CDATA[#[vars.inventoryStatusChangeBody]]]></http:body>
 			<http:query-params><![CDATA[#[vars.inventoryQueryParams]]]></http:query-params>

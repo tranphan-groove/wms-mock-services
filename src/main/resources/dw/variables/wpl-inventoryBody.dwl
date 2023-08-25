@@ -1,8 +1,8 @@
 %dw 2.0
 output application/json
 var nowTimestamp = now()
-var itemMaster = (vars.itemMasters filter ((itemMaster) -> itemMaster.source_system_id == payload.item_id))[0]
-var transactionId = (nowTimestamp as Number) + randomInt(500)
+var itemMaster = (vars.itemMasters filter ((itemMaster) -> itemMaster.source_system_id == payload.item_id as String))[0]
+var warehouseAvailability = randomInt(40000) + 10000
 ---
 {
     "item": {
@@ -19,7 +19,7 @@ var transactionId = (nowTimestamp as Number) + randomInt(500)
         "weight": "1.0",
         "available": true,
         "image_originator_url": "",
-        "vendor": null,
+        "vendor": itemMaster.vendor,
         "scancode": itemMaster.unified_model.barcode,
         "price": "1.0",
         "media_mail": false,
@@ -60,23 +60,23 @@ var transactionId = (nowTimestamp as Number) + randomInt(500)
         "shippable_container": false,
         "replenishment_min": 0,
         "replenishment_target": null,
-        "low_inventory_threshold": 5,
+        "low_inventory_threshold": null,
         "published_quantity": payload.quantity,
     },
     "transaction": {
-        "id": transactionId,
-        "description": payload.description,
+        "id": null,
+        "description": null,
         "quantity": payload.quantity,
-        "change": (randomInt(9) + 1) * (if (randomInt(1) > 0) 1 else -1),
-        "created_at": nowTimestamp,
-        "updated_at": nowTimestamp,
+        "change": payload.quantity,
+        "created_at": null,
+        "updated_at": null,
         "item_id": payload.item_id,
         "order_id": null,
         "shipnotice_id": null
     },
     "warehouse_quantities": [
         {
-        "id": 1,
+        "id": 24,
         "name": "Ann Arbor",
         "shipping_address_1": "4657 Platt Road",
         "shipping_address_2": "",
@@ -88,9 +88,9 @@ var transactionId = (nowTimestamp as Number) + randomInt(500)
         "email": "annarbor@whiplashmerch.com",
         "latitude": 42.2206,
         "longitude": -83.6989,
-        "quantity": payload.quantity,
-        "projected_quantity": payload.quantity,
-        "sellable_quantity": payload.quantity
+        "quantity": randomInt(40) + 10,
+        "projected_quantity": warehouseAvailability,
+        "sellable_quantity": warehouseAvailability
         }
     ],
     "event_name": "item.inventory_changed"
