@@ -61,7 +61,7 @@ vars.saveDataContent map ((item) -> {
 				<ee:set-payload resource="dw/transformations/pvx-save-data-response.dwl" />
 			</ee:message>
 		</ee:transform>
-<!-- [STUDIO:"Choice"]		<choice doc:name="Choice" doc:id="fe607994-e019-41c0-99b5-cfd66637ebea">
+		<choice doc:name="Choice" doc:id="fe607994-e019-41c0-99b5-cfd66637ebea">
 			<when expression="#[vars.templateName == 'Sales Order Items']" >
 				<async doc:name="Async" doc:id="f951a739-6a53-4d46-bf55-35a7ee8e6342" >
 					<ee:transform doc:name="Wait after finish flow" doc:id="5b9242e4-b0bd-4907-a153-599800a4453a" >
@@ -85,7 +85,7 @@ vars.saveDataContent map ((item) -> {
 					<flow-ref doc:name="Flow pvx-status-change-subflow" doc:id="1b4d99e6-a7b8-451e-9126-7baa545f4ddb" name="pvx-status-change-subflow"/>
 				</async>
 			</when>
-		</choice> [STUDIO] -->
+		</choice>
 	</sub-flow>
 	<sub-flow name="pvx-soap-get-report-data-subflow" doc:id="5d97f2e6-5bd8-475f-b718-3aae81abc1d4" >
 		<ee:transform doc:name="Set Variable - searchClauseTimestamps and searchClauseRPLN" doc:id="476be670-2a1c-4e4e-b7e1-0b20001b7aa8">

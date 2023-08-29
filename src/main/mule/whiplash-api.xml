@@ -32,7 +32,7 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 }]]]></db:input-parameters>
 		</db:insert>
 		<logger level="INFO" doc:name="INFO: END" doc:id="07ebe133-5c1a-4c8a-bc66-f32710c28379" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.end')&#10;var logMessage = &quot;END: Whiplash has written order to file&quot;&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
-<!-- [STUDIO:"Async"]		<async doc:name="Async" doc:id="da5fb137-ba1f-4c19-8876-fed06802c5c6">
+		<async doc:name="Async" doc:id="da5fb137-ba1f-4c19-8876-fed06802c5c6">
 			<ee:transform doc:name="Wait after finish flow" doc:id="c7a70c33-6fe3-4c60-88c8-3a1b3315e6bd">
 				<ee:message />
 				<ee:variables>
@@ -40,7 +40,7 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 				</ee:variables>
 			</ee:transform>
 			<flow-ref doc:name="Flow whiplash-inventory-flow" doc:id="c5afe440-17f7-4c50-a57c-12b66a33d462" name="whiplash-inventory-flow" />
-		</async> [STUDIO] -->
+		</async>
 	</flow>
 	<flow name="whiplash-get-orders-by-search-string-subflow" doc:id="0647291b-c4da-498c-8676-9383ff160857" >
 		<http:listener doc:name="Listener" doc:id="3bda1333-2aae-4f4f-bbbe-5cb95fc74139" config-ref="HTTP_Listener_config" path="/api/v2/orders" allowedMethods="GET"/>
