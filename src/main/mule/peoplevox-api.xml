@@ -62,23 +62,22 @@ output application/csv header=false
 		<choice doc:name="Choice" doc:id="fe607994-e019-41c0-99b5-cfd66637ebea">
 			<when expression="#[vars.templateName == 'Sales Order Items']" >
 				<async doc:name="Async" doc:id="f951a739-6a53-4d46-bf55-35a7ee8e6342" >
-					<ee:transform doc:name="wait" doc:id="5b9242e4-b0bd-4907-a153-599800a4453a" >
+					<ee:transform doc:name="Wait after finish flow" doc:id="5b9242e4-b0bd-4907-a153-599800a4453a" >
 						<ee:message >
 						</ee:message>
 						<ee:variables >
-							<ee:set-variable resource="dw/variables/wait.dwl" variableName="wait" />
+							<ee:set-variable resource="dw/variables/waitAfterFinishFlow.dwl" variableName="wait" />
 						</ee:variables>
 					</ee:transform>
-					<flow-ref doc:name="Flow pvx-inventory-availability-subflow" doc:id="601cb466-52f8-4b9c-8d90-d0ff1001c185" name="pvx-inventory-availability-subflow"/>
-					<flow-ref doc:name="Flow pvx-inventory-incremental-subflow" doc:id="0ee70de4-59af-4d3d-9acb-3b7562ece80a" name="pvx-inventory-incremental-subflow"/>
+					<flow-ref doc:name="Flow pvx-inventory-subflow" doc:id="601cb466-52f8-4b9c-8d90-d0ff1001c185" name="pvx-inventory-subflow"/>
 				</async>
 			</when>
 			<when expression="#[vars.templateName == 'Sales Orders']">
 				<async doc:name="Async" doc:id="7803b779-a5dd-4899-8992-a91dee38c8ab" >
-					<ee:transform doc:name="wait" doc:id="05b0c231-1a9b-4d02-837f-acd4fa7de304" >
+					<ee:transform doc:name="Wait after finish flow" doc:id="05b0c231-1a9b-4d02-837f-acd4fa7de304" >
 						<ee:message />
 						<ee:variables >
-							<ee:set-variable resource="dw/variables/wait.dwl" variableName="wait" />
+							<ee:set-variable resource="dw/variables/waitAfterFinishFlow.dwl" variableName="wait" />
 						</ee:variables>
 					</ee:transform>
 					<flow-ref doc:name="Flow pvx-status-change-subflow" doc:id="1b4d99e6-a7b8-451e-9126-7baa545f4ddb" name="pvx-status-change-subflow"/>
@@ -107,35 +106,49 @@ output application/csv header=false
 			</ee:message>
 		</ee:transform>
 	</sub-flow>
-	<sub-flow name="pvx-inventory-availability-subflow" doc:id="bd243e9a-b37d-4926-9720-e393c0461669" >
+	<sub-flow name="pvx-inventory-subflow" doc:id="bd243e9a-b37d-4926-9720-e393c0461669" >
 		<foreach doc:name="For Each" doc:id="15d5cb7d-f29a-4be5-bbf2-503869f9dab2" collection="#[vars.saveDataContent]">
-			<ee:transform doc:name="Set Variable - inventoryAvailabilityQueryParams" doc:id="5d80f769-b43f-4e61-8a35-3d459254743f">
+			<flow-ref doc:name="Flow pvx-inventory-availability-subflow" doc:id="84d667d9-eee2-4df4-8335-173067568063" name="pvx-inventory-availability-subflow"/>
+			<flow-ref doc:name="Flow pvx-inventory-incremental-subflow" doc:id="6e31b690-f107-4ad7-ac7b-f86d45aec0f0" name="pvx-inventory-incremental-subflow"/>
+		</foreach>
+	</sub-flow>
+	<sub-flow name="pvx-inventory-availability-subflow" doc:id="0f10d616-7697-442d-99d6-d6d980678621" >
+		<ee:transform doc:name="Set Variable - inventoryAvailabilityQueryParams" doc:id="5d80f769-b43f-4e61-8a35-3d459254743f">
 			<ee:message>
 			</ee:message>
 			<ee:variables>
 					<ee:set-variable resource="dw/variables/pvx-inventoryAvailabilityQueryParams.dwl" variableName="inventoryAvailabilityQueryParams" />
 			</ee:variables>
 		</ee:transform>
-			<http:request method="GET" doc:name="Request inventory availability" doc:id="c4a5e210-46fd-4f5a-8ccb-3811fbdb5507" config-ref="blazeMeter_HTTP_Request_configuration" path="/australia/p-inventory/v1-0/api/inventory/availability" target="httpRes" >
-				<http:query-params ><![CDATA[#[vars.inventoryAvailabilityQueryParams]]]></http:query-params>
+		<http:request method="GET" doc:name="Request inventory availability" doc:id="c4a5e210-46fd-4f5a-8ccb-3811fbdb5507" config-ref="blazeMeter_HTTP_Request_configuration" path="/australia/p-inventory/v1-0/api/inventory/availability" target="httpRes">
+				<http:query-params><![CDATA[#[vars.inventoryAvailabilityQueryParams]]]></http:query-params>
 			</http:request>
-			<logger level="INFO" doc:name="INFO: AFTER_REQUEST" doc:id="3689c191-1479-48e7-8df7-afe81a707aa1" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.afterRequest')&#10;var logMessage = &quot;AFTER_REQUEST: PeopleVox has sent an availability inventory request - &quot; ++ (payload.SalesOrderNumber default &quot;&quot;) ++ &quot;-&quot; ++ (payload.ItemCode default &quot;&quot;)&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
-		</foreach>
+		<logger level="INFO" doc:name="INFO: AFTER_REQUEST" doc:id="3689c191-1479-48e7-8df7-afe81a707aa1" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.afterRequest')&#10;var logMessage = &quot;AFTER_REQUEST: PeopleVox has sent an availability inventory request - &quot; ++ (payload.SalesOrderNumber default &quot;&quot;) ++ &quot;-&quot; ++ (payload.ItemCode default &quot;&quot;)&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
+		<ee:transform doc:name="Wait between requests" doc:id="1b171714-d01b-4691-adf6-711738e17f5a">
+				<ee:message />
+				<ee:variables>
+					<ee:set-variable resource="dw/variables/waitBetweenRequests.dwl" variableName="wait" />
+				</ee:variables>
+			</ee:transform>
 	</sub-flow>
-	<sub-flow name="pvx-inventory-incremental-subflow" doc:id="c3c28f2f-8e8b-41d3-9afd-f62be76e95cc" >
-		<foreach doc:name="For Each" doc:id="3a162cbb-8227-40a4-9820-46cdf3bde40e" collection="#[vars.saveDataContent]">
-			<ee:transform doc:name="Set Variable - inventoryIncrementalQueryParams" doc:id="7763d995-2985-4544-a48d-f84bbc3ae03a">
+	<sub-flow name="pvx-inventory-incremental-subflow" doc:id="3e99de13-a9a6-429c-83cc-856f8a0512bd" >
+		<ee:transform doc:name="Set Variable - inventoryIncrementalQueryParams" doc:id="7763d995-2985-4544-a48d-f84bbc3ae03a">
 			<ee:message>
 			</ee:message>
 			<ee:variables>
 					<ee:set-variable resource="dw/variables/pvx-inventoryIncrementalQueryParams.dwl" variableName="inventoryIncrementalQueryParams" />
 			</ee:variables>
 		</ee:transform>
-			<http:request method="GET" doc:name="Request inventory incremental" doc:id="24eb4ee2-e3a1-4332-9238-b64c40ead8d0" config-ref="blazeMeter_HTTP_Request_configuration" path="/australia/p-inventory/v1-0/api/inventory/incremental" target="httpRes" >
-				<http:query-params ><![CDATA[#[vars.inventoryIncrementalQueryParams]]]></http:query-params>
+		<http:request method="GET" doc:name="Request inventory incremental" doc:id="24eb4ee2-e3a1-4332-9238-b64c40ead8d0" config-ref="blazeMeter_HTTP_Request_configuration" path="/australia/p-inventory/v1-0/api/inventory/incremental" target="httpRes">
+				<http:query-params><![CDATA[#[vars.inventoryIncrementalQueryParams]]]></http:query-params>
 			</http:request>
-			<logger level="INFO" doc:name="INFO: AFTER_REQUEST" doc:id="ce67a910-c15e-4dd1-b45a-a40647210c53" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.afterRequest')&#10;var logMessage = &quot;AFTER_REQUEST: PeopleVox has sent an incremental inventory request - &quot; ++ (payload.SalesOrderNumber default &quot;&quot;) ++ &quot;-&quot; ++ (payload.ItemCode default &quot;&quot;)&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
-		</foreach>
+		<logger level="INFO" doc:name="INFO: AFTER_REQUEST" doc:id="ce67a910-c15e-4dd1-b45a-a40647210c53" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.afterRequest')&#10;var logMessage = &quot;AFTER_REQUEST: PeopleVox has sent an incremental inventory request - &quot; ++ (payload.SalesOrderNumber default &quot;&quot;) ++ &quot;-&quot; ++ (payload.ItemCode default &quot;&quot;)&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
+		<ee:transform doc:name="Wait between requests" doc:id="1c5d0cce-1be4-475b-905e-ae796bf57314">
+				<ee:message />
+				<ee:variables>
+					<ee:set-variable resource="dw/variables/waitBetweenRequests.dwl" variableName="wait" />
+				</ee:variables>
+			</ee:transform>
 	</sub-flow>
 	<sub-flow name="pvx-status-change-subflow" doc:id="f55f35af-03f0-4325-a23c-9c6ceba82565" >
 		<foreach doc:name="For Each" doc:id="2903f790-df78-453a-aed1-8b0ce7a40a2c" collection="#[vars.saveDataContent]">
@@ -152,6 +165,12 @@ output application/csv header=false
 				<http:query-params ><![CDATA[#[vars.statusChangeQueryParams]]]></http:query-params>
 			</http:request>
 			<logger level="INFO" doc:name="INFO: AFTER_REQUEST" doc:id="2ee376f4-bac6-48a4-b6f9-3dbb7b0f8484" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.afterRequest')&#10;var logMessage = &quot;AFTER_REQUEST: PeopleVox has sent a status change request - &quot; ++ (payload.SalesOrderNumber default &quot;&quot;)&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
+			<ee:transform doc:name="Wait between requests" doc:id="82a1c4c1-e8d4-424d-9aa3-76d9da2148d7" >
+				<ee:message />
+				<ee:variables >
+					<ee:set-variable resource="dw/variables/waitBetweenRequests.dwl" variableName="wait" />
+				</ee:variables>
+			</ee:transform>
 		</foreach>
 	</sub-flow>
 </mule>

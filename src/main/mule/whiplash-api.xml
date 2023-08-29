@@ -34,10 +34,10 @@ output application/csv header=false
 		</file:write>
 		<logger level="INFO" doc:name="INFO: END" doc:id="07ebe133-5c1a-4c8a-bc66-f32710c28379" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.end')&#10;var logMessage = &quot;END: Whiplash has written order to file&quot;&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
 		<async doc:name="Async" doc:id="da5fb137-ba1f-4c19-8876-fed06802c5c6">
-			<ee:transform doc:name="wait" doc:id="c7a70c33-6fe3-4c60-88c8-3a1b3315e6bd">
+			<ee:transform doc:name="Wait after finish flow" doc:id="c7a70c33-6fe3-4c60-88c8-3a1b3315e6bd">
 				<ee:message />
 				<ee:variables>
-					<ee:set-variable resource="dw/variables/wait.dwl" variableName="wait" />
+					<ee:set-variable resource="dw/variables/waitAfterFinishFlow.dwl" variableName="wait" />
 				</ee:variables>
 			</ee:transform>
 			<flow-ref doc:name="Flow whiplash-inventory-flow" doc:id="c5afe440-17f7-4c50-a57c-12b66a33d462" name="whiplash-inventory-flow" />
@@ -133,6 +133,12 @@ output application/csv header=false
 			<http:query-params><![CDATA[#[vars.inventoryQueryParams]]]></http:query-params>
 		</http:request>
 			<logger level="INFO" doc:name="INFO: AFTER_REQUEST" doc:id="a4b45f98-82ec-4d5d-9f01-cd0f4088065e" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.afterRequest')&#10;var logMessage = &quot;AFTER_REQUEST: Whiplash has sent an ATS inventory request - &quot; ++ (vars.orderNumber default &quot;&quot;) ++ &quot;-&quot; ++ (payload.sku default &quot;&quot;)&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
+			<ee:transform doc:name="Wait between requests" doc:id="c69bb05c-14ea-474c-b944-ae13ec77fe85">
+				<ee:message />
+				<ee:variables>
+					<ee:set-variable resource="dw/variables/waitBetweenRequests.dwl" variableName="wait" />
+				</ee:variables>
+			</ee:transform>
 			<ee:transform doc:name="Set Variable - inventoryStatusChangeBody" doc:id="fe4da152-fdc0-4af6-b487-36d34818aeb4">
 				<ee:message />
 				<ee:variables>
@@ -144,6 +150,12 @@ output application/csv header=false
 			<http:query-params><![CDATA[#[vars.inventoryQueryParams]]]></http:query-params>
 		</http:request>
 			<logger level="INFO" doc:name="INFO: AFTER_REQUEST" doc:id="402769ad-3026-4ae4-bbea-789acd097925" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.afterRequest')&#10;var logMessage = &quot;AFTER_REQUEST: Whiplash has sent a status change inventory request - &quot; ++ (vars.orderNumber default &quot;&quot;) ++ &quot;-&quot; ++ (payload.sku default &quot;&quot;)&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
+			<ee:transform doc:name="Wait between requests" doc:id="f15938b2-e0e5-41fe-95b4-52f0b84be68b">
+			<ee:message />
+			<ee:variables>
+				<ee:set-variable resource="dw/variables/waitBetweenRequests.dwl" variableName="wait" />
+			</ee:variables>
+		</ee:transform>
 		</foreach>
 		<ee:transform doc:name="Set Variable - fulfillmentQueryParams and fulfillmentBody" doc:id="ecfa8590-ffcf-40a1-838d-a6882dc0dfa7" >
 			<ee:message >

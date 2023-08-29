@@ -18,15 +18,16 @@ mule:
     client_secret: "83ddb32B0ff7426CAb89Ff94aAd494BE"
     
 blazemeter-mock-service:
-  wait: "2" #secs
+  waitAfterFinishFlow: "60" #secs
+  waitBetweenRequests: "2" #secs
   host: "ckmulesoftredirectmockservice308531.mock.blazemeter.com"
   port: "443"
 
 object-store:
-  ttl: "10" #mins
+  ttl: "30" #mins
   
 http:
-  timeout: "180000" #milisecs
+  timeout: "600000" #milisecs
   
 file:
   timeBetweenSizeCheck: "2" #secs
