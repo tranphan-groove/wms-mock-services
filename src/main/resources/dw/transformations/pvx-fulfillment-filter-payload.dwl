@@ -1,20 +1,18 @@
 %dw 2.0
 output application/xml  
 ns soap http://www.w3.org/2003/05/soap-envelope
-var salesOrders = flatten((vars.salesOrders.data default []) map ((item) -> read(item, 'application/json')))
-var salesOrderItems = flatten((vars.salesOrderItems.data default []) map ((item) -> read(item, 'application/json')))
-var transformedPayload = flatten((salesOrders filter ((item) -> (
-    ((vars.searchClauseRPLN and (item.SalesOrderNumber contains "RPLN")) or ((vars.searchClauseRPLN == false and !(item.SalesOrderNumber contains "RPLN")))) and
-    (isEmpty(vars.searchClauseTimestamps[0]) or ((item.timestamp as DateTime) > (vars.searchClauseTimestamps[0] as DateTime))) and
-    (isEmpty(vars.searchClauseTimestamps[1]) or ((item.timestamp as DateTime) < (vars.searchClauseTimestamps[1] as DateTime)))
-))) map ((order) -> (salesOrderItems filter ((item) -> item.SalesOrderNumber == order.SalesOrderNumber)) map ((item) -> {
+var transformedPayload = payload map ((item) -> do {
+    var order = read(item.order_data, 'application/json')
+    var orderItem = read(item.order_item_data, 'application/json')
+    ---
+    {
       "Sales order number": order.SalesOrderNumber default "",
-      "Package number": item.QuantityOrdered default "",
-      "Item code": item.ItemCode default "",
-      "Item quantity": item.QuantityOrdered default "",
+      "Package number": orderItem.QuantityOrdered default "",
+      "Item code": orderItem.ItemCode default "",
+      "Item quantity": orderItem.QuantityOrdered default "",
       "Package despatch timestamp": ("'" ++ order.timestamp as DateTime as String {format: 'dd/MM/yyyy hh:mm'} ++ "'") default "",
       "Package tracking number": "Staff Order - Picking under stairs at HQ",
-      "Sales order item quantity ordered": item.QuantityOrdered default "",
+      "Sales order item quantity ordered": orderItem.QuantityOrdered default "",
       "Shipping address line 1": order.ShippingAddressLine1 default "",
       "Shipping address line 2": order.ShippingAddressLine2 default "",
       "Shipping address town": order.ShippingAddressCity default "",
@@ -30,7 +28,7 @@ var transformedPayload = flatten((salesOrders filter ((item) -> (
       "Sales order attribute 3": order.Attribute3 default "",
       "Sales order attribute 4": order.Attribute4 default "",
       "Sales order attribute 5": order.Attribute5 default "",
-      "Despatch number of packages": item.QuantityOrdered default "",
+      "Despatch number of packages": orderItem.QuantityOrdered default "",
       "Despatch carrier name": "DC Pickup",
       "Despatch service type code": "DCPickup-StaffOrderPickup",
       "Package carrier name": "DC Pickup",
@@ -48,8 +46,8 @@ var transformedPayload = flatten((salesOrders filter ((item) -> (
       "Package width unit of measure": "Centimetre",
       "Package depth unit of measure": "Centimetre",
       "Package tracking number timestamp": ("'" ++ order.timestamp as DateTime as String {format: 'dd/MM/yyyy hh:mm'} ++ "'") default "",
-    })
-))
+    }
+})
 ---
 {
     soap#Envelope @("xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance", "xsi:xsd":"http://www.w3.org/2001/XMLSchema"): {

@@ -1,36 +1,10 @@
 filePaths: "pvx/sales-orders.csv,pvx/sales-order-items.csv,pvx/customers.csv,wpl/sales-orders.csv"
 
-mule:
-  p-inventory:
-    client_id: "daa0dedb9b9f496aa64b5014dafcd2ef"
-    client_secret: "83ddb32B0ff7426CAb89Ff94aAd494BE"
-    
-  p-api-co-pvx-os-statusevents:
-    client_id: "daa0dedb9b9f496aa64b5014dafcd2ef"
-    client_secret: "83ddb32B0ff7426CAb89Ff94aAd494BE"
-    
-  p-inventory-whip:
-    client_id: "daa0dedb9b9f496aa64b5014dafcd2ef"
-    client_secret: "83ddb32B0ff7426CAb89Ff94aAd494BE"
-    
-  p-forders-pub:
-    client_id: "daa0dedb9b9f496aa64b5014dafcd2ef"
-    client_secret: "83ddb32B0ff7426CAb89Ff94aAd494BE"
-    
-blazemeter-mock-service:
-  waitAfterFinishFlow: "60" #secs
-  waitBetweenRequests: "2" #secs
-  host: "ckmulesoftredirectmockservice308531.mock.blazemeter.com"
-  port: "443"
-
 object-store:
   ttl: "30" #mins
   
 http:
   timeout: "600000" #milisecs
-  
-file:
-  timeBetweenSizeCheck: "2" #secs
   
 json.logger:
 ## Priority/Levels of logging  

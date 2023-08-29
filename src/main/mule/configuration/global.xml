@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
 	xmlns:file="http://www.mulesoft.org/schema/mule/file"
 	xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns:http="http://www.mulesoft.org/schema/mule/http"
 	xmlns="http://www.mulesoft.org/schema/mule/core"
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd 
 http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd 
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
@@ -20,12 +22,17 @@ http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/
 	<http:request-config name="s-whiplash_HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="8f580ae2-51a5-4d3a-be6e-3a5c97460533" >
 		<http:request-connection host="#[vars.parsedCallbackURI.host]" port="#[vars.parsedCallbackURI.port default 443]" protocol="HTTPS"/>
 	</http:request-config>
-	<file:config name="File_Config" doc:name="File Config" doc:id="35ecd874-6b5a-4d48-872b-6d504feca429" >
-		<file:connection workingDir="${app.home}" />
-	</file:config>
-	<configuration-properties doc:name="Configuration properties" doc:id="73ccdab0-5798-46a6-8d55-a85bcdfbcb60" file="config\common.yaml" />
+	<global-property doc:name="Global Property" doc:id="4127858d-0a7e-490c-afc5-a7de6205b094" name="mule.env" value="LOCAL" />
+	<configuration-properties doc:name="Configuration env properties" doc:id="bd37f4b1-5575-4ca0-b50e-b3bd4de31a45" file="config\config-${mule.env}.yaml" />
+	<configuration-properties doc:name="Configuration common properties" doc:id="73ccdab0-5798-46a6-8d55-a85bcdfbcb60" file="config\common.yaml" />
 	<http:request-config name="blazeMeter_HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="3d9a1e03-1b63-4523-baf3-a7005d2411da">
 		<http:request-connection protocol="HTTPS" host="#[p('blazemeter-mock-service.host')]" port="#[p('blazemeter-mock-service.port')]" />
 	</http:request-config>
 	<os:object-store name="Object_store" doc:name="Object store" doc:id="09f6d6d7-c3a9-4db6-afd9-13398f65e866" persistent="false" entryTtl="${object-store.ttl}" entryTtlUnit="MINUTES" />
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="d9d87bc2-401f-4ffe-a09d-8f85c8a10494" >
+		<db:my-sql-connection host="${jdbc.hostName}" port="${jdbc.port}" user="${jdbc.user}" password="${jdbc.password}" database="${jdbc.databaseName}"/>
+	</db:config>
+	<file:config name="File_Config" doc:name="File Config" doc:id="35ecd874-6b5a-4d48-872b-6d504feca429" >
+		<file:connection workingDir="${app.home}" />
+	</file:config>
 </mule>

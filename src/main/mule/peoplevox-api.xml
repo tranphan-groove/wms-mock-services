@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:apikit-soap="http://www.mulesoft.org/schema/mule/apikit-soap" xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
-	xmlns:file="http://www.mulesoft.org/schema/mule/file"
-	xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:apikit-soap="http://www.mulesoft.org/schema/mule/apikit-soap"
+	xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+	xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
 http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
 http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
 http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
-http://www.mulesoft.org/schema/mule/apikit-soap http://www.mulesoft.org/schema/mule/apikit-soap/current/mule-apikit-soap.xsd">
+http://www.mulesoft.org/schema/mule/apikit-soap http://www.mulesoft.org/schema/mule/apikit-soap/current/mule-apikit-soap.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
 	<flow name="pvx-soap-flow" doc:id="4226e2e0-3a98-4e4c-b35e-a06f3431c290" >
 		<http:listener doc:name="Listener" doc:id="d29550ae-8c29-4841-8239-df26fff75bdf" config-ref="HTTP_Listener_config" path="/tfaQa3012/resources/integrationservicev4.asmx" allowedMethods="POST"/>
 		<ee:transform doc:name="Set Variable - templateName" doc:id="16180b66-5768-4d90-ae80-9624e7c86410" >
@@ -39,27 +40,28 @@ http://www.mulesoft.org/schema/mule/apikit-soap http://www.mulesoft.org/schema/m
 				<ee:set-variable resource="dw/variables/pvx-save-data-saveDataContent.dwl" variableName="saveDataContent" />
 			</ee:variables>
 		</ee:transform>
-		<ee:transform doc:name="Set Varable - filePath" doc:id="256ec832-f89c-4feb-b739-dae1c9f17347">
+		<ee:transform doc:name="Set Varable - tableName" doc:id="256ec832-f89c-4feb-b739-dae1c9f17347">
 			<ee:message>
 			</ee:message>
 			<ee:variables>
-				<ee:set-variable resource="dw/variables/pvx-get-file-path.dwl" variableName="filePath" />
+				<ee:set-variable resource="dw/variables/pvx-get-table-name.dwl" variableName="tableName" />
 			</ee:variables>
 		</ee:transform>
-		<file:write doc:name="Write file" doc:id="089f19f3-647e-4417-8937-fc5c1f2ecb58" config-ref="File_Config" path="#[vars.filePath]" mode="APPEND">
-					<file:content><![CDATA[#[%dw 2.0
-output application/csv header=false
+		<db:bulk-insert doc:name="Bulk insert" doc:id="f1090605-d4bd-43cd-8229-33e60e91c07d" config-ref="Database_Config" target="dbRes">
+			<db:bulk-input-parameters ><![CDATA[#[%dw 2.0
+output application/json
 ---
-[{
-    data: write((vars.saveDataContent map ((item) -> (item ++ {timestamp: now()}))), 'application/json', {indent: false})
-}]]]]></file:content>
-				</file:write>
+vars.saveDataContent map ((item) -> {
+    data: write(item,'application/json')
+})]]]></db:bulk-input-parameters>
+			<db:sql ><![CDATA[#["INSERT INTO " ++ vars.tableName ++ " (data) VALUES (:data)"]]]></db:sql>
+		</db:bulk-insert>
 		<ee:transform doc:name="Transform Message" doc:id="42454e97-075d-42d7-a692-5e8488964b29">
 			<ee:message>
 				<ee:set-payload resource="dw/transformations/pvx-save-data-response.dwl" />
 			</ee:message>
 		</ee:transform>
-		<choice doc:name="Choice" doc:id="fe607994-e019-41c0-99b5-cfd66637ebea">
+<!-- [STUDIO:"Choice"]		<choice doc:name="Choice" doc:id="fe607994-e019-41c0-99b5-cfd66637ebea">
 			<when expression="#[vars.templateName == 'Sales Order Items']" >
 				<async doc:name="Async" doc:id="f951a739-6a53-4d46-bf55-35a7ee8e6342" >
 					<ee:transform doc:name="Wait after finish flow" doc:id="5b9242e4-b0bd-4907-a153-599800a4453a" >
@@ -83,15 +85,9 @@ output application/csv header=false
 					<flow-ref doc:name="Flow pvx-status-change-subflow" doc:id="1b4d99e6-a7b8-451e-9126-7baa545f4ddb" name="pvx-status-change-subflow"/>
 				</async>
 			</when>
-		</choice>
+		</choice> [STUDIO] -->
 	</sub-flow>
 	<sub-flow name="pvx-soap-get-report-data-subflow" doc:id="5d97f2e6-5bd8-475f-b718-3aae81abc1d4" >
-		<file:read doc:name="Read pvx/sales-orders.csv" doc:id="57966cbb-4f42-4ccf-8146-731acb8e964c" config-ref="File_Config" path="pvx/sales-orders.csv" target="salesOrders" outputMimeType="application/csv" timeBetweenSizeCheck="${file.timeBetweenSizeCheck}" timeBetweenSizeCheckUnit="SECONDS">
-			<ee:repeatable-file-store-stream inMemorySize="256" bufferUnit="MB" />
-		</file:read>
-		<file:read doc:name="Read pvx/sales-order-items.csv" doc:id="53e6b16f-9740-4f91-83d5-312ab4e01573" config-ref="File_Config" path="pvx/sales-order-items.csv" target="salesOrderItems" outputMimeType="application/csv" timeBetweenSizeCheck="${file.timeBetweenSizeCheck}" timeBetweenSizeCheckUnit="SECONDS">
-			<ee:repeatable-file-store-stream inMemorySize="256" bufferUnit="MB" />
-		</file:read>
 		<ee:transform doc:name="Set Variable - searchClauseTimestamps and searchClauseRPLN" doc:id="476be670-2a1c-4e4e-b7e1-0b20001b7aa8">
 			<ee:message>
 			</ee:message>
@@ -100,6 +96,16 @@ output application/csv header=false
 				<ee:set-variable resource="dw/variables/pvx-fulfillment-searchClauseRPLN.dwl" variableName="searchClauseRPLN" />
 			</ee:variables>
 		</ee:transform>
+		<ee:transform doc:name="Set Variable - getReportSQLQuery" doc:id="9e0e9eaf-3c91-4ef5-9c49-ee9155b49e31" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable resource="dw/variables/pvx-getReportSQLQuery.dwl" variableName="getReportSQLQuery" />
+			</ee:variables>
+		</ee:transform>
+		<db:select doc:name="Select" doc:id="c99737eb-f271-4918-9367-123fac3da835" config-ref="Database_Config">
+			<db:sql ><![CDATA[#[vars.getReportSQLQuery]]]></db:sql>
+		</db:select>
 		<ee:transform doc:name="Filter Payload" doc:id="8a74a9a1-6da1-4321-be8c-4057d40d0601">
 			<ee:message>
 				<ee:set-payload resource="dw/transformations/pvx-fulfillment-filter-payload.dwl" />

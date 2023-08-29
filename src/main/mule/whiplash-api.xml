@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
-	xmlns:http="http://www.mulesoft.org/schema/mule/http"
-	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
-http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
 	<flow name="whiplash-create-orders-flow" doc:id="3775615d-d49f-47a3-8474-b2340f1ddc7c" >
 		<http:listener doc:name="Listener" doc:id="d4d06cfe-080d-423b-a558-45e67f9c4839" config-ref="HTTP_Listener_config" path="/api/v2/orders" allowedMethods="POST"/>
 		<logger level="INFO" doc:name="INFO: START" doc:id="24249560-dcdb-40f8-85c0-87681afb7abd" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.start')&#10;var logMessage = &quot;START: Whiplash has received an order&quot;&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
-		<file:read doc:name="Read item_masters.json" doc:id="07449d78-767a-4440-92a8-b46c3208b2fe" config-ref="File_Config" path="item_masters.json" outputMimeType="application/json" target="itemMasters">
+		<file:read doc:name="Read item_masters.json" doc:id="07449d78-767a-4440-92a8-b46c3208b2fe" path="item_masters.json" outputMimeType="application/json" target="itemMasters" config-ref="File_Config">
 				<ee:repeatable-file-store-stream inMemorySize="256" bufferUnit="MB" />
 			</file:read>
 		<ee:transform doc:name="Set Variable - orderId" doc:id="c33fd925-7d3b-4df6-903a-b9e53cd237fa" >
@@ -24,16 +25,14 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
 				<ee:set-payload resource="dw/transformations/wpl-create-order-response.dwl" />
 			</ee:message>
 		</ee:transform>
-		<file:write doc:name="Write wpl/sales-orders.csv" doc:id="94882f75-7c9f-4e7c-819e-29895fd37398" config-ref="File_Config" path="wpl/sales-orders.csv" mode="APPEND">
-			<file:content ><![CDATA[#[%dw 2.0
-output application/csv header=false
----
-[{
-    data: write(payload, 'application/json', {indent: false})
-}]]]]></file:content>
-		</file:write>
+		<db:insert doc:name="Insert" doc:id="b6d6c48b-bcc8-4612-9ea5-43ff71d3997a" config-ref="Database_Config" target="dbRes">
+			<db:sql ><![CDATA[INSERT INTO wmsmock_wpl_sales_orders (data) VALUES (:data)]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	data: write(payload,'application/json')
+}]]]></db:input-parameters>
+		</db:insert>
 		<logger level="INFO" doc:name="INFO: END" doc:id="07ebe133-5c1a-4c8a-bc66-f32710c28379" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.end')&#10;var logMessage = &quot;END: Whiplash has written order to file&quot;&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
-		<async doc:name="Async" doc:id="da5fb137-ba1f-4c19-8876-fed06802c5c6">
+<!-- [STUDIO:"Async"]		<async doc:name="Async" doc:id="da5fb137-ba1f-4c19-8876-fed06802c5c6">
 			<ee:transform doc:name="Wait after finish flow" doc:id="c7a70c33-6fe3-4c60-88c8-3a1b3315e6bd">
 				<ee:message />
 				<ee:variables>
@@ -41,20 +40,20 @@ output application/csv header=false
 				</ee:variables>
 			</ee:transform>
 			<flow-ref doc:name="Flow whiplash-inventory-flow" doc:id="c5afe440-17f7-4c50-a57c-12b66a33d462" name="whiplash-inventory-flow" />
-		</async>
+		</async> [STUDIO] -->
 	</flow>
 	<flow name="whiplash-get-orders-by-search-string-subflow" doc:id="0647291b-c4da-498c-8676-9383ff160857" >
 		<http:listener doc:name="Listener" doc:id="3bda1333-2aae-4f4f-bbbe-5cb95fc74139" config-ref="HTTP_Listener_config" path="/api/v2/orders" allowedMethods="GET"/>
-		<ee:transform doc:name="Set Variable - seach" doc:id="7fc602bc-f578-4c6d-944d-b1ad7776b4c7" >
+		<ee:transform doc:name="Set Variable - getOrdersBySearchStringSQLQuery" doc:id="7fc602bc-f578-4c6d-944d-b1ad7776b4c7" >
 			<ee:message >
 			</ee:message>
 			<ee:variables >
-				<ee:set-variable resource="dw/variables/wpl-attr-query-search.dwl" variableName="search" />
+				<ee:set-variable resource="dw/variables/wpl-getOrdersBySearchStringSQLQuery.dwl" variableName="getOrdersBySearchStringSQLQuery" />
 			</ee:variables>
 		</ee:transform>
-		<file:read doc:name="Read wpl/sales-orders.csv" doc:id="e9db54e0-affd-41c1-8a9f-5a67957fdfd6" config-ref="File_Config" path="wpl/sales-orders.csv" outputMimeType="application/csv" timeBetweenSizeCheck="${file.timeBetweenSizeCheck}" timeBetweenSizeCheckUnit="SECONDS">
-			<ee:repeatable-file-store-stream inMemorySize="256" bufferUnit="MB" />
-		</file:read>
+		<db:select doc:name="Select" doc:id="f04eddea-bdb1-4769-99cf-d986cbc83a70" config-ref="Database_Config">
+			<db:sql ><![CDATA[#[vars.getOrdersBySearchStringSQLQuery]]]></db:sql>
+		</db:select>
 		<ee:transform doc:name="Transform Message" doc:id="e9b0f6f6-622d-431f-b38e-668785ce7ce7" >
 			<ee:message >
 				<ee:set-payload resource="dw/transformations/wpl-get-orders-by-search-string.dwl" />
@@ -69,9 +68,12 @@ output application/csv header=false
 				<ee:set-variable resource="dw/variables/wpl-attr-query-id.dwl" variableName="id" />
 			</ee:variables>
 		</ee:transform>
-		<file:read doc:name="Read wpl/sales-orders.csv" doc:id="721695f6-8262-4740-ba56-0a1a7777cf11" config-ref="File_Config" path="wpl/sales-orders.csv" outputMimeType="application/csv" timeBetweenSizeCheck="${file.timeBetweenSizeCheck}" timeBetweenSizeCheckUnit="SECONDS">
-			<ee:repeatable-file-store-stream inMemorySize="256" bufferUnit="MB" />
-		</file:read>
+		<db:select doc:name="Select" doc:id="2ed7b58c-4446-4e38-887a-984394b7143d" config-ref="Database_Config">
+			<db:sql ><![CDATA[SELECT data FROM wmsmock_wpl_sales_orders WHERE JSON_EXTRACT(data, "$.order_orig") = :order_orig]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	order_orig: vars.id
+}]]]></db:input-parameters>
+		</db:select>
 		<ee:transform doc:name="Transform Message" doc:id="bc49ef67-2662-4d3b-8db4-f56004d25863" >
 			<ee:message >
 				<ee:set-payload resource="dw/transformations/wpl-get-an-order.dwl" />
