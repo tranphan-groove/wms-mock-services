@@ -15,6 +15,38 @@
             <SizeBasedTriggeringPolicy size="10 MB"/>
             <DefaultRolloverStrategy max="10"/>
         </RollingFile>
+        <!-- Cloudhub Appender for logging messages to Cloudhub. 
+			This is needed because we disable Cloudhub logging for sending logs to New Relic.
+			This appender will be used Asynchonously because we use it with AsyncRoot and AsyncLogger. 
+		-->
+		<Log4J2CloudhubLogAppender name="Cloudhub"
+			addressProvider="com.mulesoft.ch.logging.DefaultAggregatorAddressProvider"
+			applicationContext="com.mulesoft.ch.logging.DefaultApplicationContext"
+			appendRetryIntervalMs="${sys:logging.appendRetryInterval}"
+			appendMaxAttempts="${sys:logging.appendMaxAttempts}"
+			batchSendIntervalMs="${sys:logging.batchSendInterval}"
+			batchMaxRecords="${sys:logging.batchMaxRecords}"
+			memBufferMaxSize="${sys:logging.memBufferMaxSize}"
+			journalMaxWriteBatchSize="${sys:logging.journalMaxBatchSize}"
+			journalMaxFileSize="${sys:logging.journalMaxFileSize}"
+			clientMaxPacketSize="${sys:logging.clientMaxPacketSize}"
+			clientConnectTimeoutMs="${sys:logging.clientConnectTimeout}"
+			clientSocketTimeoutMs="${sys:logging.clientSocketTimeout}"
+			serverAddressPollIntervalMs="${sys:logging.serverAddressPollInterval}"
+			serverHeartbeatSendIntervalMs="${sys:logging.serverHeartbeatSendIntervalMs}"
+			statisticsPrintIntervalMs="${sys:logging.statisticsPrintIntervalMs}">
+			<PatternLayout
+				pattern="[%d{MM-dd HH:mm:ss}] %-5p %c{1} [%t]: %m%n" />
+		</Log4J2CloudhubLogAppender>
+
+		<!--  HTTP Appender for sending Logs to New Relice.
+			  This appender will be used Asynchonously because we use it with AsyncRoot and AsyncLogger.
+		 -->
+		<Http name="NEWRELIC" url="${sys:new.relic.url}">
+			<Property name="X-License-Key" value="${sys:new.relic.license.key}" />
+			<Property name="Content-Type" value="application/json" />
+			<PatternLayout pattern="%m%n"></PatternLayout>
+		</Http>       
     </Appenders>
 
     <Loggers>
@@ -25,9 +57,16 @@
 
         <!-- Mule logger -->
         <AsyncLogger name="org.mule.runtime.core.internal.processor.LoggerMessageProcessor" level="INFO"/>
+        
+		<!-- CK Packages -->        
+		<AsyncLogger name="ck-support-info-monitoring" level="WARN"/>
+		<AsyncLogger name="ck-support-error-monitoring" level="WARN"/>
+		<AsyncLogger name="ck-support-debug-monitoring" level="INFO"/>
 
         <AsyncRoot level="INFO">
             <AppenderRef ref="file"/>
+            <AppenderRef ref="NEWRELIC" />
+            <AppenderRef ref="Cloudhub"/>
         </AsyncRoot>
     </Loggers>
 

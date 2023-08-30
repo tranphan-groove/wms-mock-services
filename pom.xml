@@ -12,9 +12,15 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<app.version>${project.artifact.selectedVersion.majorVersion}</app.version>
+		<app.name>${project.artifactId}-ck-au-v${app.version}-${ENV_NAME}</app.name>
 
-		<app.runtime>4.4.0-20220221</app.runtime>
+		<app.runtime>4.4.0</app.runtime>
 		<mule.maven.plugin.version>3.5.4</mule.maven.plugin.version>
+		<anypoint.platform.workers>${P_ORDERS_WMS_ERP_DB_FRM_Q_SUB_MULE_WORKERS}</anypoint.platform.workers>
+		<anypoint.platform.region>${MULE_REGION}</anypoint.platform.region>
+		<anypoint.platform.worker.type>${P_ORDERS_WMS_ERP_DB_FRM_Q_SUB_MULE_WORKER_TYPE}</anypoint.platform.worker.type>
+		<connected.app.grant.type>client_credentials</connected.app.grant.type>
 	</properties>
 
 	<build>
@@ -31,6 +37,39 @@
 				<extensions>true</extensions>
 				<configuration>
 					<classifier>mule-application</classifier>
+					<cloudHubDeployment>
+						<muleVersion>${app.runtime}</muleVersion>
+						<applicationName>${app.name}</applicationName>
+						<connectedAppClientId>${CONNECTED_APP_CLIENT_ID}</connectedAppClientId>
+						<connectedAppClientSecret>${CONNECTED_APP_CLIENT_SECRET}</connectedAppClientSecret>
+						<connectedAppGrantType>${connected.app.grant.type}</connectedAppGrantType>
+						<environment>${ENV_NAME}</environment>
+						<businessGroupId>${project.groupId}</businessGroupId>
+						<region>${anypoint.platform.region}</region>
+						<workerType>${anypoint.platform.worker.type}</workerType>
+						<workers>${anypoint.platform.workers}</workers>
+						<objectStoreV2>true</objectStoreV2>
+						<properties>
+							<mule.env>${ENV_NAME}</mule.env>
+							<anypoint.platform.client_id>${ENV_CLIENT_ID}</anypoint.platform.client_id>
+							<anypoint.platform.client_secret>${ENV_CLIENT_SECRET}</anypoint.platform.client_secret>
+							<json.logger.application.version>${app.version}</json.logger.application.version>
+							<json.logger.application.name>${app.name}</json.logger.application.name>
+							<anypoint.platform.config.analytics.agent.enabled>${MONITORING}</anypoint.platform.config.analytics.agent.enabled>
+							<new.relic.url>${NEW_RELIC_URL}</new.relic.url>
+							<new.relic.license.key>${NEW_RELIC_LICENSE_KEY}</new.relic.license.key>
+							<mule.p-inventory.client_id>MULE_P_INVENTORY_CLIENT_ID</mule.p-inventory.client_id>
+							<mule.p-inventory.client_secret>MULE_P_INVENTORY_CLIENT_SECRET</mule.p-inventory.client_secret>
+							<mule.p-api-co-pvx-os-statusevents.client_id>MULE_P_API_CO_PVX_OS_STATUSEVENTS_CLIENT_ID</mule.p-api-co-pvx-os-statusevents.client_id>
+							<mule.p-api-co-pvx-os-statusevents.client_secret>MULE_P_API_CO_PVX_OS_STATUSEVENTS_CLIENT_SECRET</mule.p-api-co-pvx-os-statusevents.client_secret>
+							<mule.p-inventory-whip.client_id>MULE_P_INVENTORY_WHIP_CLIENT_ID</mule.p-inventory-whip.client_id>
+							<mule.p-inventory-whip.client_secret>MULE_P_INVENTORY_WHIP_CLIENT_SECRET</mule.p-inventory-whip.client_secret>
+							<mule.p-forders-pub.client_id>MULE_P_FORDERS_PUB_CLIENT_ID</mule.p-forders-pub.client_id>
+							<mule.p-forders-pub.client_secret>MULE_P_FORDERS_PUB_CLIENT_SECRET</mule.p-forders-pub.client_secret>
+							<jdbc.password>JDBC_PASSWORD</jdbc.password>
+							<jdbc.user>JDBC_USER</jdbc.user>
+						</properties>
+					</cloudHubDeployment>
 					<sharedLibraries>
 						<sharedLibrary>
 							<groupId>mysql</groupId>

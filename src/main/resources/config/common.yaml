@@ -1,5 +1,3 @@
-filePaths: "pvx/sales-orders.csv,pvx/sales-order-items.csv,pvx/customers.csv,wpl/sales-orders.csv"
-
 object-store:
   ttl: "30" #mins
   

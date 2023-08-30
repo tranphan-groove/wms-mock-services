@@ -44,6 +44,7 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 	</flow>
 	<flow name="whiplash-get-orders-by-search-string-subflow" doc:id="0647291b-c4da-498c-8676-9383ff160857" >
 		<http:listener doc:name="Listener" doc:id="3bda1333-2aae-4f4f-bbbe-5cb95fc74139" config-ref="HTTP_Listener_config" path="/api/v2/orders" allowedMethods="GET"/>
+		<logger level="INFO" doc:name="INFO: START" doc:id="0780764d-1b57-4b97-8160-7e52ea652e79" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.start')&#10;var logMessage = &quot;START: Whiplash is going to get orders by search string&quot;&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
 		<ee:transform doc:name="Set Variable - getOrdersBySearchStringSQLQuery" doc:id="7fc602bc-f578-4c6d-944d-b1ad7776b4c7" >
 			<ee:message >
 			</ee:message>
@@ -59,9 +60,11 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 				<ee:set-payload resource="dw/transformations/wpl-get-orders-by-search-string.dwl" />
 			</ee:message>
 		</ee:transform>
+		<logger level="INFO" doc:name="INFO: END" doc:id="9196154a-6fbb-4ac6-9317-53d5564b6f3c" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.end')&#10;var logMessage = &quot;END: Whiplash returned &quot; ++ sizeOf(payload.data default []) ++ &quot; orders searched by search string&quot;&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
 	</flow>
 	<flow name="whiplash-get-an-order-flow" doc:id="be75fde8-1192-44a2-ab49-b1a9d33dec07" >
 		<http:listener doc:name="Listener" doc:id="f0d4893e-8d75-4fa0-a7bf-df600a5567ec" config-ref="HTTP_Listener_config" path="/api/v2/orders/{id}" allowedMethods="GET"/>
+		<logger level="INFO" doc:name="INFO: START" doc:id="e2a214c1-f322-426f-aa75-c83f3326d4e2" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.start')&#10;var logMessage = &quot;START: Whiplash is going to get order by id&quot;&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
 		<ee:transform doc:name="Set Variable - id" doc:id="1d3d2d5a-58b9-43da-8bc0-9902c11ea00f">
 			<ee:message />
 			<ee:variables>
@@ -79,6 +82,7 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 				<ee:set-payload resource="dw/transformations/wpl-get-an-order.dwl" />
 			</ee:message>
 		</ee:transform>
+		<logger level="INFO" doc:name="INFO: END" doc:id="65db1ad6-62ef-4c46-a198-9ad31de09ea5" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.end')&#10;var logMessage = &quot;END: Whiplash returned order searched by id&quot;&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
 	</flow>
 	<flow name="whiplash-get-token-flow" doc:id="24ef67c6-dd38-4374-b292-85d40cdb696d" >
 		<http:listener doc:name="Listener" doc:id="ebb82e54-848d-4fb1-a8d3-f47cadec77b8" config-ref="HTTP_Listener_config" path="/oauth/token" allowedMethods="POST"/>

@@ -1,19 +1,19 @@
 mule:
   p-inventory:
-    client_id: "daa0dedb9b9f496aa64b5014dafcd2ef"
-    client_secret: "83ddb32B0ff7426CAb89Ff94aAd494BE"
+    client_id: "passIn"
+    client_secret: "passIn"
     
   p-api-co-pvx-os-statusevents:
-    client_id: "daa0dedb9b9f496aa64b5014dafcd2ef"
-    client_secret: "83ddb32B0ff7426CAb89Ff94aAd494BE"
+    client_id: "passIn"
+    client_secret: "passIn"
     
   p-inventory-whip:
-    client_id: "daa0dedb9b9f496aa64b5014dafcd2ef"
-    client_secret: "83ddb32B0ff7426CAb89Ff94aAd494BE"
+    client_id: "passIn"
+    client_secret: "passIn"
     
   p-forders-pub:
-    client_id: "daa0dedb9b9f496aa64b5014dafcd2ef"
-    client_secret: "83ddb32B0ff7426CAb89Ff94aAd494BE"
+    client_id: "passIn"
+    client_secret: "passIn"
     
 blazemeter-mock-service:
   waitAfterFinishFlow: "60" #secs
@@ -25,5 +25,5 @@ jdbc:
   hostName: "mulesoft-integration-test.c7iscturzbsa.ap-southeast-2.rds.amazonaws.com"
   port: "3306"
   databaseName: "mulesoft-dev"
-  user: "mulesoft_dev_user"
-  password: "OB3TiNtss34w"
+  user: "passIn"
+  password: "passIn"
