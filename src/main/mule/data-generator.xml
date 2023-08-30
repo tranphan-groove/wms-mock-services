@@ -9,12 +9,11 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
 http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd">
 	<flow name="data-generator-flow" doc:id="cded20e8-221c-4854-b778-5261231bbb6b" >
 		<http:listener doc:name="Listener" doc:id="e2818d0d-4ffb-4a17-962a-f05feff7847e" config-ref="HTTP_Listener_config" path="/generate-data" allowedMethods="GET"/>
-		<ee:transform doc:name="Set Variable - orderQuantity, itemQuantity, osKeyPrefix and header" doc:id="76b83c9c-c31c-4cc7-95d4-ac2ba79047dc" >
+		<ee:transform doc:name="Set Variable - orderQuantity, itemQuantity, osKeyPrefix" doc:id="76b83c9c-c31c-4cc7-95d4-ac2ba79047dc" >
 			<ee:message >
 			</ee:message>
 			<ee:variables >
 				<ee:set-variable resource="dw/variables/data-generator-osKeyPrefix.dwl" variableName="osKeyPrefix" />
-				<ee:set-variable resource="dw/variables/data-generator-header.dwl" variableName="header" />
 				<ee:set-variable resource="dw/variables/data-generator-orderQuantity.dwl" variableName="orderQuantity" />
 				<ee:set-variable resource="dw/variables/data-generator-itemQuantity.dwl" variableName="itemQuantity" />
 			</ee:variables>
@@ -130,20 +129,14 @@ output application/json
 		</choice>
 	</sub-flow>
 	<sub-flow name="get-generated-test-data-subflow" doc:id="134f0ea1-70fc-4b17-a2f8-6e7dbd91c3f0" >
-		<os:retrieve doc:name="Retrieve AU orders" doc:id="57f6600d-60a9-421f-a9da-b15e099a633b" objectStore="Object_store" key="#[(vars.dataKey default '') ++ '_AU_orders']" target="generatedAUOrders">
+		<os:retrieve doc:name="Retrieve orders" doc:id="57f6600d-60a9-421f-a9da-b15e099a633b" objectStore="Object_store" key="#[(vars.dataKey default '') ++ '_' ++ vars.orderType ++ '_orders']">
 			<os:default-value ><![CDATA[#[%dw 2.0
 output application/json
 ---
 {}]]]></os:default-value>
 		</os:retrieve>
-		<os:retrieve doc:name="Retrieve US orders" doc:id="c16f5d2a-fc68-4b74-813d-318ce9a7ea14" key="#[(vars.dataKey default '') ++ '_US_orders']" objectStore="Object_store" target="generatedUSOrders">
-			<os:default-value><![CDATA[#[%dw 2.0
-output application/json
----
-{}]]]></os:default-value>
-		</os:retrieve>
 		<choice doc:name="Choice" doc:id="89edaf8b-d76e-4d1f-820f-c286702781cb" >
-			<when expression="#[!isEmpty(vars.generatedAUOrders) or !isEmpty(vars.generatedUSOrders)]">
+			<when expression="#[!isEmpty(payload)]">
 				<ee:transform doc:name="Transform Message" doc:id="3c8b5656-c9d1-4bf9-b684-a16bc4064ead" >
 					<ee:message >
 						<ee:set-payload resource="dw/transformations/generated-test-data-response.dwl" />
