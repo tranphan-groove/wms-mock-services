@@ -2,4 +2,4 @@
 import * from dw::Runtime
 output application/json
 ---
-{} wait ((p('blazemeter-mock-service.waitBetweenRequests') as Number) * 1000)
+{} wait ((p('outbound.waitBetweenRequests') as Number) * 1000)

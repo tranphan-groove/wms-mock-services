@@ -26,7 +26,7 @@ http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/
 	<configuration-properties doc:name="Configuration env properties" doc:id="bd37f4b1-5575-4ca0-b50e-b3bd4de31a45" file="config\config-${mule.env}.yaml" />
 	<configuration-properties doc:name="Configuration common properties" doc:id="73ccdab0-5798-46a6-8d55-a85bcdfbcb60" file="config\common.yaml" />
 	<http:request-config name="blazeMeter_HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="3d9a1e03-1b63-4523-baf3-a7005d2411da">
-		<http:request-connection protocol="HTTPS" host="#[p('blazemeter-mock-service.host')]" port="#[p('blazemeter-mock-service.port')]" />
+		<http:request-connection protocol="HTTPS" host="#[p('outbound.host')]" port="#[p('outbound.port')]" />
 	</http:request-config>
 	<os:object-store name="Object_store" doc:name="Object store" doc:id="09f6d6d7-c3a9-4db6-afd9-13398f65e866" persistent="false" entryTtl="${object-store.ttl}" entryTtlUnit="MINUTES" />
 	<db:config name="Database_Config" doc:name="Database Config" doc:id="d9d87bc2-401f-4ffe-a09d-8f85c8a10494" >

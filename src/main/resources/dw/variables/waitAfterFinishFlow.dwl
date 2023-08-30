@@ -2,4 +2,4 @@
 import * from dw::Runtime
 output application/json
 ---
-{} wait ((p('blazemeter-mock-service.waitAfterFinishFlow') as Number) * 1000)
+{} wait ((p('outbound.waitAfterFinishFlow') as Number) * 1000)

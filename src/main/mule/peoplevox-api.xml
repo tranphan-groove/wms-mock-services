@@ -114,6 +114,12 @@ vars.saveDataContent map ((item) -> {
 	</sub-flow>
 	<sub-flow name="pvx-inventory-subflow" doc:id="bd243e9a-b37d-4926-9720-e393c0461669" >
 		<foreach doc:name="For Each" doc:id="15d5cb7d-f29a-4be5-bbf2-503869f9dab2" collection="#[vars.saveDataContent]">
+			<ee:transform doc:name="Set Variable - correlationId" doc:id="92984d5e-564a-45a5-8deb-5539f4845ff6">
+				<ee:message />
+				<ee:variables>
+					<ee:set-variable resource="dw/variables/correlationId.dwl" variableName="correlationId" />
+				</ee:variables>
+			</ee:transform>
 			<flow-ref doc:name="Flow pvx-inventory-availability-subflow" doc:id="84d667d9-eee2-4df4-8335-173067568063" name="pvx-inventory-availability-subflow"/>
 			<flow-ref doc:name="Flow pvx-inventory-incremental-subflow" doc:id="6e31b690-f107-4ad7-ac7b-f86d45aec0f0" name="pvx-inventory-incremental-subflow"/>
 		</foreach>
@@ -127,9 +133,14 @@ vars.saveDataContent map ((item) -> {
 			</ee:variables>
 		</ee:transform>
 		<http:request method="GET" doc:name="Request inventory availability" doc:id="c4a5e210-46fd-4f5a-8ccb-3811fbdb5507" config-ref="blazeMeter_HTTP_Request_configuration" path="/australia/p-inventory/v1-0/api/inventory/availability" target="httpRes">
-				<http:query-params><![CDATA[#[vars.inventoryAvailabilityQueryParams]]]></http:query-params>
+				<http:headers ><![CDATA[#[output application/java
+---
+{
+	"X-Correlation-ID" : vars.correlationId default ""
+}]]]></http:headers>
+			<http:query-params><![CDATA[#[vars.inventoryAvailabilityQueryParams]]]></http:query-params>
 			</http:request>
-		<logger level="INFO" doc:name="INFO: AFTER_REQUEST" doc:id="3689c191-1479-48e7-8df7-afe81a707aa1" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.afterRequest')&#10;var logMessage = &quot;AFTER_REQUEST: PeopleVox has sent an availability inventory request - &quot; ++ (payload.SalesOrderNumber default &quot;&quot;) ++ &quot;-&quot; ++ (payload.ItemCode default &quot;&quot;)&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
+		<logger level="INFO" doc:name="INFO: AFTER_REQUEST" doc:id="3689c191-1479-48e7-8df7-afe81a707aa1" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.afterRequest')&#10;var logMessage = &quot;AFTER_REQUEST: PeopleVox has sent an availability inventory request - &quot; ++ (payload.SalesOrderNumber default &quot;&quot;) ++ &quot;-&quot; ++ (payload.ItemCode default &quot;&quot;)&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, (vars - &quot;rootMessage&quot;), attributes)]" />
 		<ee:transform doc:name="Wait between requests" doc:id="1b171714-d01b-4691-adf6-711738e17f5a">
 				<ee:message />
 				<ee:variables>
@@ -146,9 +157,14 @@ vars.saveDataContent map ((item) -> {
 			</ee:variables>
 		</ee:transform>
 		<http:request method="GET" doc:name="Request inventory incremental" doc:id="24eb4ee2-e3a1-4332-9238-b64c40ead8d0" config-ref="blazeMeter_HTTP_Request_configuration" path="/australia/p-inventory/v1-0/api/inventory/incremental" target="httpRes">
-				<http:query-params><![CDATA[#[vars.inventoryIncrementalQueryParams]]]></http:query-params>
+				<http:headers ><![CDATA[#[output application/java
+---
+{
+	"X-Correlation-ID" : vars.correlationId default ""
+}]]]></http:headers>
+			<http:query-params><![CDATA[#[vars.inventoryIncrementalQueryParams]]]></http:query-params>
 			</http:request>
-		<logger level="INFO" doc:name="INFO: AFTER_REQUEST" doc:id="ce67a910-c15e-4dd1-b45a-a40647210c53" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.afterRequest')&#10;var logMessage = &quot;AFTER_REQUEST: PeopleVox has sent an incremental inventory request - &quot; ++ (payload.SalesOrderNumber default &quot;&quot;) ++ &quot;-&quot; ++ (payload.ItemCode default &quot;&quot;)&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
+		<logger level="INFO" doc:name="INFO: AFTER_REQUEST" doc:id="ce67a910-c15e-4dd1-b45a-a40647210c53" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.afterRequest')&#10;var logMessage = &quot;AFTER_REQUEST: PeopleVox has sent an incremental inventory request - &quot; ++ (payload.SalesOrderNumber default &quot;&quot;) ++ &quot;-&quot; ++ (payload.ItemCode default &quot;&quot;)&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, (vars - &quot;rootMessage&quot;), attributes)]" />
 		<ee:transform doc:name="Wait between requests" doc:id="1c5d0cce-1be4-475b-905e-ae796bf57314">
 				<ee:message />
 				<ee:variables>
@@ -158,6 +174,12 @@ vars.saveDataContent map ((item) -> {
 	</sub-flow>
 	<sub-flow name="pvx-status-change-subflow" doc:id="f55f35af-03f0-4325-a23c-9c6ceba82565" >
 		<foreach doc:name="For Each" doc:id="2903f790-df78-453a-aed1-8b0ce7a40a2c" collection="#[vars.saveDataContent]">
+			<ee:transform doc:name="Set Variable - correlationId" doc:id="d8ea9b3b-b9a0-4ef6-8e50-bbc7b403bca4">
+				<ee:message />
+				<ee:variables>
+					<ee:set-variable resource="dw/variables/correlationId.dwl" variableName="correlationId" />
+				</ee:variables>
+			</ee:transform>
 			<ee:transform doc:name="Set Variable - statusChangeQueryParams and statusChangeBody" doc:id="64877458-dfa8-42f7-9df5-e74186d3bb81">
 			<ee:message>
 			</ee:message>
@@ -168,9 +190,14 @@ vars.saveDataContent map ((item) -> {
 		</ee:transform>
 			<http:request method="POST" doc:name="Request status change" doc:id="490555f0-2411-46e2-8a3a-563e2684ed87" config-ref="blazeMeter_HTTP_Request_configuration" path="/au/p-api-co-pvx-os-statusevents/v1/api/statusevents" target="httpRes" >
 				<http:body ><![CDATA[#[vars.statusChangeBody]]]></http:body>
+				<http:headers ><![CDATA[#[output application/java
+---
+{
+	"X-Correlation-ID" : vars.correlationId default ""
+}]]]></http:headers>
 				<http:query-params ><![CDATA[#[vars.statusChangeQueryParams]]]></http:query-params>
 			</http:request>
-			<logger level="INFO" doc:name="INFO: AFTER_REQUEST" doc:id="2ee376f4-bac6-48a4-b6f9-3dbb7b0f8484" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.afterRequest')&#10;var logMessage = &quot;AFTER_REQUEST: PeopleVox has sent a status change request - &quot; ++ (payload.SalesOrderNumber default &quot;&quot;)&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
+			<logger level="INFO" doc:name="INFO: AFTER_REQUEST" doc:id="2ee376f4-bac6-48a4-b6f9-3dbb7b0f8484" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.afterRequest')&#10;var logMessage = &quot;AFTER_REQUEST: PeopleVox has sent a status change request - &quot; ++ (payload.SalesOrderNumber default &quot;&quot;)&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, (vars - &quot;rootMessage&quot;), attributes)]" />
 			<ee:transform doc:name="Wait between requests" doc:id="82a1c4c1-e8d4-424d-9aa3-76d9da2148d7" >
 				<ee:message />
 				<ee:variables >

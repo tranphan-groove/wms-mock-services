@@ -15,10 +15,10 @@ mule:
     client_id: "passIn"
     client_secret: "passIn"
     
-blazemeter-mock-service:
+outbound:
   waitAfterFinishFlow: "60" #secs
   waitBetweenRequests: "2" #secs
-  host: "ckmulesoftredirectmockservice308531.mock.blazemeter.com"
+  host: "qa.ipaas.tfapparel.net"
   port: "443"
   
 jdbc:
