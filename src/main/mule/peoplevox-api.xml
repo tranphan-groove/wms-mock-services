@@ -63,7 +63,7 @@ vars.saveDataContent map ((item) -> {
 		</ee:transform>
 		<choice doc:name="Choice" doc:id="fe607994-e019-41c0-99b5-cfd66637ebea">
 			<when expression="#[vars.templateName == 'Sales Order Items']" >
-				<async doc:name="Async" doc:id="f951a739-6a53-4d46-bf55-35a7ee8e6342" >
+				<async doc:name="Async" doc:id="f951a739-6a53-4d46-bf55-35a7ee8e6342" maxConcurrency="1">
 					<ee:transform doc:name="Wait after finish flow" doc:id="5b9242e4-b0bd-4907-a153-599800a4453a" >
 						<ee:message >
 						</ee:message>
@@ -75,7 +75,7 @@ vars.saveDataContent map ((item) -> {
 				</async>
 			</when>
 			<when expression="#[vars.templateName == 'Sales Orders']">
-				<async doc:name="Async" doc:id="7803b779-a5dd-4899-8992-a91dee38c8ab" >
+				<async doc:name="Async" doc:id="7803b779-a5dd-4899-8992-a91dee38c8ab" maxConcurrency="1">
 					<ee:transform doc:name="Wait after finish flow" doc:id="05b0c231-1a9b-4d02-837f-acd4fa7de304" >
 						<ee:message />
 						<ee:variables >
@@ -114,17 +114,17 @@ vars.saveDataContent map ((item) -> {
 	</sub-flow>
 	<sub-flow name="pvx-inventory-subflow" doc:id="bd243e9a-b37d-4926-9720-e393c0461669" >
 		<foreach doc:name="For Each" doc:id="15d5cb7d-f29a-4be5-bbf2-503869f9dab2" collection="#[vars.saveDataContent]">
-			<ee:transform doc:name="Set Variable - correlationId" doc:id="92984d5e-564a-45a5-8deb-5539f4845ff6">
-				<ee:message />
-				<ee:variables>
-					<ee:set-variable resource="dw/variables/correlationId.dwl" variableName="correlationId" />
-				</ee:variables>
-			</ee:transform>
 			<flow-ref doc:name="Flow pvx-inventory-availability-subflow" doc:id="84d667d9-eee2-4df4-8335-173067568063" name="pvx-inventory-availability-subflow"/>
 			<flow-ref doc:name="Flow pvx-inventory-incremental-subflow" doc:id="6e31b690-f107-4ad7-ac7b-f86d45aec0f0" name="pvx-inventory-incremental-subflow"/>
 		</foreach>
 	</sub-flow>
 	<sub-flow name="pvx-inventory-availability-subflow" doc:id="0f10d616-7697-442d-99d6-d6d980678621" >
+		<ee:transform doc:name="Set Variable - correlationId" doc:id="e9be4c00-8ca3-478a-87d5-f445bac43994">
+			<ee:message />
+			<ee:variables>
+				<ee:set-variable resource="dw/variables/correlationId.dwl" variableName="correlationId" />
+			</ee:variables>
+		</ee:transform>
 		<ee:transform doc:name="Set Variable - inventoryAvailabilityQueryParams" doc:id="5d80f769-b43f-4e61-8a35-3d459254743f">
 			<ee:message>
 			</ee:message>
@@ -132,6 +132,7 @@ vars.saveDataContent map ((item) -> {
 					<ee:set-variable resource="dw/variables/pvx-inventoryAvailabilityQueryParams.dwl" variableName="inventoryAvailabilityQueryParams" />
 			</ee:variables>
 		</ee:transform>
+		<logger level="INFO" doc:name="INFO: BEFORE_REQUEST" doc:id="de5776f7-b762-4006-b699-9d5fed4ca9c3" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.beforeRequest')&#10;var logMessage = &quot;AFTER_REQUEST: PeopleVox is sending an availability inventory request - &quot; ++ (payload.SalesOrderNumber default &quot;&quot;) ++ &quot;-&quot; ++ (payload.ItemCode default &quot;&quot;)&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, (vars - &quot;rootMessage&quot;), attributes)]" />
 		<http:request method="GET" doc:name="Request inventory availability" doc:id="c4a5e210-46fd-4f5a-8ccb-3811fbdb5507" config-ref="blazeMeter_HTTP_Request_configuration" path="/australia/p-inventory/v1-0/api/inventory/availability" target="httpRes">
 				<http:headers ><![CDATA[#[output application/java
 ---
@@ -149,6 +150,12 @@ vars.saveDataContent map ((item) -> {
 			</ee:transform>
 	</sub-flow>
 	<sub-flow name="pvx-inventory-incremental-subflow" doc:id="3e99de13-a9a6-429c-83cc-856f8a0512bd" >
+		<ee:transform doc:name="Set Variable - correlationId" doc:id="a0a3960e-942f-4fe8-8aa4-a4e51c8670f7">
+			<ee:message />
+			<ee:variables>
+				<ee:set-variable resource="dw/variables/correlationId.dwl" variableName="correlationId" />
+			</ee:variables>
+		</ee:transform>
 		<ee:transform doc:name="Set Variable - inventoryIncrementalQueryParams" doc:id="7763d995-2985-4544-a48d-f84bbc3ae03a">
 			<ee:message>
 			</ee:message>
@@ -156,6 +163,7 @@ vars.saveDataContent map ((item) -> {
 					<ee:set-variable resource="dw/variables/pvx-inventoryIncrementalQueryParams.dwl" variableName="inventoryIncrementalQueryParams" />
 			</ee:variables>
 		</ee:transform>
+		<logger level="INFO" doc:name="INFO: BEFORE_REQUEST" doc:id="912a9bdf-7e0d-4531-ba71-4399aab31936" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.beforeRequest')&#10;var logMessage = &quot;AFTER_REQUEST: PeopleVox is sending an incremental inventory request - &quot; ++ (payload.SalesOrderNumber default &quot;&quot;) ++ &quot;-&quot; ++ (payload.ItemCode default &quot;&quot;)&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, (vars - &quot;rootMessage&quot;), attributes)]" />
 		<http:request method="GET" doc:name="Request inventory incremental" doc:id="24eb4ee2-e3a1-4332-9238-b64c40ead8d0" config-ref="blazeMeter_HTTP_Request_configuration" path="/australia/p-inventory/v1-0/api/inventory/incremental" target="httpRes">
 				<http:headers ><![CDATA[#[output application/java
 ---
@@ -188,6 +196,7 @@ vars.saveDataContent map ((item) -> {
 					<ee:set-variable resource="dw/variables/pvx-statusChangeQueryParams.dwl" variableName="statusChangeQueryParams" />
 			</ee:variables>
 		</ee:transform>
+			<logger level="INFO" doc:name="INFO: BEFORE_REQUEST" doc:id="1edf4926-67b9-4a2e-b91b-ec3bdaf19127" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.beforeRequest')&#10;var logMessage = &quot;AFTER_REQUEST: PeopleVox is sending a status change request - &quot; ++ (payload.SalesOrderNumber default &quot;&quot;)&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, (vars - &quot;rootMessage&quot;), attributes)]" />
 			<http:request method="POST" doc:name="Request status change" doc:id="490555f0-2411-46e2-8a3a-563e2684ed87" config-ref="blazeMeter_HTTP_Request_configuration" path="/au/p-api-co-pvx-os-statusevents/v1/api/statusevents" target="httpRes" >
 				<http:body ><![CDATA[#[vars.statusChangeBody]]]></http:body>
 				<http:headers ><![CDATA[#[output application/java
