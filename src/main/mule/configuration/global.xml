@@ -30,7 +30,12 @@ http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/
 	</http:request-config>
 	<os:object-store name="Object_store" doc:name="Object store" doc:id="09f6d6d7-c3a9-4db6-afd9-13398f65e866" persistent="false" entryTtl="${object-store.ttl}" entryTtlUnit="MINUTES" />
 	<db:config name="Database_Config" doc:name="Database Config" doc:id="d9d87bc2-401f-4ffe-a09d-8f85c8a10494" >
-		<db:my-sql-connection host="${jdbc.hostName}" port="${jdbc.port}" user="${jdbc.user}" password="${jdbc.password}" database="${jdbc.databaseName}"/>
+		<db:my-sql-connection host="${jdbc.hostName}" port="${jdbc.port}" user="${jdbc.user}" password="${jdbc.password}" database="${jdbc.databaseName}">
+			<reconnection>
+                <reconnect count="${jdbc.reconnection.attemps}" frequency="${jdbc.reconnection.frequency}" />
+            </reconnection>
+            <db:pooling-profile maxPoolSize="${jdbc.pool.maxPoolSize}" minPoolSize="${jdbc.pool.minPoolSize}" maxWait="${jdbc.pool.maxWait}" maxWaitUnit="MILLISECONDS" preparedStatementCacheSize="${jdbc.pool.preparedStatementCacheSize}" acquireIncrement="${jdbc.pool.increment}" testConnectionOnCheckout="false" maxStatements="${jdbc.pool.maxPreparedStatement}" maxIdleTime="${jdbc.pool.maxIdle}" />
+		</db:my-sql-connection>
 	</db:config>
 	<file:config name="File_Config" doc:name="File Config" doc:id="35ecd874-6b5a-4d48-872b-6d504feca429" >
 		<file:connection workingDir="${app.home}" />

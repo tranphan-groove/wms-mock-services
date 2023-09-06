@@ -3,6 +3,21 @@ object-store:
   
 http:
   timeout: "600000" #milisecs
+
+jdbc:
+  reconnection: 
+    attemps: "2"
+    frequency: "2000"
+  timeout:
+    interval: "10000"
+  pool:
+    maxPoolSize: "30"
+    minPoolSize: "1"
+    maxWait: "60000"
+    preparedStatementCacheSize: "0"
+    increment: "1"
+    maxPreparedStatement: "0"
+    maxIdle: "15"
   
 json.logger:
 ## Priority/Levels of logging  

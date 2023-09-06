@@ -16,7 +16,7 @@ mule:
     client_secret: "passIn"
     
 outbound:
-  waitAfterFinishFlow: "5" #secs
+  waitAfterFinishFlow: "25" #secs
   waitBetweenRequests: "2" #secs
   host: "qa.ipaas.tfapparel.net"
   port: "443"
