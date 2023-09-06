@@ -4,7 +4,8 @@ import * from dw::util::Timer
 import * from dw::util::Values
 var packFee = (random() * 100) as String {format: '##.##'}
 var pickFee = (random() * 100) as String {format: '##.##'}
-var uniqueVal = currentMilliseconds()
+var originalOrderId = payload.order_orig replace /[a-zA-Z]/ with ("")
+var uniqueVal = (currentMilliseconds() ++ originalOrderId) as Number
 var packages = (
     payload.packages map ((package, packageIndex) -> do {
         var trackingNumber = uniqueVal + packageIndex

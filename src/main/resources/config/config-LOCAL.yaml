@@ -20,6 +20,7 @@ outbound:
   waitBetweenRequests: "2" #secs
   host: "qa.ipaas.tfapparel.net"
   port: "443"
+  maxConcurrency: "20"
 
 jdbc:
   hostName: "0.0.0.0"

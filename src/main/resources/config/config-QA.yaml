@@ -16,10 +16,11 @@ mule:
     client_secret: "passIn"
     
 outbound:
-  waitAfterFinishFlow: "60" #secs
+  waitAfterFinishFlow: "5" #secs
   waitBetweenRequests: "2" #secs
   host: "qa.ipaas.tfapparel.net"
   port: "443"
+  maxConcurrency: "20"
   
 jdbc:
   hostName: "mulesoft-integration-test.c7iscturzbsa.ap-southeast-2.rds.amazonaws.com"
