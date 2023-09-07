@@ -27,7 +27,18 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 			</when>
 			<when expression="#[vars.templateName == 'Mulesoft - Despatched items by package v3']">
 				<logger level="INFO" doc:name="INFO: START" doc:id="a8cb97d2-01bd-44fc-aded-942e2c0187c4" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.start')&#10;var logMessage = tracePoint ++ &quot;: PeopleVox has received a get report request&quot;&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
-				<flow-ref doc:name="Flow pvx-soap-get-report-data-subflow" doc:id="f5c4fb5a-7db8-4a1a-9433-4a5da0f54122" name="pvx-soap-get-report-data-subflow"/>
+				<choice doc:name="Choice" doc:id="b6afb72b-e3b6-47e6-ab81-80dce6381728" >
+					<when expression="#[p('peoplevox.fulfillment') == 'true']">
+						<flow-ref doc:name="Flow pvx-soap-get-report-data-subflow" doc:id="f5c4fb5a-7db8-4a1a-9433-4a5da0f54122" name="pvx-soap-get-report-data-subflow" />
+					</when>
+					<otherwise >
+						<ee:transform doc:name="Filter Payload" doc:id="7a0b356c-cff3-47cf-ac31-98bb44d029cd" >
+							<ee:message >
+								<ee:set-payload resource="dw/transformations/pvx-non-fulfillment-filter-payload.dwl" />
+							</ee:message>
+						</ee:transform>
+					</otherwise>
+				</choice>
 				<logger level="INFO" doc:name="INFO: END" doc:id="9613309d-7156-4ad9-b1fb-4b3fc8653249" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.end')&#10;var logMessage = tracePoint ++ &quot;: PeopleVox has returned a report&quot;&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
 			</when>
 		</choice>
@@ -64,30 +75,38 @@ vars.saveDataContent map ((item) -> {
 		<choice doc:name="Choice" doc:id="fe607994-e019-41c0-99b5-cfd66637ebea">
 			<when expression="#[vars.templateName == 'Sales Order Items']" >
 				<async doc:name="Async" doc:id="f951a739-6a53-4d46-bf55-35a7ee8e6342" maxConcurrency="${outbound.maxConcurrency}">
-					<ee:transform doc:name="Wait before calling inventory request" doc:id="5b9242e4-b0bd-4907-a153-599800a4453a" >
-						<ee:message >
+					<choice doc:name="Choice" doc:id="17f75f5c-0800-4618-ad91-34560666912f">
+					<when expression="#[p('peoplevox.inventory') == 'true']">
+							<ee:transform doc:name="Wait before calling inventory request" doc:id="5b9242e4-b0bd-4907-a153-599800a4453a">
+						<ee:message>
 						</ee:message>
-						<ee:variables >
+						<ee:variables>
 							<ee:set-variable resource="dw/variables/waitBeforeCallingInventoryRequest.dwl" variableName="wait" />
 						</ee:variables>
 					</ee:transform>
-					<foreach doc:name="For Each" doc:id="d453962b-196a-4fbd-aee6-ba0c7ca17009" collection="#[vars.saveDataContent]" >
+							<foreach doc:name="For Each" doc:id="d453962b-196a-4fbd-aee6-ba0c7ca17009" collection="#[vars.saveDataContent]">
 						<flow-ref doc:name="Flow pvx-inventory-availability-flow" doc:id="ce5f3d68-8b2c-48e9-8109-719996dce4ae" name="pvx-inventory-availability-flow" />
 						<flow-ref doc:name="Flow pvx-inventory-incremental-flow" doc:id="b358d925-2de5-4611-ba9b-5b11427be76b" name="pvx-inventory-incremental-flow" />
 					</foreach>
+						</when>
+				</choice>
 				</async>
 			</when>
 			<when expression="#[vars.templateName == 'Sales Orders']">
 				<async doc:name="Async" doc:id="7803b779-a5dd-4899-8992-a91dee38c8ab" maxConcurrency="${outbound.maxConcurrency}">
-					<ee:transform doc:name="Wait before calling inventory request" doc:id="05b0c231-1a9b-4d02-837f-acd4fa7de304" >
+					<choice doc:name="Choice" doc:id="72360f10-adb8-4101-af2d-5762b8cc38a2" >
+						<when expression="#[p('peoplevox.statusChange') == 'true']">
+							<ee:transform doc:name="Wait before calling inventory request" doc:id="05b0c231-1a9b-4d02-837f-acd4fa7de304">
 						<ee:message />
-						<ee:variables >
+						<ee:variables>
 							<ee:set-variable resource="dw/variables/waitBeforeCallingInventoryRequest.dwl" variableName="wait" />
 						</ee:variables>
 					</ee:transform>
-					<foreach doc:name="For Each" doc:id="3f5f13e3-9306-4500-9848-d74582a3ca18" collection="#[vars.saveDataContent]" >
+							<foreach doc:name="For Each" doc:id="3f5f13e3-9306-4500-9848-d74582a3ca18" collection="#[vars.saveDataContent]">
 						<flow-ref doc:name="Flow pvx-status-change-flow" doc:id="1b4d99e6-a7b8-451e-9126-7baa545f4ddb" name="pvx-status-change-flow" />
 					</foreach>
+						</when>
+					</choice>
 				</async>
 			</when>
 		</choice>

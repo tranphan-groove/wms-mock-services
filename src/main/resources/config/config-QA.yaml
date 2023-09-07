@@ -22,6 +22,16 @@ outbound:
   host: "qa.ipaas.tfapparel.net"
   port: "443"
   maxConcurrency: "20"
+
+peoplevox:
+  inventory: "true"
+  statusChange: "true"
+  fulfillment: "true"
+
+whiplash:
+  inventory: "true"
+  statusChange: "true"
+  fulfillment: "true"
   
 jdbc:
   hostName: "mulesoft-integration-test.c7iscturzbsa.ap-southeast-2.rds.amazonaws.com"

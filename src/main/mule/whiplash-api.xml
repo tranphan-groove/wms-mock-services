@@ -42,22 +42,30 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 			</ee:transform>
 			<scatter-gather doc:name="Scatter-Gather" doc:id="062259ef-021a-43a5-a3d4-8301a5b66691" >
 				<route >
-					<ee:transform doc:name="Wait before calling inventory request" doc:id="c7a70c33-6fe3-4c60-88c8-3a1b3315e6bd">
+					<choice doc:name="Choice" doc:id="867fd0ea-6886-430e-b9e1-cdda4e30c435" >
+						<when expression="#[p('whiplash.inventory') == 'true' or p('whiplash.statusChange') == 'true']">
+							<ee:transform doc:name="Wait before calling inventory request" doc:id="c7a70c33-6fe3-4c60-88c8-3a1b3315e6bd">
 				<ee:message />
 				<ee:variables>
 					<ee:set-variable resource="dw/variables/waitBeforeCallingInventoryRequest.dwl" variableName="wait" />
 				</ee:variables>
 			</ee:transform>
-					<flow-ref doc:name="Flow whiplash-inventory-flow" doc:id="c5afe440-17f7-4c50-a57c-12b66a33d462" name="whiplash-inventory-flow" />
+							<flow-ref doc:name="Flow whiplash-inventory-flow" doc:id="c5afe440-17f7-4c50-a57c-12b66a33d462" name="whiplash-inventory-flow" />
+						</when>
+					</choice>
 				</route>
 				<route >
-					<ee:transform doc:name="Wait before calling fulfillment request" doc:id="088b8ee6-edec-46b7-a9d6-eb16248a9894">
+					<choice doc:name="Choice" doc:id="66a3d912-acce-4046-8ac5-e4d388b7c172" >
+						<when expression="#[p('whiplash.fulfillment') == 'true']">
+							<ee:transform doc:name="Wait before calling fulfillment request" doc:id="088b8ee6-edec-46b7-a9d6-eb16248a9894">
 						<ee:message />
 						<ee:variables>
 							<ee:set-variable resource="dw/variables/waitBeforeCallingFulfillmentRequest.dwl" variableName="wait" />
 						</ee:variables>
 					</ee:transform>
-					<flow-ref doc:name="Flow whiplash-fulfillment-flow" doc:id="7ed50a8e-40ba-41ff-999a-f232943aab49" name="whiplash-fulfillment-flow" />
+							<flow-ref doc:name="Flow whiplash-fulfillment-flow" doc:id="7ed50a8e-40ba-41ff-999a-f232943aab49" name="whiplash-fulfillment-flow" />
+						</when>
+					</choice>
 				</route>
 			</scatter-gather>
 		</async>
@@ -154,8 +162,16 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 				<ee:set-variable resource="dw/variables/wpl-inventoryQueryParams.dwl" variableName="inventoryQueryParams" />
 			</ee:variables>
 		</ee:transform>
-			<flow-ref doc:name="Flow whiplash-ats-flow" doc:id="77501c3f-d908-4d0a-aa0c-c24980ad6284" name="whiplash-ats-flow"/>
-			<flow-ref doc:name="Flow whiplash-status-change-flow" doc:id="3e7f6805-7a73-48c7-9474-a11fd8700701" name="whiplash-status-change-flow"/>
+			<choice doc:name="Choice" doc:id="9ae93966-2565-42d1-a098-dee36a3af22d" >
+				<when expression="#[p('whiplash.inventory') == 'true']">
+					<flow-ref doc:name="Flow whiplash-ats-flow" doc:id="77501c3f-d908-4d0a-aa0c-c24980ad6284" name="whiplash-ats-flow" />
+				</when>
+			</choice>
+			<choice doc:name="Choice" doc:id="548c9fc5-aca9-4c04-a236-81c97c64ea01" >
+				<when expression="#[p('whiplash.statusChange') == 'true']">
+					<flow-ref doc:name="Flow whiplash-status-change-flow" doc:id="3e7f6805-7a73-48c7-9474-a11fd8700701" name="whiplash-status-change-flow" />
+				</when>
+			</choice>
 		</foreach>
 	</sub-flow>
 	<flow name="whiplash-ats-flow" doc:id="a6801db6-55fd-4803-8402-79132f1f0af1" >
