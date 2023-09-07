@@ -23,7 +23,7 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 			<when expression="#[['Sales Orders', 'Sales Order Items', 'Customers'] contains vars.templateName]">
 				<logger level="INFO" doc:name="INFO: START" doc:id="a40c995c-be58-42b0-9fe9-d39d76ce6d83" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.start')&#10;var logMessage = tracePoint ++ &quot;: PeopleVox has received &quot; ++ vars.templateName&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
 				<flow-ref doc:name="Flow pvx-soap-save-data-subflow" doc:id="c9c6514f-44da-4b2f-b813-3ae962925baf" name="pvx-soap-save-data-subflow"/>
-				<logger level="INFO" doc:name="NFO: END" doc:id="2c8b2b5c-68f8-4611-96b8-565207675af4" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.end')&#10;var logMessage = tracePoint ++ &quot;: PeopleVox has written &quot; ++ vars.templateName ++ &quot; to file&quot;&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
+				<logger level="INFO" doc:name="NFO: END" doc:id="2c8b2b5c-68f8-4611-96b8-565207675af4" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.end')&#10;var logMessage = tracePoint ++ &quot;: PeopleVox has inserted &quot; ++ vars.templateName ++ &quot; into DB&quot;&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
 			</when>
 			<when expression="#[vars.templateName == 'Mulesoft - Despatched items by package v3']">
 				<logger level="INFO" doc:name="INFO: START" doc:id="a8cb97d2-01bd-44fc-aded-942e2c0187c4" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.start')&#10;var logMessage = tracePoint ++ &quot;: PeopleVox has received a get report request&quot;&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
@@ -64,11 +64,11 @@ vars.saveDataContent map ((item) -> {
 		<choice doc:name="Choice" doc:id="fe607994-e019-41c0-99b5-cfd66637ebea">
 			<when expression="#[vars.templateName == 'Sales Order Items']" >
 				<async doc:name="Async" doc:id="f951a739-6a53-4d46-bf55-35a7ee8e6342" maxConcurrency="${outbound.maxConcurrency}">
-					<ee:transform doc:name="Wait after finish flow" doc:id="5b9242e4-b0bd-4907-a153-599800a4453a" >
+					<ee:transform doc:name="Wait before calling inventory request" doc:id="5b9242e4-b0bd-4907-a153-599800a4453a" >
 						<ee:message >
 						</ee:message>
 						<ee:variables >
-							<ee:set-variable resource="dw/variables/waitAfterFinishFlow.dwl" variableName="wait" />
+							<ee:set-variable resource="dw/variables/waitBeforeCallingInventoryRequest.dwl" variableName="wait" />
 						</ee:variables>
 					</ee:transform>
 					<foreach doc:name="For Each" doc:id="d453962b-196a-4fbd-aee6-ba0c7ca17009" collection="#[vars.saveDataContent]" >
@@ -79,10 +79,10 @@ vars.saveDataContent map ((item) -> {
 			</when>
 			<when expression="#[vars.templateName == 'Sales Orders']">
 				<async doc:name="Async" doc:id="7803b779-a5dd-4899-8992-a91dee38c8ab" maxConcurrency="${outbound.maxConcurrency}">
-					<ee:transform doc:name="Wait after finish flow" doc:id="05b0c231-1a9b-4d02-837f-acd4fa7de304" >
+					<ee:transform doc:name="Wait before calling inventory request" doc:id="05b0c231-1a9b-4d02-837f-acd4fa7de304" >
 						<ee:message />
 						<ee:variables >
-							<ee:set-variable resource="dw/variables/waitAfterFinishFlow.dwl" variableName="wait" />
+							<ee:set-variable resource="dw/variables/waitBeforeCallingInventoryRequest.dwl" variableName="wait" />
 						</ee:variables>
 					</ee:transform>
 					<foreach doc:name="For Each" doc:id="3f5f13e3-9306-4500-9848-d74582a3ca18" collection="#[vars.saveDataContent]" >
@@ -144,7 +144,7 @@ vars.saveDataContent map ((item) -> {
 		<ee:transform doc:name="Wait between requests" doc:id="1b171714-d01b-4691-adf6-711738e17f5a">
 				<ee:message />
 				<ee:variables>
-					<ee:set-variable resource="dw/variables/waitBetweenRequests.dwl" variableName="wait" />
+					<ee:set-variable resource="dw/variables/waitBetweenInventoryRequests.dwl" variableName="wait" />
 				</ee:variables>
 			</ee:transform>
 			<error-handler >
@@ -180,7 +180,7 @@ vars.saveDataContent map ((item) -> {
 		<ee:transform doc:name="Wait between requests" doc:id="1c5d0cce-1be4-475b-905e-ae796bf57314">
 				<ee:message />
 				<ee:variables>
-					<ee:set-variable resource="dw/variables/waitBetweenRequests.dwl" variableName="wait" />
+					<ee:set-variable resource="dw/variables/waitBetweenInventoryRequests.dwl" variableName="wait" />
 				</ee:variables>
 			</ee:transform>
 			<error-handler >
@@ -218,7 +218,7 @@ vars.saveDataContent map ((item) -> {
 		<ee:transform doc:name="Wait between requests" doc:id="82a1c4c1-e8d4-424d-9aa3-76d9da2148d7">
 				<ee:message />
 				<ee:variables>
-					<ee:set-variable resource="dw/variables/waitBetweenRequests.dwl" variableName="wait" />
+					<ee:set-variable resource="dw/variables/waitBetweenInventoryRequests.dwl" variableName="wait" />
 				</ee:variables>
 			</ee:transform>
 				<error-handler >

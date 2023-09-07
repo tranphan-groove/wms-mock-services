@@ -16,8 +16,9 @@ mule:
     client_secret: "passIn"
     
 outbound:
-  waitAfterFinishFlow: "5" #secs
-  waitBetweenRequests: "2" #secs
+  waitBeforeCallingFulfillmentRequest: "300" #secs
+  waitBeforeCallingInventoryRequest: "5" #secs
+  waitBetweenInventoryRequests: "2" #secs
   host: "qa.ipaas.tfapparel.net"
   port: "443"
   maxConcurrency: "20"

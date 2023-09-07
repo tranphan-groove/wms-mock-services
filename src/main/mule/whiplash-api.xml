@@ -31,14 +31,8 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 	data: write(payload,'application/json')
 }]]]></db:input-parameters>
 		</db:insert>
-		<logger level="INFO" doc:name="INFO: END" doc:id="07ebe133-5c1a-4c8a-bc66-f32710c28379" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.end')&#10;var logMessage = tracePoint ++ &quot;: Whiplash has written order to file&quot;&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
+		<logger level="INFO" doc:name="INFO: END" doc:id="07ebe133-5c1a-4c8a-bc66-f32710c28379" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.end')&#10;var logMessage = tracePoint ++ &quot;: Whiplash has inserted order into DB&quot;&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
 		<async doc:name="Async" doc:id="da5fb137-ba1f-4c19-8876-fed06802c5c6" maxConcurrency="${outbound.maxConcurrency}">
-			<ee:transform doc:name="Wait after finish flow" doc:id="c7a70c33-6fe3-4c60-88c8-3a1b3315e6bd">
-				<ee:message />
-				<ee:variables>
-					<ee:set-variable resource="dw/variables/waitAfterFinishFlow.dwl" variableName="wait" />
-				</ee:variables>
-			</ee:transform>
 			<ee:transform doc:name="Set Variable - orderNumber and originalOrderId" doc:id="fef80552-560a-434a-b43b-54d8dee9997c">
 				<ee:message />
 				<ee:variables>
@@ -48,9 +42,21 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 			</ee:transform>
 			<scatter-gather doc:name="Scatter-Gather" doc:id="062259ef-021a-43a5-a3d4-8301a5b66691" >
 				<route >
+					<ee:transform doc:name="Wait before calling inventory request" doc:id="c7a70c33-6fe3-4c60-88c8-3a1b3315e6bd">
+				<ee:message />
+				<ee:variables>
+					<ee:set-variable resource="dw/variables/waitBeforeCallingInventoryRequest.dwl" variableName="wait" />
+				</ee:variables>
+			</ee:transform>
 					<flow-ref doc:name="Flow whiplash-inventory-flow" doc:id="c5afe440-17f7-4c50-a57c-12b66a33d462" name="whiplash-inventory-flow" />
 				</route>
 				<route >
+					<ee:transform doc:name="Wait before calling fulfillment request" doc:id="088b8ee6-edec-46b7-a9d6-eb16248a9894">
+						<ee:message />
+						<ee:variables>
+							<ee:set-variable resource="dw/variables/waitBeforeCallingFulfillmentRequest.dwl" variableName="wait" />
+						</ee:variables>
+					</ee:transform>
 					<flow-ref doc:name="Flow whiplash-fulfillment-flow" doc:id="7ed50a8e-40ba-41ff-999a-f232943aab49" name="whiplash-fulfillment-flow" />
 				</route>
 			</scatter-gather>
@@ -179,7 +185,7 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 		<ee:transform doc:name="Wait between requests" doc:id="c69bb05c-14ea-474c-b944-ae13ec77fe85">
 				<ee:message />
 				<ee:variables>
-					<ee:set-variable resource="dw/variables/waitBetweenRequests.dwl" variableName="wait" />
+					<ee:set-variable resource="dw/variables/waitBetweenInventoryRequests.dwl" variableName="wait" />
 				</ee:variables>
 			</ee:transform>
 			<error-handler >
@@ -215,7 +221,7 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 		<ee:transform doc:name="Wait between requests" doc:id="f15938b2-e0e5-41fe-95b4-52f0b84be68b">
 			<ee:message />
 			<ee:variables>
-				<ee:set-variable resource="dw/variables/waitBetweenRequests.dwl" variableName="wait" />
+				<ee:set-variable resource="dw/variables/waitBetweenInventoryRequests.dwl" variableName="wait" />
 			</ee:variables>
 		</ee:transform>
 			<error-handler >
