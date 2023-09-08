@@ -25,6 +25,7 @@ CREATE TABLE `wmsmock_pvx_customers` (
 CREATE TABLE `wmsmock_wpl_sales_orders` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `data` json NOT NULL,
+  `in_sync` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)

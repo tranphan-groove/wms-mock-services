@@ -77,13 +77,6 @@ vars.saveDataContent map ((item) -> {
 				<async doc:name="Async" doc:id="f951a739-6a53-4d46-bf55-35a7ee8e6342" maxConcurrency="${outbound.maxConcurrency}">
 					<choice doc:name="Choice" doc:id="17f75f5c-0800-4618-ad91-34560666912f">
 					<when expression="#[p('peoplevox.inventory') == 'true']">
-							<ee:transform doc:name="Wait before calling inventory request" doc:id="5b9242e4-b0bd-4907-a153-599800a4453a">
-						<ee:message>
-						</ee:message>
-						<ee:variables>
-							<ee:set-variable resource="dw/variables/waitBeforeCallingInventoryRequest.dwl" variableName="wait" />
-						</ee:variables>
-					</ee:transform>
 							<foreach doc:name="For Each" doc:id="d453962b-196a-4fbd-aee6-ba0c7ca17009" collection="#[vars.saveDataContent]">
 						<flow-ref doc:name="Flow pvx-inventory-availability-flow" doc:id="ce5f3d68-8b2c-48e9-8109-719996dce4ae" name="pvx-inventory-availability-flow" />
 						<flow-ref doc:name="Flow pvx-inventory-incremental-flow" doc:id="b358d925-2de5-4611-ba9b-5b11427be76b" name="pvx-inventory-incremental-flow" />
@@ -96,12 +89,6 @@ vars.saveDataContent map ((item) -> {
 				<async doc:name="Async" doc:id="7803b779-a5dd-4899-8992-a91dee38c8ab" maxConcurrency="${outbound.maxConcurrency}">
 					<choice doc:name="Choice" doc:id="72360f10-adb8-4101-af2d-5762b8cc38a2" >
 						<when expression="#[p('peoplevox.statusChange') == 'true']">
-							<ee:transform doc:name="Wait before calling inventory request" doc:id="05b0c231-1a9b-4d02-837f-acd4fa7de304">
-						<ee:message />
-						<ee:variables>
-							<ee:set-variable resource="dw/variables/waitBeforeCallingInventoryRequest.dwl" variableName="wait" />
-						</ee:variables>
-					</ee:transform>
 							<foreach doc:name="For Each" doc:id="3f5f13e3-9306-4500-9848-d74582a3ca18" collection="#[vars.saveDataContent]">
 						<flow-ref doc:name="Flow pvx-status-change-flow" doc:id="1b4d99e6-a7b8-451e-9126-7baa545f4ddb" name="pvx-status-change-flow" />
 					</foreach>
@@ -160,12 +147,6 @@ vars.saveDataContent map ((item) -> {
 			<http:query-params><![CDATA[#[vars.inventoryAvailabilityQueryParams]]]></http:query-params>
 			</http:request>
 		<logger level="INFO" doc:name="INFO: AFTER_REQUEST" doc:id="3689c191-1479-48e7-8df7-afe81a707aa1" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.afterRequest')&#10;var logMessage = tracePoint ++ &quot;: PeopleVox has sent an availability inventory request - &quot; ++ (payload.SalesOrderNumber default &quot;&quot;) ++ &quot;-&quot; ++ (payload.ItemCode default &quot;&quot;)&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, (vars - &quot;rootMessage&quot;), attributes)]" />
-		<ee:transform doc:name="Wait between requests" doc:id="1b171714-d01b-4691-adf6-711738e17f5a">
-				<ee:message />
-				<ee:variables>
-					<ee:set-variable resource="dw/variables/waitBetweenInventoryRequests.dwl" variableName="wait" />
-				</ee:variables>
-			</ee:transform>
 			<error-handler >
 				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="2927a40a-9acb-4c1f-839f-a0f9b3745370" >
 					<logger level="INFO" doc:name="ERROR: EXCEPTION" doc:id="86e97d79-7a0b-414a-8300-b6b04ad3068a" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.error')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.exception')&#10;var logMessage = tracePoint ++ &quot;: PeopleVox encountered an error while sending an availability inventory request - &quot; ++ (payload.SalesOrderNumber default &quot;&quot;) ++ &quot;-&quot; ++ (payload.ItemCode default &quot;&quot;)&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, error, correlationId, (vars - &quot;rootMessage&quot;), attributes)]" />
@@ -196,12 +177,6 @@ vars.saveDataContent map ((item) -> {
 			<http:query-params><![CDATA[#[vars.inventoryIncrementalQueryParams]]]></http:query-params>
 			</http:request>
 		<logger level="INFO" doc:name="INFO: AFTER_REQUEST" doc:id="ce67a910-c15e-4dd1-b45a-a40647210c53" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.afterRequest')&#10;var logMessage = tracePoint ++ &quot;: PeopleVox has sent an incremental inventory request - &quot; ++ (payload.SalesOrderNumber default &quot;&quot;) ++ &quot;-&quot; ++ (payload.ItemCode default &quot;&quot;)&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, (vars - &quot;rootMessage&quot;), attributes)]" />
-		<ee:transform doc:name="Wait between requests" doc:id="1c5d0cce-1be4-475b-905e-ae796bf57314">
-				<ee:message />
-				<ee:variables>
-					<ee:set-variable resource="dw/variables/waitBetweenInventoryRequests.dwl" variableName="wait" />
-				</ee:variables>
-			</ee:transform>
 			<error-handler >
 				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="1036a03f-fab6-4947-9a33-85c62f06284c" >
 					<logger level="INFO" doc:name="ERROR: EXCEPTION" doc:id="f598c312-7f4a-4f2b-b3cf-b05de2fb8148" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.error')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.exception')&#10;var logMessage = tracePoint ++ &quot;: PeopleVox encountered an error while sending an incremental inventory request - &quot; ++ (payload.SalesOrderNumber default &quot;&quot;) ++ &quot;-&quot; ++ (payload.ItemCode default &quot;&quot;)&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, error, correlationId, (vars - &quot;rootMessage&quot;), attributes)]" />
@@ -234,12 +209,6 @@ vars.saveDataContent map ((item) -> {
 				<http:query-params><![CDATA[#[vars.statusChangeQueryParams]]]></http:query-params>
 			</http:request>
 		<logger level="INFO" doc:name="INFO: AFTER_REQUEST" doc:id="2ee376f4-bac6-48a4-b6f9-3dbb7b0f8484" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.afterRequest')&#10;var logMessage = tracePoint ++ &quot;: PeopleVox has sent a status change request - &quot; ++ (payload.SalesOrderNumber default &quot;&quot;)&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, (vars - &quot;rootMessage&quot;), attributes)]" />
-		<ee:transform doc:name="Wait between requests" doc:id="82a1c4c1-e8d4-424d-9aa3-76d9da2148d7">
-				<ee:message />
-				<ee:variables>
-					<ee:set-variable resource="dw/variables/waitBetweenInventoryRequests.dwl" variableName="wait" />
-				</ee:variables>
-			</ee:transform>
 				<error-handler >
 					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="bf39b795-dc90-4949-82f1-bd6604bcbb1d" >
 						<logger level="INFO" doc:name="ERROR: EXCEPTION" doc:id="53fa207c-acff-469e-8b45-dbdb6cd5005d" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.error')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.exception')&#10;var logMessage = tracePoint ++ &quot;: PeopleVox encountered an error while sending a status change request - &quot; ++ (payload.SalesOrderNumber default &quot;&quot;)&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, error, correlationId, (vars - &quot;rootMessage&quot;), attributes)]" />

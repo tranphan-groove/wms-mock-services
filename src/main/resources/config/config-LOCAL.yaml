@@ -16,22 +16,26 @@ mule:
     client_secret: "passIn"
     
 outbound:
-  waitBeforeCallingFulfillmentRequest: "300" #secs
-  waitBeforeCallingInventoryRequest: "5" #secs
-  waitBetweenInventoryRequests: "2" #secs
   host: "qa.ipaas.tfapparel.net"
   port: "443"
   maxConcurrency: "20"
 
+  fulfillment:
+    scheduler:
+      frequency: "0 0/5 * 1/1 * ? *" # this will run every 5 minutes
+    db:
+      timeDiff: "300" #secs
+      limit: "50"
+
 peoplevox:
   inventory: "true"
   statusChange: "true"
-  fulfillment: "true"
+  fulfillment: "false"
 
 whiplash:
   inventoryATS: "true"
   statusChange: "true"
-  fulfillment: "true"
+  fulfillment: "false"
 
 jdbc:
   hostName: "0.0.0.0"

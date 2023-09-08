@@ -33,41 +33,18 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 		</db:insert>
 		<logger level="INFO" doc:name="INFO: END" doc:id="07ebe133-5c1a-4c8a-bc66-f32710c28379" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.end')&#10;var logMessage = tracePoint ++ &quot;: Whiplash has inserted order into DB&quot;&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
 		<async doc:name="Async" doc:id="da5fb137-ba1f-4c19-8876-fed06802c5c6" maxConcurrency="${outbound.maxConcurrency}">
-			<ee:transform doc:name="Set Variable - orderNumber and originalOrderId" doc:id="fef80552-560a-434a-b43b-54d8dee9997c">
+			<choice doc:name="Choice" doc:id="867fd0ea-6886-430e-b9e1-cdda4e30c435">
+						<when expression="#[p('whiplash.inventory') == 'true' or p('whiplash.statusChange') == 'true']">
+							<ee:transform doc:name="Set Variable - orderNumber and originalOrderId" doc:id="fef80552-560a-434a-b43b-54d8dee9997c">
 				<ee:message />
 				<ee:variables>
 					<ee:set-variable resource="dw/variables/wpl-orderNumber.dwl" variableName="orderNumber" />
 					<ee:set-variable resource="dw/variables/wpl-originalOrderId.dwl" variableName="originalOrderId" />
 				</ee:variables>
 			</ee:transform>
-			<scatter-gather doc:name="Scatter-Gather" doc:id="062259ef-021a-43a5-a3d4-8301a5b66691" >
-				<route >
-					<choice doc:name="Choice" doc:id="867fd0ea-6886-430e-b9e1-cdda4e30c435" >
-						<when expression="#[p('whiplash.inventory') == 'true' or p('whiplash.statusChange') == 'true']">
-							<ee:transform doc:name="Wait before calling inventory request" doc:id="c7a70c33-6fe3-4c60-88c8-3a1b3315e6bd">
-				<ee:message />
-				<ee:variables>
-					<ee:set-variable resource="dw/variables/waitBeforeCallingInventoryRequest.dwl" variableName="wait" />
-				</ee:variables>
-			</ee:transform>
-							<flow-ref doc:name="Flow whiplash-inventory-flow" doc:id="c5afe440-17f7-4c50-a57c-12b66a33d462" name="whiplash-inventory-flow" />
+					<flow-ref doc:name="Flow whiplash-inventory-flow" doc:id="c5afe440-17f7-4c50-a57c-12b66a33d462" name="whiplash-inventory-flow" />
 						</when>
 					</choice>
-				</route>
-				<route >
-					<choice doc:name="Choice" doc:id="66a3d912-acce-4046-8ac5-e4d388b7c172" >
-						<when expression="#[p('whiplash.fulfillment') == 'true']">
-							<ee:transform doc:name="Wait before calling fulfillment request" doc:id="088b8ee6-edec-46b7-a9d6-eb16248a9894">
-						<ee:message />
-						<ee:variables>
-							<ee:set-variable resource="dw/variables/waitBeforeCallingFulfillmentRequest.dwl" variableName="wait" />
-						</ee:variables>
-					</ee:transform>
-							<flow-ref doc:name="Flow whiplash-fulfillment-flow" doc:id="7ed50a8e-40ba-41ff-999a-f232943aab49" name="whiplash-fulfillment-flow" />
-						</when>
-					</choice>
-				</route>
-			</scatter-gather>
 		</async>
 	</flow>
 	<flow name="whiplash-get-orders-by-search-string-subflow" doc:id="0647291b-c4da-498c-8676-9383ff160857" >
@@ -198,12 +175,6 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 			<http:query-params><![CDATA[#[vars.inventoryQueryParams]]]></http:query-params>
 		</http:request>
 		<logger level="INFO" doc:name="INFO: AFTER_REQUEST" doc:id="a4b45f98-82ec-4d5d-9f01-cd0f4088065e" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.afterRequest')&#10;var logMessage = tracePoint ++ &quot;: Whiplash has sent an ATS inventory request - &quot; ++ (vars.orderNumber default &quot;&quot;) ++ &quot;-&quot; ++ vars.itemSku&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, (vars - &quot;rootMessage&quot;), attributes)]" />
-		<ee:transform doc:name="Wait between requests" doc:id="c69bb05c-14ea-474c-b944-ae13ec77fe85">
-				<ee:message />
-				<ee:variables>
-					<ee:set-variable resource="dw/variables/waitBetweenInventoryRequests.dwl" variableName="wait" />
-				</ee:variables>
-			</ee:transform>
 			<error-handler >
 				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="d253022d-44a2-435e-ba1e-5e2b1058749a" >
 					<logger level="INFO" doc:name="ERROR: EXCEPTION" doc:id="e4d35981-4b68-46ea-9ba4-881b2b6f547f" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.error')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.exception')&#10;var logMessage = tracePoint ++ &quot;: Whiplash encountered an error while sending an ATS inventory request - &quot; ++ (vars.orderNumber default &quot;&quot;) ++ &quot;-&quot; ++ vars.itemSku&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, error, correlationId, (vars - &quot;rootMessage&quot;), attributes)]" />
@@ -234,12 +205,6 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 			<http:query-params><![CDATA[#[vars.inventoryQueryParams]]]></http:query-params>
 		</http:request>
 		<logger level="INFO" doc:name="INFO: AFTER_REQUEST" doc:id="402769ad-3026-4ae4-bbea-789acd097925" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.afterRequest')&#10;var logMessage = tracePoint ++ &quot;: Whiplash has sent a status change inventory request - &quot; ++ (vars.orderNumber default &quot;&quot;) ++ &quot;-&quot; ++ vars.itemSku&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, (vars - &quot;rootMessage&quot;), attributes)]" />
-		<ee:transform doc:name="Wait between requests" doc:id="f15938b2-e0e5-41fe-95b4-52f0b84be68b">
-			<ee:message />
-			<ee:variables>
-				<ee:set-variable resource="dw/variables/waitBetweenInventoryRequests.dwl" variableName="wait" />
-			</ee:variables>
-		</ee:transform>
 			<error-handler >
 				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="842fab7a-4aca-4af2-a2de-ed92c19fcff4" >
 					<logger level="INFO" doc:name="ERROR: EXCEPTION" doc:id="ff9dd597-9615-4378-8edb-fdef459c10bb" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.error')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.exception')&#10;var logMessage = tracePoint ++ &quot;: Whiplash encountered an error while sending a status change inventory request - &quot; ++ (vars.orderNumber default &quot;&quot;) ++ &quot;-&quot; ++ vars.itemSku&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, error, correlationId, (vars - &quot;rootMessage&quot;), attributes)]" />
@@ -247,6 +212,42 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 			</error-handler>
 	</flow>
 	<flow name="whiplash-fulfillment-flow" doc:id="be167a5c-2bea-4855-8b1d-df40e28c9cb2">
+		<scheduler doc:name="Scheduler" doc:id="ce1ce57a-0ac6-41ef-9e4f-c0ee1912c1cb">
+			<scheduling-strategy >
+				<cron expression="${outbound.fulfillment.scheduler.frequency}" />
+			</scheduling-strategy>
+		</scheduler>
+		<choice doc:name="Choice" doc:id="873f2fe7-d745-4c4e-a363-9c88a27cb850" >
+			<when expression="#[p('whiplash.fulfillment') == 'true']">
+				<db:select doc:name="Select" doc:id="b06d9619-15bd-4477-a774-c3943ea0fc8d" config-ref="Database_Config" maxRows="#[p('outbound.fulfillment.db.limit')]">
+					<db:sql ><![CDATA[SELECT data FROM wmsmock_wpl_sales_orders WHERE TIMESTAMPDIFF(SECOND, created_at, now()) > :fulfillmentTimeDiff AND in_sync = 0]]></db:sql>
+					<db:input-parameters ><![CDATA[#[{
+	fulfillmentTimeDiff: p('outbound.fulfillment.db.timeDiff')
+}]]]></db:input-parameters>
+				</db:select>
+				<logger level="INFO" doc:name="INFO: AFTER_REQUEST" doc:id="2fda56b3-3c5d-4d9f-ae1a-57d362fed1bd" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.afterRequest')&#10;var logMessage = tracePoint ++ &quot;: Whiplash has retrieved orders for fulfillment&quot;&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
+				<foreach doc:name="For Each" doc:id="25274830-16bc-41d6-a014-fd0375fb2236" collection="#[payload.data]">
+					<ee:transform doc:name="Transform Message" doc:id="488e848f-1baf-49e8-becc-73e0e79d19f3">
+						<ee:message>
+							<ee:set-payload resource="dw/transformations/wpl-convert-order-to-json.dwl" />
+						</ee:message>
+					</ee:transform>
+					<flow-ref doc:name="Flow whiplash-each-fulfillment-flow" doc:id="f819b51b-d223-45df-acf2-fafe057f0484" name="whiplash-each-fulfillment-flow"/>
+				</foreach>
+				<db:bulk-update doc:name="Bulk update" doc:id="0460a5ff-0767-47ed-af3b-ca724381e262" config-ref="Database_Config">
+					<db:bulk-input-parameters ><![CDATA[#[%dw 2.0
+output application/json
+---
+(vars.fulfilledOrderNumbers default []) map ((fulfilledOrderNumber) -> {
+	order_orig: fulfilledOrderNumber
+})]]]></db:bulk-input-parameters>
+					<db:sql ><![CDATA[UPDATE wmsmock_wpl_sales_orders SET in_sync = 1 WHERE JSON_EXTRACT(data, "$.order_orig") = :order_orig]]></db:sql>
+				</db:bulk-update>
+				<logger level="INFO" doc:name="INFO: AFTER_REQUEST" doc:id="e5409caa-f1dc-4e42-8875-d3c799240507" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.afterRequest')&#10;var logMessage = tracePoint ++ &quot;: Whiplash has updated orders in_sync after fulfillment&quot;&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
+			</when>
+		</choice>
+	</flow>
+	<flow name="whiplash-each-fulfillment-flow" doc:id="d240af54-39e7-4046-870f-53f452059cc5" >
 		<ee:transform doc:name="Set Variable - correlationId" doc:id="4aa3e86c-e591-4b3a-bbb7-f96b70d44b5f">
 			<ee:message />
 			<ee:variables>
@@ -262,7 +263,7 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 			</ee:variables>
 		</ee:transform>
 		<logger level="INFO" doc:name="INFO: BEFORE_REQUEST" doc:id="f1f5c727-ea99-4c09-8687-4578f3209cf8" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.beforeRequest')&#10;var logMessage = tracePoint ++ &quot;: Whiplash is sending a fulfillment request - &quot; ++ (vars.orderNumber default &quot;&quot;)&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
-			<http:request method="POST" doc:name="Request fulfillment" doc:id="256bad2a-5015-4722-a0ee-82b27105608a" config-ref="blazeMeter_HTTP_Request_configuration" path="/Australia/p-forders-pub/v1/api/orders" target="httpRes">
+		<http:request method="POST" doc:name="Request fulfillment" doc:id="256bad2a-5015-4722-a0ee-82b27105608a" config-ref="blazeMeter_HTTP_Request_configuration" path="/Australia/p-forders-pub/v1/api/orders" target="httpRes">
 			<http:headers><![CDATA[#[output application/java
 ---
 {
@@ -271,9 +272,16 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 			<http:query-params><![CDATA[#[vars.fulfillmentQueryParams]]]></http:query-params>
 		</http:request>
 		<logger level="INFO" doc:name="INFO: AFTER_REQUEST" doc:id="0b46c688-2f8e-4903-8d24-dafd0e68181b" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.afterRequest')&#10;var logMessage = tracePoint ++ &quot;: Whiplash has sent a fulfillment request - &quot; ++ (vars.orderNumber default &quot;&quot;)&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
-			<error-handler >
-				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="c508a61f-9310-4eab-853f-d9923ffaec2a" >
-					<logger level="INFO" doc:name="ERROR: EXCEPTION" doc:id="9c151dfe-2fc8-4a67-80bf-f3c3253d81b7" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.error')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.exception')&#10;var logMessage = tracePoint ++ &quot;: Whiplash encountered an error while sending a fulfillment request - &quot; ++ (vars.orderNumber default &quot;&quot;)&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, error, correlationId, vars, attributes)]" />
+			<ee:transform doc:name="Set Variable - fulfilledOrderNumbers" doc:id="ba7d6b60-1d43-4f5f-8e71-d6403f3b5aed">
+			<ee:message>
+			</ee:message>
+			<ee:variables>
+				<ee:set-variable resource="dw/variables/wpl-fulfilledOrderNumbers.dwl" variableName="fulfilledOrderNumbers" />
+			</ee:variables>
+		</ee:transform>
+		<error-handler >
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="66dc8c86-e95a-40f6-bb93-363b7def00bc" >
+					<logger level="INFO" doc:name="ERROR: EXCEPTION" doc:id="9b50082a-48d3-4bc2-a81e-bb0ec3c4fd32" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.error')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.exception')&#10;var logMessage = tracePoint ++ &quot;: Whiplash encountered an error while sending a fulfillment request - &quot; ++ (vars.orderNumber default &quot;&quot;)&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, error, correlationId, vars, attributes)]" />
 				</on-error-continue>
 			</error-handler>
 	</flow>
