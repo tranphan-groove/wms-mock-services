@@ -225,13 +225,13 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 	fulfillmentTimeDiff: p('outbound.fulfillment.db.timeDiff')
 }]]]></db:input-parameters>
 				</db:select>
-				<logger level="INFO" doc:name="INFO: AFTER_REQUEST" doc:id="2fda56b3-3c5d-4d9f-ae1a-57d362fed1bd" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.afterRequest')&#10;var logMessage = tracePoint ++ &quot;: Whiplash has retrieved orders for fulfillment&quot;&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
-				<foreach doc:name="For Each" doc:id="25274830-16bc-41d6-a014-fd0375fb2236" collection="#[payload.data]">
-					<ee:transform doc:name="Transform Message" doc:id="488e848f-1baf-49e8-becc-73e0e79d19f3">
+				<ee:transform doc:name="Transform Message" doc:id="488e848f-1baf-49e8-becc-73e0e79d19f3">
 						<ee:message>
 							<ee:set-payload resource="dw/transformations/wpl-convert-order-to-json.dwl" />
 						</ee:message>
 					</ee:transform>
+				<logger level="INFO" doc:name="INFO: AFTER_REQUEST" doc:id="2fda56b3-3c5d-4d9f-ae1a-57d362fed1bd" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.afterRequest')&#10;var logMessage = tracePoint ++ &quot;: Whiplash has retrieved orders for fulfillment&quot;&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, vars, attributes)]" />
+				<foreach doc:name="For Each" doc:id="25274830-16bc-41d6-a014-fd0375fb2236">
 					<flow-ref doc:name="Flow whiplash-each-fulfillment-flow" doc:id="f819b51b-d223-45df-acf2-fafe057f0484" name="whiplash-each-fulfillment-flow"/>
 				</foreach>
 				<db:bulk-update doc:name="Bulk update" doc:id="0460a5ff-0767-47ed-af3b-ca724381e262" config-ref="Database_Config">

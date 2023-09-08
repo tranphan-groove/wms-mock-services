@@ -1,4 +1,4 @@
 %dw 2.0
 output application/json
 ---
-read(payload, 'application/json')
+(payload.data default []) map ((item) -> read(item, 'application/json'))
