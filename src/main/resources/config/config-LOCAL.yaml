@@ -20,12 +20,38 @@ outbound:
   port: "443"
   maxConcurrency: "20"
 
-  fulfillment:
-    scheduler:
-      frequency: "0 0/5 * 1/1 * ? *" # this will run every 5 minutes
-    db:
-      timeDiff: "300" #secs
-      limit: "50"
+  wpl:
+    fulfillment:
+      scheduler:
+        frequency: "0 0/5 * 1/1 * ? *" # this will run every 5 minutes
+      db:
+        timeDiff: "300" #secs
+        limit: "50"
+
+    inventory:
+      scheduler:
+        frequency: "0 0/2 * 1/1 * ? *" # this will run every 2 minutes
+      db:
+        limit: "50"
+
+    statusChange:
+      scheduler:
+        frequency: "0 0/2 * 1/1 * ? *" # this will run every 2 minutes
+      db:
+        limit: "50"
+
+  pvx:
+    inventory:
+      scheduler:
+        frequency: "0 0/2 * 1/1 * ? *" # this will run every 2 minutes
+      db:
+        limit: "50"
+
+    statusChange:
+      scheduler:
+        frequency: "0 0/2 * 1/1 * ? *" # this will run every 2 minutes
+      db:
+        limit: "50"
 
 peoplevox:
   inventory: "true"
@@ -33,7 +59,7 @@ peoplevox:
   fulfillment: "false"
 
 whiplash:
-  inventoryATS: "true"
+  inventory: "true"
   statusChange: "true"
   fulfillment: "false"
 

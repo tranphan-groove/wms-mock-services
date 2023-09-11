@@ -72,31 +72,6 @@ vars.saveDataContent map ((item) -> {
 				<ee:set-payload resource="dw/transformations/pvx-save-data-response.dwl" />
 			</ee:message>
 		</ee:transform>
-		<choice doc:name="Choice" doc:id="fe607994-e019-41c0-99b5-cfd66637ebea">
-			<when expression="#[vars.templateName == 'Sales Order Items']" >
-				<async doc:name="Async" doc:id="f951a739-6a53-4d46-bf55-35a7ee8e6342" maxConcurrency="${outbound.maxConcurrency}">
-					<choice doc:name="Choice" doc:id="17f75f5c-0800-4618-ad91-34560666912f">
-					<when expression="#[p('peoplevox.inventory') == 'true']">
-							<foreach doc:name="For Each" doc:id="d453962b-196a-4fbd-aee6-ba0c7ca17009" collection="#[vars.saveDataContent]">
-						<flow-ref doc:name="Flow pvx-inventory-availability-flow" doc:id="ce5f3d68-8b2c-48e9-8109-719996dce4ae" name="pvx-inventory-availability-flow" />
-						<flow-ref doc:name="Flow pvx-inventory-incremental-flow" doc:id="b358d925-2de5-4611-ba9b-5b11427be76b" name="pvx-inventory-incremental-flow" />
-					</foreach>
-						</when>
-				</choice>
-				</async>
-			</when>
-			<when expression="#[vars.templateName == 'Sales Orders']">
-				<async doc:name="Async" doc:id="7803b779-a5dd-4899-8992-a91dee38c8ab" maxConcurrency="${outbound.maxConcurrency}">
-					<choice doc:name="Choice" doc:id="72360f10-adb8-4101-af2d-5762b8cc38a2" >
-						<when expression="#[p('peoplevox.statusChange') == 'true']">
-							<foreach doc:name="For Each" doc:id="3f5f13e3-9306-4500-9848-d74582a3ca18" collection="#[vars.saveDataContent]">
-						<flow-ref doc:name="Flow pvx-status-change-flow" doc:id="1b4d99e6-a7b8-451e-9126-7baa545f4ddb" name="pvx-status-change-flow" />
-					</foreach>
-						</when>
-					</choice>
-				</async>
-			</when>
-		</choice>
 	</sub-flow>
 	<sub-flow name="pvx-soap-get-report-data-subflow" doc:id="5d97f2e6-5bd8-475f-b718-3aae81abc1d4" >
 		<ee:transform doc:name="Set Variable - searchClauseTimestamps and searchClauseRPLN" doc:id="476be670-2a1c-4e4e-b7e1-0b20001b7aa8">
@@ -123,7 +98,40 @@ vars.saveDataContent map ((item) -> {
 			</ee:message>
 		</ee:transform>
 	</sub-flow>
-	<flow name="pvx-inventory-availability-flow" doc:id="0f10d616-7697-442d-99d6-d6d980678621" >
+	<flow name="pvx-inventory-availability-flow" doc:id="4c38cc30-00b4-4c84-ad44-bce7d9fa6847">
+		<scheduler doc:name="Scheduler" doc:id="a88921f0-d546-4305-b4f1-f6024b9fdd73">
+			<scheduling-strategy>
+				<cron expression="${outbound.pvx.statusChange.scheduler.frequency}" />
+			</scheduling-strategy>
+		</scheduler>
+		<choice doc:name="Choice" doc:id="b45e0939-3619-437b-a605-613347d05897">
+			<when expression="#[p('peoplevox.inventory') == 'true']">
+				<db:select doc:name="Select" doc:id="ecadaa61-4bdd-41f8-b4af-b78e9b2b78d1" config-ref="Database_Config" maxRows="#[p('outbound.wpl.fulfillment.db.limit')]">
+					<db:sql><![CDATA[SELECT data FROM wmsmock_pvx_sales_order_items WHERE inventory_availability_in_sync = 0]]></db:sql>
+				</db:select>
+				<ee:transform doc:name="Transform Message" doc:id="d9011b0a-fa63-46bf-9e29-a2b5d198ccb0">
+					<ee:message>
+						<ee:set-payload resource="dw/transformations/wpl-convert-order-to-json.dwl" />
+					</ee:message>
+				</ee:transform>
+				<logger level="DEBUG" doc:name="DEBUG: AFTER_REQUEST" doc:id="81904e52-27c2-4e52-8b09-002eea11c72e" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.debug')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.afterRequest')&#10;var logMessage = tracePoint ++ &quot;: PeopleVox has retrieved order items for inventory availability&quot;&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, null, attributes)]" category="ck-support-debug-monitoring" />
+				<foreach doc:name="For Each" doc:id="e7c67b8a-133a-469a-8c32-3ef400b17a4a">
+					<flow-ref doc:name="Flow pvx-each-inventory-availability-flow" doc:id="e37e435a-e1aa-4251-9def-c8aeeeae4d38" name="pvx-each-inventory-availability-flow" />
+				</foreach>
+				<choice doc:name="Choice" doc:id="04f8b40e-0cf5-4d11-b61d-0a5d370e160b">
+					<when expression="#[!isEmpty(vars.successOrderItems)]">
+						<db:bulk-update doc:name="Bulk update" doc:id="b94f29ed-4db6-4f51-ab47-462f99ab06d8" config-ref="Database_Config" target="dbRes">
+					<db:bulk-input-parameters><![CDATA[#[vars.successOrderItems]]]></db:bulk-input-parameters>
+					<db:sql><![CDATA[UPDATE wmsmock_pvx_sales_order_items SET inventory_availability_in_sync = 1 WHERE JSON_EXTRACT(data, "$.SalesOrderNumber") = :SalesOrderNumber AND JSON_EXTRACT(data, "$.ItemCode") = :ItemCode]]></db:sql>
+				</db:bulk-update>
+						<logger level="DEBUG" doc:name="DEBUG: AFTER_REQUEST" doc:id="ecfb1466-2dd6-402c-9bfa-87b72ebe3e3a" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.debug')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.afterRequest')&#10;var logMessage = tracePoint ++ &quot;: PeopleVox has updated order items status_change_in_sync after inventory availability sent&quot;&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, null, null, correlationId, null, attributes)]" category="ck-support-debug-monitoring" />
+						<logger level="INFO" doc:name="INFO: END" doc:id="f58533c6-b502-45a1-b803-0cdbfd19511f" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.end')&#10;var logMessage = tracePoint ++ &quot;: PeopleVox has sent a batch of inventory availability requests&quot;&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, vars.successOrderItems, null, correlationId, {correlationId: vars.correlationId}, attributes)]" category="ck-support-info-monitoring" />
+					</when>
+				</choice>
+			</when>
+		</choice>
+	</flow>
+	<flow name="pvx-each-inventory-availability-flow" doc:id="0f10d616-7697-442d-99d6-d6d980678621" >
 		<ee:transform doc:name="Set Variable - correlationId" doc:id="e9be4c00-8ca3-478a-87d5-f445bac43994">
 			<ee:message />
 			<ee:variables>
@@ -147,13 +155,52 @@ vars.saveDataContent map ((item) -> {
 			<http:query-params><![CDATA[#[vars.inventoryAvailabilityQueryParams]]]></http:query-params>
 			</http:request>
 		<logger level="DEBUG" doc:name="DEBUG: AFTER_REQUEST" doc:id="3689c191-1479-48e7-8df7-afe81a707aa1" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.debug')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.afterRequest')&#10;var logMessage = tracePoint ++ &quot;: PeopleVox has sent an availability inventory request - &quot; ++ (payload.SalesOrderNumber default &quot;&quot;) ++ &quot;-&quot; ++ (payload.ItemCode default &quot;&quot;)&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, vars.inventoryAvailabilityQueryParams, null, correlationId, {correlationId: vars.correlationId}, attributes)]" category="ck-support-debug-monitoring"/>
-			<error-handler >
+			<ee:transform doc:name="Set Variable - successOrderItems" doc:id="1343f352-e6e5-49a0-b046-a5a22df40b78" >
+			<ee:message />
+			<ee:variables >
+				<ee:set-variable resource="dw/variables/pvx-successOrderItems.dwl" variableName="successOrderItems" />
+			</ee:variables>
+		</ee:transform>
+		<error-handler >
 				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="2927a40a-9acb-4c1f-839f-a0f9b3745370" >
 					<logger level="ERROR" doc:name="ERROR: EXCEPTION" doc:id="86e97d79-7a0b-414a-8300-b6b04ad3068a" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.error')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.exception')&#10;var logMessage = tracePoint ++ &quot;: PeopleVox encountered an error while sending an availability inventory request - &quot; ++ (payload.SalesOrderNumber default &quot;&quot;) ++ &quot;-&quot; ++ (payload.ItemCode default &quot;&quot;)&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, vars.inventoryAvailabilityQueryParams, error, correlationId, {correlationId: vars.correlationId}, attributes)]" category="ck-support-error-monitoring"/>
 				</on-error-continue>
 			</error-handler>
 	</flow>
-	<flow name="pvx-inventory-incremental-flow" doc:id="3e99de13-a9a6-429c-83cc-856f8a0512bd" >
+	<flow name="pvx-inventory-incremental-flow" doc:id="e8f87e25-c256-4d6d-bc6f-9b033b3b809b">
+		<scheduler doc:name="Scheduler" doc:id="c41d5b35-8af8-4a88-a137-0f19df0bbd14">
+			<scheduling-strategy>
+				<cron expression="${outbound.pvx.statusChange.scheduler.frequency}" />
+			</scheduling-strategy>
+		</scheduler>
+		<choice doc:name="Choice" doc:id="411bbbea-b157-4e15-ba3a-357339263230">
+			<when expression="#[p('peoplevox.inventory') == 'true']">
+				<db:select doc:name="Select" doc:id="eacf67d6-a689-460d-aa90-95a7518cb61f" config-ref="Database_Config" maxRows="#[p('outbound.wpl.fulfillment.db.limit')]">
+					<db:sql><![CDATA[SELECT data FROM wmsmock_pvx_sales_order_items WHERE inventory_incremental_in_sync = 0]]></db:sql>
+				</db:select>
+				<ee:transform doc:name="Transform Message" doc:id="289f84ca-2cec-43ee-8fd6-22eb07feb8ad">
+					<ee:message>
+						<ee:set-payload resource="dw/transformations/wpl-convert-order-to-json.dwl" />
+					</ee:message>
+				</ee:transform>
+				<logger level="DEBUG" doc:name="DEBUG: AFTER_REQUEST" doc:id="ec184b5d-514a-427a-b2fb-a9a9b53940dd" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.debug')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.afterRequest')&#10;var logMessage = tracePoint ++ &quot;: PeopleVox has retrieved order items for inventory incremental&quot;&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, null, attributes)]" category="ck-support-debug-monitoring" />
+				<foreach doc:name="For Each" doc:id="8c800c07-7214-4c96-9d4b-39a6f8ea6891">
+					<flow-ref doc:name="Flow pvx-each-inventory-incremental-flow" doc:id="069edd60-d2fe-49bd-b2fe-50c601ef1be4" name="pvx-each-inventory-incremental-flow" />
+				</foreach>
+				<choice doc:name="Choice" doc:id="43e314d7-7dd1-4c3d-a4b0-9e8fa63db718">
+					<when expression="#[!isEmpty(vars.successOrderItems)]">
+						<db:bulk-update doc:name="Bulk update" doc:id="0161ccf1-63f8-4333-af50-13d690ac9909" config-ref="Database_Config" target="dbRes">
+					<db:bulk-input-parameters><![CDATA[#[vars.successOrderItems]]]></db:bulk-input-parameters>
+					<db:sql><![CDATA[UPDATE wmsmock_pvx_sales_order_items SET inventory_incremental_in_sync = 1 WHERE JSON_EXTRACT(data, "$.SalesOrderNumber") = :SalesOrderNumber AND JSON_EXTRACT(data, "$.ItemCode") = :ItemCode]]></db:sql>
+				</db:bulk-update>
+						<logger level="DEBUG" doc:name="DEBUG: AFTER_REQUEST" doc:id="0c5bb10d-a26f-4100-8e3a-8e46e11ca99f" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.debug')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.afterRequest')&#10;var logMessage = tracePoint ++ &quot;: PeopleVox has updated order items inventory_incremental_in_sync after inventory incremental sent&quot;&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, null, null, correlationId, null, attributes)]" category="ck-support-debug-monitoring" />
+						<logger level="INFO" doc:name="INFO: END" doc:id="fd35f31b-0701-4eae-8029-17860cc50997" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.end')&#10;var logMessage = tracePoint ++ &quot;: PeopleVox has sent a batch of inventory incremental requests&quot;&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, vars.successOrderItems, null, correlationId, {correlationId: vars.correlationId}, attributes)]" category="ck-support-info-monitoring" />
+					</when>
+				</choice>
+			</when>
+		</choice>
+	</flow>
+	<flow name="pvx-each-inventory-incremental-flow" doc:id="3e99de13-a9a6-429c-83cc-856f8a0512bd" >
 		<ee:transform doc:name="Set Variable - correlationId" doc:id="a0a3960e-942f-4fe8-8aa4-a4e51c8670f7">
 			<ee:message />
 			<ee:variables>
@@ -177,13 +224,52 @@ vars.saveDataContent map ((item) -> {
 			<http:query-params><![CDATA[#[vars.inventoryIncrementalQueryParams]]]></http:query-params>
 			</http:request>
 		<logger level="DEBUG" doc:name="DEBUG: AFTER_REQUEST" doc:id="ce67a910-c15e-4dd1-b45a-a40647210c53" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.debug')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.afterRequest')&#10;var logMessage = tracePoint ++ &quot;: PeopleVox has sent an incremental inventory request - &quot; ++ (payload.SalesOrderNumber default &quot;&quot;) ++ &quot;-&quot; ++ (payload.ItemCode default &quot;&quot;)&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, vars.inventoryIncrementalQueryParams, null, correlationId, {correlationId: vars.correlationId}, attributes)]" category="ck-support-debug-monitoring"/>
-			<error-handler >
+			<ee:transform doc:name="Set Variable - successOrderItems" doc:id="247c384b-417e-4d53-a71f-398f1711a448" >
+			<ee:message />
+			<ee:variables >
+				<ee:set-variable resource="dw/variables/pvx-successOrderItems.dwl" variableName="successOrderItems" />
+			</ee:variables>
+		</ee:transform>
+		<error-handler >
 				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="1036a03f-fab6-4947-9a33-85c62f06284c" >
 					<logger level="ERROR" doc:name="ERROR: EXCEPTION" doc:id="f598c312-7f4a-4f2b-b3cf-b05de2fb8148" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.error')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.exception')&#10;var logMessage = tracePoint ++ &quot;: PeopleVox encountered an error while sending an incremental inventory request - &quot; ++ (payload.SalesOrderNumber default &quot;&quot;) ++ &quot;-&quot; ++ (payload.ItemCode default &quot;&quot;)&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, vars.inventoryIncrementalQueryParams, error, correlationId, {correlationId: vars.correlationId}, attributes)]" category="ck-support-error-monitoring"/>
 				</on-error-continue>
 			</error-handler>
 	</flow>
-	<flow name="pvx-status-change-flow" doc:id="f55f35af-03f0-4325-a23c-9c6ceba82565" >
+	<flow name="pvx-status-change-flow" doc:id="fb573591-fc73-4ac4-b6f7-7d1f30ee4ed6">
+		<scheduler doc:name="Scheduler" doc:id="fc1e2866-eefb-49f0-96f1-52deb1861301">
+			<scheduling-strategy>
+				<cron expression="${outbound.pvx.statusChange.scheduler.frequency}" />
+			</scheduling-strategy>
+		</scheduler>
+		<choice doc:name="Choice" doc:id="9c84aad4-c9cf-4388-92f7-59583af19977">
+			<when expression="#[p('peoplevox.statusChange') == 'true']">
+				<db:select doc:name="Select" doc:id="1ee643c1-e96f-4585-ac8a-cbb06da55fe0" config-ref="Database_Config" maxRows="#[p('outbound.wpl.fulfillment.db.limit')]">
+					<db:sql><![CDATA[SELECT data FROM wmsmock_pvx_sales_orders WHERE status_change_in_sync = 0]]></db:sql>
+				</db:select>
+				<ee:transform doc:name="Transform Message" doc:id="4fedaded-b57b-41de-aede-9b612c5af52b">
+					<ee:message>
+						<ee:set-payload resource="dw/transformations/wpl-convert-order-to-json.dwl" />
+					</ee:message>
+				</ee:transform>
+				<logger level="DEBUG" doc:name="DEBUG: AFTER_REQUEST" doc:id="14968f6d-b455-47b1-9eea-324d19c29e0a" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.debug')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.afterRequest')&#10;var logMessage = tracePoint ++ &quot;: PeopleVox has retrieved orders for status change&quot;&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, payload, null, correlationId, null, attributes)]" category="ck-support-debug-monitoring" />
+				<foreach doc:name="For Each" doc:id="f4a2f4fc-d557-4e5e-a341-83897b8b646d">
+					<flow-ref doc:name="Flow pvx-each-status-change-flow" doc:id="053388cc-93b4-483e-a5cf-9e9237d6a737" name="pvx-each-status-change-flow" />
+				</foreach>
+				<choice doc:name="Choice" doc:id="5fe00503-3dc6-446a-a18c-e84af4f611df">
+					<when expression="#[!isEmpty(vars.successOrders)]">
+						<db:bulk-update doc:name="Bulk update" doc:id="cf9ef004-6687-4c8b-8f11-1fddd7c01e47" config-ref="Database_Config" target="dbRes">
+					<db:bulk-input-parameters><![CDATA[#[vars.successOrders]]]></db:bulk-input-parameters>
+					<db:sql><![CDATA[UPDATE wmsmock_pvx_sales_orders SET status_change_in_sync = 1 WHERE JSON_EXTRACT(data, "$.SalesOrderNumber") = :SalesOrderNumber]]></db:sql>
+				</db:bulk-update>
+						<logger level="DEBUG" doc:name="DEBUG: AFTER_REQUEST" doc:id="76705256-3a17-4920-b3d6-a388657f1968" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.debug')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.afterRequest')&#10;var logMessage = tracePoint ++ &quot;: PeopleVox has updated orders status_change_in_sync after status change sent&quot;&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, null, null, correlationId, null, attributes)]" category="ck-support-debug-monitoring" />
+						<logger level="INFO" doc:name="INFO: END" doc:id="a6e6dfc6-316b-4ad2-8459-bd19ab1d02c2" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.info')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.end')&#10;var logMessage = tracePoint ++ &quot;: PeopleVox has sent a batch of status change requests&quot;&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, vars.successOrders, null, correlationId, {correlationId: vars.correlationId}, attributes)]" category="ck-support-info-monitoring" />
+					</when>
+				</choice>
+			</when>
+		</choice>
+	</flow>
+	<flow name="pvx-each-status-change-flow" doc:id="f55f35af-03f0-4325-a23c-9c6ceba82565" >
 		<ee:transform doc:name="Set Variable - correlationId" doc:id="d8ea9b3b-b9a0-4ef6-8e50-bbc7b403bca4">
 				<ee:message />
 				<ee:variables>
@@ -209,7 +295,13 @@ vars.saveDataContent map ((item) -> {
 				<http:query-params><![CDATA[#[vars.statusChangeQueryParams]]]></http:query-params>
 			</http:request>
 		<logger level="DEBUG" doc:name="DEBUG: AFTER_REQUEST" doc:id="2ee376f4-bac6-48a4-b6f9-3dbb7b0f8484" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.debug')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.afterRequest')&#10;var logMessage = tracePoint ++ &quot;: PeopleVox has sent a status change request - &quot; ++ (payload.SalesOrderNumber default &quot;&quot;)&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, vars.statusChangeBody, null, correlationId, {correlationId: vars.correlationId}, attributes)]" category="ck-support-debug-monitoring"/>
-				<error-handler >
+				<ee:transform doc:name="Set Variable - successOrders" doc:id="048cbd21-49c9-4bfc-8b95-c7e2f55a0c7f" >
+			<ee:message />
+			<ee:variables >
+				<ee:set-variable resource="dw/variables/pvx-successOrders.dwl" variableName="successOrders" />
+			</ee:variables>
+		</ee:transform>
+		<error-handler >
 					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="bf39b795-dc90-4949-82f1-bd6604bcbb1d" >
 						<logger level="ERROR" doc:name="ERROR: EXCEPTION" doc:id="53fa207c-acff-469e-8b45-dbdb6cd5005d" message="#[%dw 2.0&#10;import modules::CustomLoggerModule&#10;output application/json&#10;var priority = p('json.logger.priority.error')&#10;var flowName = flow.name&#10;var tracePoint = p('json.logger.tracePoint.exception')&#10;var logMessage = tracePoint ++ &quot;: PeopleVox encountered an error while sending a status change request - &quot; ++ (payload.SalesOrderNumber default &quot;&quot;)&#10;---&#10;CustomLoggerModule::generateLogger(priority, flowName, tracePoint, logMessage, vars.statusChangeBody, error, correlationId, {correlationId: vars.correlationId}, attributes)]" category="ck-support-error-monitoring"/>
 					</on-error-continue>
